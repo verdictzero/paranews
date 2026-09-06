@@ -3,13 +3,14 @@ name: CI
 on:
   pull_request:
   push:
-    branches-ignore: [main]
 
 permissions:
   contents: read
 
 jobs:
   verify:
+    # The default branch is verified by update.yml before every ingest.
+    if: github.event_name != 'push' || github.ref_name != github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

@@ -3,10 +3,11 @@ name: Update site
 on:
   schedule:
     # Every 30 minutes. GitHub runs schedules best-effort; expect drift under load.
+    # Schedules only ever run on the repository's default branch.
     - cron: "*/30 * * * *"
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: ["**"]
 
 permissions:
   contents: write
@@ -21,6 +22,9 @@ concurrency:
 
 jobs:
   ingest-and-build:
+    # Pushes only count on the default branch, whatever it is called; feature
+    # branches get ci.yml instead. Schedule and manual runs always proceed.
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
