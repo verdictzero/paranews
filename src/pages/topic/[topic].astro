@@ -1,0 +1,35 @@
+---
+import Base from "../../layouts/Base.astro";
+import StoryRow from "../../components/StoryRow.astro";
+import { TOPICS, type Topic } from "../../../pipeline/types";
+import { TOPIC_BLURB, TOPIC_LABEL, getSiteData } from "../../lib/site";
+
+export function getStaticPaths() {
+  return TOPICS.map((topic) => ({ params: { topic } }));
+}
+
+const topic = Astro.params.topic as Topic;
+const data = getSiteData();
+const list = data.byTopic[topic];
+---
+
+<Base title={TOPIC_LABEL[topic]} description={TOPIC_BLURB[topic]} current={topic}>
+  <section class="section">
+    <div class="section-head">
+      <h2>{TOPIC_LABEL[topic]}</h2>
+      <span class="more">{list.length} {list.length === 1 ? "story" : "stories"} · last 30 days</span>
+    </div>
+    <p class="section-blurb">{TOPIC_BLURB[topic]}</p>
+    {
+      list.length ? (
+        <ol class="stories">
+          {list.map((c, i) => (
+            <StoryRow cluster={c} variant={i < 3 ? "standard" : "compact"} showTopic={false} />
+          ))}
+        </ol>
+      ) : (
+        <p class="empty">Nothing on this beat in the last 30 days.</p>
+      )
+    }
+  </section>
+</Base>

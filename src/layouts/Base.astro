@@ -1,0 +1,100 @@
+---
+import "../styles/global.css";
+import { TOPICS } from "../../pipeline/types";
+import { SITE_NAME, SITE_TAGLINE, TOPIC_LABEL, getSiteData, href, timeAgo, topicPath } from "../lib/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  current?: string;
+}
+const { title, description = SITE_TAGLINE, current } = Astro.props;
+const data = getSiteData();
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title === SITE_NAME ? `${SITE_NAME} — the Fortean wire` : `${title} · ${SITE_NAME}`;
+const liveSources = Object.values(data.health.sources).filter((s) => s.status === "ok").length;
+const storyCount = data.clusters.length;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE_NAME} RSS`} href={href("rss.xml")} />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁</text></svg>" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="robots" content="index,follow" />
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="wrap">
+        <div class="brand">
+          <div class="title"><a href={href("")}>{SITE_NAME}</a></div>
+          <div class="tagline">{SITE_TAGLINE}</div>
+        </div>
+        <nav class="nav" aria-label="Sections">
+          <a href={href("")} aria-current={current === "home" ? "page" : undefined}>Front page</a>
+          {TOPICS.map((t) => (
+            <a href={href(topicPath(t))} aria-current={current === t ? "page" : undefined}>{TOPIC_LABEL[t]}</a>
+          ))}
+          <span class="spacer"></span>
+          <a href={href("sources/")} aria-current={current === "sources" ? "page" : undefined}>Sources</a>
+          <a href={href("about/")} aria-current={current === "about" ? "page" : undefined}>About</a>
+          <a class="rss" href={href("rss.xml")}>RSS</a>
+        </nav>
+      </div>
+    </header>
+    <div class="wrap">
+      <div class="strap">
+        {data.meta && (
+          <span>
+            Updated <b><time datetime={data.meta.last_run_at} data-relative>{timeAgo(data.meta.last_run_at, data.now)}</time></b>
+          </span>
+        )}
+        <span><b>{storyCount}</b> {storyCount === 1 ? "story" : "stories"} in the last 30 days</span>
+        <span><b>{liveSources}</b> live {liveSources === 1 ? "source" : "sources"}</span>
+        <span>Refreshes every 30 minutes</span>
+      </div>
+    </div>
+    <main class="wrap"><slot /></main>
+    <footer>
+      <div class="wrap">
+        <p>
+          <b>{SITE_NAME}</b> aggregates headlines and links to the publishers; it writes no articles of its own. Credibility tiers describe the publisher, never the claim — see <a href={href("about/")}>how it works</a>.
+        </p>
+        <p>Assembled by software from {data.items.size} feed items. Treat every story as exactly as reliable as its source.</p>
+      </div>
+    </footer>
+    <script>
+      const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+      function relative(ms: number): string {
+        const mins = Math.round(ms / 60_000);
+        if (mins < 1) return "just now";
+        if (mins < 60) return rtf.format(-mins, "minute");
+        const hours = Math.round(mins / 60);
+        if (hours < 36) return rtf.format(-hours, "hour");
+        const days = Math.round(hours / 24);
+        if (days < 14) return rtf.format(-days, "day");
+        return new Date(Date.now() - ms).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      }
+      function refresh(): void {
+        for (const el of document.querySelectorAll<HTMLTimeElement>("time[data-relative]")) {
+          const t = Date.parse(el.dateTime);
+          if (!Number.isNaN(t)) {
+            el.textContent = relative(Math.max(0, Date.now() - t));
+            el.title = new Date(t).toLocaleString();
+          }
+        }
+      }
+      refresh();
+      setInterval(refresh, 60_000);
+    </script>
+  </body>
+</html>

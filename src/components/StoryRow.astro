@@ -1,0 +1,37 @@
+---
+import type { Cluster } from "../../pipeline/types";
+import { TOPIC_LABEL, getSiteData, href, primaryOf, storyPath, timeAgo, topicPath } from "../lib/site";
+import TierBadge from "./TierBadge.astro";
+
+interface Props {
+  cluster: Cluster;
+  variant?: "lead" | "standard" | "compact";
+  index?: number;
+  showTopic?: boolean;
+}
+const { cluster, variant = "standard", index, showTopic = true } = Astro.props;
+const data = getSiteData();
+const primary = primaryOf(cluster, data);
+const others = cluster.publishers.length - 1;
+---
+
+<li class:list={["story", variant]}>
+  <div class="head">
+    {index !== undefined && <span class="num">{index}.</span>}
+    <a href={primary.url}>{cluster.title}</a>
+  </div>
+  {variant !== "compact" && cluster.snippet && <p class="snippet">{cluster.snippet}</p>}
+  <div class="meta">
+    <TierBadge tier={cluster.tier} />
+    <span class="pub">{primary.publisher}</span>
+    <time datetime={cluster.latest_published} data-relative>{timeAgo(cluster.latest_published, data.now)}</time>
+    {others > 0 && (
+      <a class="more" href={href(storyPath(cluster))}>
+        +{others} {others === 1 ? "outlet" : "outlets"}
+      </a>
+    )}
+    {cluster.corroboration >= 2 && <span class="corroborated" title="Independent write-ups from official or press sources">corroborated ×{cluster.corroboration}</span>}
+    {showTopic && cluster.topics.map((t) => <a class:list={["tag", t]} href={href(topicPath(t))}>{TOPIC_LABEL[t]}</a>)}
+    {cluster.flags.map((f) => <span class="flag" title="Demoted in ranking">{f}</span>)}
+  </div>
+</li>

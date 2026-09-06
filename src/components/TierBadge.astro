@@ -1,0 +1,11 @@
+---
+import type { Tier } from "../../pipeline/types";
+import { TIER_BLURB, TIER_LABEL } from "../lib/site";
+
+interface Props {
+  tier: Tier;
+}
+const { tier } = Astro.props;
+---
+
+<span class:list={["badge", tier]} title={TIER_BLURB[tier]}>{TIER_LABEL[tier]}</span>

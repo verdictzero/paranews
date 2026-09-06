@@ -1,0 +1,116 @@
+name: Update site
+
+on:
+  schedule:
+    # Every 30 minutes. GitHub runs schedules best-effort; expect drift under load.
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+# Never let two ingests race on the data branch.
+concurrency:
+  group: update-site
+  cancel-in-progress: false
+
+jobs:
+  ingest-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Verify
+        run: |
+          npm test
+          npm run typecheck
+
+      - name: Ingest feeds
+        run: npm run ingest
+
+      - name: Commit new data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No data changes."
+            exit 0
+          fi
+          git commit -m "data: ingest $(date -u +'%Y-%m-%d %H:%M UTC')"
+          for attempt in 1 2 3 4; do
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            echo "Push rejected (attempt ${attempt}); rebasing onto the remote."
+            sleep $((attempt * 5))
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}"
+          done
+          echo "Could not push data after 4 attempts." >&2
+          exit 1
+
+      - name: Open issues for newly quarantined sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/quarantine-report.ts > .cache/issues.json
+          if [ "$(jq length .cache/issues.json)" = "0" ]; then
+            echo "No newly quarantined sources."
+            exit 0
+          fi
+          gh label create source-health --description "A feed the ingest pipeline quarantined" --color D93F0B --force
+          jq -c '.[]' .cache/issues.json | while read -r row; do
+            title=$(jq -r .title <<<"$row")
+            body=$(jq -r .body <<<"$row")
+            open=$(gh issue list --state open --label source-health --search "\"$title\" in:title" --json number --jq length)
+            if [ "$open" = "0" ]; then
+              gh issue create --title "$title" --label source-health --body "$body"
+            else
+              echo "Issue already open: $title"
+            fi
+          done
+
+      # Also creates the Pages site on first run. If that needs a manual click
+      # (Settings → Pages → Source: GitHub Actions), the data commit and build
+      # above still happen; only the deploy job fails until it is done.
+      - name: Configure Pages
+        id: pages
+        continue-on-error: true
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Build site
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: ingest-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

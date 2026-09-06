@@ -1,0 +1,515 @@
+# Feed registry. Items are the source of truth; clusters are derived at build time.
+#
+# kind: google-news  -> query + edition build a Google News RSS search. Publisher
+#                       tier comes from the `publishers` lookup below.
+# kind: rss          -> a direct feed. `tier` applies to every item.
+# topics: [..]       -> fixed topic(s), plus any the headline classifier adds.
+# topics: auto       -> headline classifier decides; unmatched items use
+#                       default_topic, or are dropped when it is absent.
+#
+# Disabled sources keep a `note` so nobody rediscovers the same dead path.
+
+sources:
+  # ── Google News topic queries: the backbone (100 items each, no auth, no bot wall) ──
+  - id: gn-ufo-us
+    name: Google News · UFO/UAP
+    kind: google-news
+    edition: US
+    query: ufo OR uap OR "unidentified anomalous" OR "unidentified aerial" OR AARO OR "flying saucer"
+    topics: [ufo]
+    enabled: true
+  - id: gn-ufo-gb
+    name: Google News · UFO/UAP (UK edition)
+    kind: google-news
+    edition: GB
+    query: ufo OR uap OR "unidentified anomalous" OR "unidentified aerial" OR AARO OR "flying saucer"
+    topics: [ufo]
+    enabled: true
+  # Google News silently drops the when:7d operator on long queries (tested: a
+  # 309-character query returned zero recent items, ≤190 characters returned
+  # only recent ones), so every beat is split into short queries. Validation
+  # enforces the limit.
+  - id: gn-ghosts-a-us
+    name: Google News · Hauntings (investigations)
+    kind: google-news
+    edition: US
+    # "haunted"/"haunting" alone are metaphor and product magnets (Ponzi frauds haunting
+    # the GOP, LEGO Haunted Mansion). Precise phrases only.
+    query: poltergeist OR "paranormal investigators" OR "paranormal investigation" OR "ghost sighting" OR "ghost sightings" OR "ghost hunters" OR "ghost hunting" OR exorcism
+    topics: [ghosts]
+    enabled: true
+  - id: gn-ghosts-a-gb
+    name: Google News · Hauntings (investigations, UK edition)
+    kind: google-news
+    edition: GB
+    query: poltergeist OR "paranormal investigators" OR "paranormal investigation" OR "ghost sighting" OR "ghost sightings" OR "ghost hunters" OR "ghost hunting" OR exorcism
+    topics: [ghosts]
+    enabled: true
+  - id: gn-ghosts-b-us
+    name: Google News · Hauntings (places)
+    kind: google-news
+    edition: US
+    # No "paranormal activity": it is the film franchise nearly every time.
+    query: '"reportedly haunted" OR "most haunted" OR "haunted hotel" OR "haunted castle" OR "haunted pub" OR apparition OR "paranormal experience"'
+    topics: [ghosts]
+    enabled: true
+  - id: gn-ghosts-b-gb
+    name: Google News · Hauntings (places, UK edition)
+    kind: google-news
+    edition: GB
+    query: '"reportedly haunted" OR "most haunted" OR "haunted hotel" OR "haunted castle" OR apparition OR "paranormal experience" OR "paranormal activity"'
+    topics: [ghosts]
+    enabled: true
+  - id: gn-cryptids-us
+    name: Google News · Cryptids
+    kind: google-news
+    edition: US
+    # No "yeti" (coolers), "dogman" (children's books), bare "loch ness" (tourism), "jersey devil" (NHL)
+    # or "sea monster" (military hardware nicknames). -brewing keeps Lake Monster Brewing out.
+    query: bigfoot OR sasquatch OR cryptid OR cryptids OR cryptozoology OR "loch ness monster" OR nessie OR mothman OR chupacabra OR "lake monster" OR "skunk ape" -brewing
+    topics: [cryptids]
+    enabled: true
+  - id: gn-cryptids-gb
+    name: Google News · Cryptids (UK edition)
+    kind: google-news
+    edition: GB
+    query: bigfoot OR sasquatch OR cryptid OR cryptids OR cryptozoology OR "loch ness monster" OR nessie OR mothman OR chupacabra OR "lake monster" OR "skunk ape" -brewing
+    topics: [cryptids]
+    enabled: true
+  - id: gn-fortean-a-us
+    name: Google News · High strangeness (phenomena)
+    kind: google-news
+    edition: US
+    query: '"unexplained phenomena" OR "unexplained phenomenon" OR "high strangeness" OR "crop circle" OR "crop circles" OR "mysterious lights" OR "mysterious object"'
+    topics: [fortean]
+    enabled: true
+  - id: gn-fortean-a-gb
+    name: Google News · High strangeness (phenomena, UK edition)
+    kind: google-news
+    edition: GB
+    query: '"unexplained phenomena" OR "unexplained phenomenon" OR "high strangeness" OR "crop circle" OR "crop circles" OR "mysterious lights" OR "mysterious object"'
+    topics: [fortean]
+    enabled: true
+  - id: gn-fortean-b-us
+    name: Google News · High strangeness (creatures & booms)
+    kind: google-news
+    edition: US
+    query: '"mysterious creature" OR "strange creature" OR "mystery creature" OR "mysterious boom" OR "loud boom" OR "strange noise" OR "unexplained noise"'
+    topics: [fortean]
+    enabled: true
+  - id: gn-fortean-b-gb
+    name: Google News · High strangeness (creatures & booms, UK edition)
+    kind: google-news
+    edition: GB
+    query: '"mysterious creature" OR "strange creature" OR "mystery creature" OR "mysterious boom" OR "loud boom" OR "strange noise" OR "unexplained noise"'
+    topics: [fortean]
+    enabled: true
+  - id: gn-mysteries-us
+    name: Google News · Mysteries & the uncanny
+    kind: google-news
+    edition: US
+    # "skinwalker ranch", "ancient aliens", "bermuda triangle" are TV-promo magnets and
+    # "reincarnation" is an anime magnet (Jobless Reincarnation); all left out.
+    query: '"mysterious disappearance" OR "vanished without a trace" OR "near-death experiences" OR "past lives" OR "remote viewing" OR "lost civilization" OR "mandela effect"'
+    topics: [fortean]
+    enabled: true
+
+  # ── Direct feeds: real URLs, snippets and images (verified live 2026-09-06) ──
+  - id: the-debrief
+    name: The Debrief
+    kind: rss
+    url: https://thedebrief.org/feed/
+    tier: genre
+    topics: auto
+    enabled: true
+    note: Covers general science too; only headlines the classifier matches are kept.
+  - id: singular-fortean
+    name: Singular Fortean
+    kind: rss
+    url: https://www.singularfortean.com/news?format=rss
+    tier: genre
+    topics: auto
+    default_topic: fortean
+    enabled: false
+    note: Feed is live but its newest entry is from 2024-11; re-enable if the site resumes.
+  - id: daily-grail
+    name: The Daily Grail
+    kind: rss
+    url: https://www.dailygrail.com/feed/
+    tier: genre
+    topics: auto
+    default_topic: fortean
+    enabled: true
+  - id: unexplained-mysteries
+    name: Unexplained Mysteries
+    kind: rss
+    url: https://feeds.feedburner.com/UnexplainedMysteries
+    tier: genre
+    topics: auto
+    default_topic: fortean
+    enabled: true
+  - id: black-vault
+    name: The Black Vault
+    kind: rss
+    url: https://www.theblackvault.com/documentarchive/feed/
+    tier: genre
+    topics: auto
+    default_topic: ufo
+    enabled: true
+  - id: ancient-origins
+    name: Ancient Origins
+    kind: rss
+    url: https://www.ancient-origins.net/rss.xml
+    tier: genre
+    topics: auto
+    enabled: true
+  - id: ufo-sightings-hotspot
+    name: UFO Sightings Hotspot
+    kind: rss
+    url: https://ufosightingshotspot.blogspot.com/feeds/posts/default?alt=rss
+    tier: unverified
+    topics: [ufo]
+    enabled: true
+  - id: nypost-ufos
+    name: New York Post
+    kind: rss
+    url: https://nypost.com/tag/ufos/feed/
+    tier: genre
+    topics: [ufo]
+    enabled: true
+    note: The /tag/ufo/ feed exists but is empty; /tag/ufos/ is the live one. Needs a browser UA.
+  - id: nypost-bigfoot
+    name: New York Post
+    kind: rss
+    url: https://nypost.com/tag/bigfoot/feed/
+    tier: genre
+    topics: [cryptids]
+    enabled: true
+  - id: livescience
+    name: Live Science
+    kind: rss
+    url: https://www.livescience.com/feeds/all
+    tier: press
+    topics: auto
+    enabled: true
+  - id: sciencealert
+    name: ScienceAlert
+    kind: rss
+    url: https://www.sciencealert.com/feed
+    tier: press
+    topics: auto
+    enabled: true
+  - id: dailystar-weird
+    name: Daily Star
+    kind: rss
+    url: https://www.dailystar.co.uk/news/weird-news/?service=rss
+    tier: genre
+    topics: auto
+    enabled: true
+  - id: mirror-weird
+    name: The Mirror
+    kind: rss
+    url: https://www.mirror.co.uk/news/weird-news/?service=rss
+    tier: genre
+    topics: auto
+    enabled: true
+  - id: reddit-ufos
+    name: r/UFOs
+    kind: rss
+    url: https://www.reddit.com/r/UFOs/top/.rss?t=day
+    tier: unverified
+    topics: [ufo]
+    enabled: true
+    note: Reddit rate-limits datacenter IPs aggressively (429). Expect quarantine cycles.
+  - id: reddit-paranormal
+    name: r/Paranormal
+    kind: rss
+    url: https://www.reddit.com/r/Paranormal/top/.rss?t=day
+    tier: unverified
+    topics: [ghosts]
+    enabled: true
+    note: Reddit rate-limits datacenter IPs aggressively (429). Expect quarantine cycles.
+
+  # ── Retired: dead paths and bot walls found on 2026-09-06 ──
+  - id: mysterious-universe
+    name: Mysterious Universe
+    kind: rss
+    url: https://mysteriousuniverse.org/feed/
+    tier: genre
+    topics: auto
+    default_topic: fortean
+    enabled: false
+    note: /feed/ and /rss return a 404 HTML page. Site redesigned; feed path unknown.
+  - id: coast-to-coast
+    name: Coast to Coast AM
+    kind: rss
+    url: https://www.coasttocoastam.com/rss/
+    tier: genre
+    topics: auto
+    default_topic: fortean
+    enabled: false
+    note: /rss/ serves an HTML page, not a feed.
+  - id: anomalien
+    name: Anomalien
+    kind: rss
+    url: https://anomalien.com/feed/
+    tier: genre
+    topics: auto
+    default_topic: fortean
+    enabled: false
+    note: Captcha wall (sgcaptcha) on every request.
+  - id: openminds
+    name: Open Minds
+    kind: rss
+    url: https://www.openminds.tv/feed
+    tier: genre
+    topics: [ufo]
+    enabled: false
+    note: HTTP 403.
+  - id: phantoms-and-monsters
+    name: Phantoms & Monsters
+    kind: rss
+    url: https://www.phantomsandmonsters.com/feeds/posts/default?alt=rss
+    tier: unverified
+    topics: auto
+    default_topic: fortean
+    enabled: false
+    note: Feed URL serves the HTML homepage (ad-network consent script).
+  - id: liberation-times
+    name: Liberation Times
+    kind: rss
+    url: https://liberationtimes.com/feed/
+    tier: genre
+    topics: [ufo]
+    enabled: false
+    note: HTTP 404.
+  - id: express-weird
+    name: Daily Express
+    kind: rss
+    url: https://www.express.co.uk/feed/news/weird
+    tier: genre
+    topics: auto
+    enabled: false
+    note: HTTP 404.
+
+# Publisher -> tier lookup for Google News items. Exact names first (case and
+# leading "The" ignored), then patterns in order, then the default.
+publishers:
+  official:
+    - Reuters
+    - Associated Press
+    - AP News
+    - NASA
+    - NASA Science
+    - U.S. Department of Defense
+    - Department of Defense
+    - Defense.gov
+    - Congress.gov
+    - Federal Register
+    - Nature
+    - Science
+    - Science Magazine
+    - The Conversation
+  press:
+    - The New York Times
+    - The Washington Post
+    - The Wall Street Journal
+    - WSJ
+    - The Guardian
+    - BBC
+    - BBC News
+    - CNN
+    - NBC News
+    - CBS News
+    - ABC News
+    - NPR
+    - PBS
+    - Fox News
+    - NewsNation
+    - Politico
+    - The Hill
+    - USA Today
+    - Los Angeles Times
+    - latimes.com
+    - Chicago Tribune
+    - The Boston Globe
+    - Boston.com
+    - The Atlantic
+    - The Times
+    - The Sunday Times
+    - The Telegraph
+    - The Independent
+    - Sky News
+    - ITV
+    - ITV News
+    - Channel 4 News
+    - The Economist
+    - Financial Times
+    - Newsweek
+    - TIME
+    - Bloomberg
+    - Axios
+    - DefenseScoop
+    - Defense One
+    - Breaking Defense
+    - Military.com
+    - Stars and Stripes
+    - Space.com
+    - Live Science
+    - Scientific American
+    - New Scientist
+    - Popular Mechanics
+    - Popular Science
+    - Smithsonian Magazine
+    - National Geographic
+    - Ars Technica
+    - Wired
+    - Vice
+    - The Verge
+    - Gizmodo
+    - Forbes
+    - Business Insider
+    - Yahoo News
+    - Yahoo News UK
+    - MSN
+    - The Japan Times
+    - Deadline
+    - Variety
+    - The Hollywood Reporter
+    - Entertainment Weekly
+    - ew.com
+    - History.com
+    - Britannica
+    - Atlas Obscura
+    - The Christian Science Monitor
+    - Futurism
+    - ScienceAlert
+    - Mashable
+    - Inverse
+    - inverse.com
+    - The Times of India
+    - Hindustan Times
+    - NDTV
+    - The Sydney Morning Herald
+    - ABC News (Australia)
+    - CBC
+    - CBC News
+    - CTV News
+    - Global News
+    - Toronto Star
+    - The Globe and Mail
+    - The Irish Times
+    - Irish Independent
+    - RTÉ
+    - Nation.Cymru
+    - WalesOnline
+    - Liverpool Echo
+    - Manchester Evening News
+    - Bristol Post
+    - bristolpost.co.uk
+    - Somerset Live
+    - Kent Online
+    - Inverness Courier
+    - Press and Journal
+    - The Scotsman
+    - The Herald
+    - STLPR
+    - stlpr.org
+    - KSL.com
+  genre:
+    - New York Post
+    - nypost.com
+    - Daily Mail
+    - Mail Online
+    - The Sun
+    - The US Sun
+    - The Irish Sun
+    - The Scottish Sun
+    - Daily Star
+    - Mirror
+    - The Mirror
+    - Daily Mirror
+    - Daily Express
+    - Express
+    - Express.co.uk
+    - Metro
+    - Metro.co.uk
+    - LADbible
+    - UNILAD
+    - Dexerto
+    - The Debrief
+    - The Daily Grail
+    - Singular Fortean
+    - Mysterious Universe
+    - Coast to Coast AM
+    - Anomalien
+    - Unexplained Mysteries
+    - Fortean Times
+    - Liberation Times
+    - Ancient Origins
+    - The Black Vault
+    - Far Out Magazine
+    - femalefirst.co.uk
+    - Time Out Worldwide
+    - Time Out
+    - HELLO! Magazine
+    - Hello Magazine
+    - All That's Interesting
+    - the-line-up.com
+    - TheTravel
+    - Sky HISTORY TV channel
+    - Disney Plus
+    - Disney.com
+    - IGN
+    - No Film School
+    - PopMatters
+    - IMDb
+    - Cinema Sentries
+    - Media Play News
+    - HowStuffWorks
+    - scoopwhoop.com
+    - PressReader
+    - Cureus
+    - MiGFlug
+    - migflug.com
+    - StockInvest.us
+    - Krepšinio žinios
+  unverified:
+    - Reddit
+    - YouTube
+    - TikTok
+    - Facebook
+    - facebook.com
+    - Instagram
+    - X
+    - Twitter
+    - Substack
+    - Medium
+    - Avi Loeb – Medium
+    - Blogspot
+    - Before It's News
+    - Latest UFO Sightings
+    - UFO Sightings Hotspot
+    - Quora
+    - Pinterest
+    - Tumblr
+    - Vocal
+    - Vocal Media
+    - Mshale
+    - mshale.com
+  patterns:
+    # Government, universities, journals
+    - tier: official
+      pattern: '\b(university|universit[aeé]|college|institute|laboratory|observatory|\.gov|\.edu|\.ac\.uk|nasa|noaa|esa|department of|ministry of|government|parliament|congress)\b'
+    # Social and self-publishing platforms
+    - tier: unverified
+      pattern: '\b(reddit|youtube|tiktok|facebook|instagram|twitter|substack|medium|blogspot|wordpress|tumblr|quora|pinterest|patreon|linkedin)\b|^r/'
+    # US broadcast call signs: KLAS 8 News Now, WMUR, kfvs12.com, WOWK 13 News
+    - tier: press
+      pattern: '^[kw][a-z]{2,3}\d{0,2}(?:-?(?:tv|dt|am|fm))?\b'
+    # Newspaper and broadcaster naming conventions
+    - tier: press
+      pattern: '\b(news|times|post|herald|tribune|gazette|journal|chronicle|courier|daily|observer|standard|telegraph|examiner|register|dispatch|record|bulletin|sentinel|star|globe|echo|independent|guardian|advertiser|argus|leader|ledger|mercury|patriot|pioneer|press|radio|television|tv|broadcasting|broadcaster|public media|newspaper)\b'
+  # Google News only lists outlets it indexes, so an unknown name is more likely a
+  # small real newsroom or a content site than a hoax blog. Genre is the honest middle.
+  default: genre

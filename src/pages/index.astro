@@ -1,0 +1,59 @@
+---
+import Base from "../layouts/Base.astro";
+import StoryRow from "../components/StoryRow.astro";
+import { TOPICS } from "../../pipeline/types";
+import { SITE_NAME, TOPIC_BLURB, TOPIC_LABEL, getSiteData, href, topicPath } from "../lib/site";
+
+const data = getSiteData();
+const topIds = new Set(data.top.map((c) => c.id));
+const SECTION_COUNT = 8;
+---
+
+<Base title={SITE_NAME} current="home">
+  <section class="section">
+    <div class="section-head">
+      <h2>Top stories</h2>
+      <span class="more">Ranked by coverage, publisher tier and freshness</span>
+    </div>
+    {
+      data.top.length ? (
+        <ol class="stories">
+          {data.top.map((c, i) => (
+            <StoryRow cluster={c} variant={i === 0 ? "lead" : "standard"} index={i + 1} />
+          ))}
+        </ol>
+      ) : (
+        <p class="empty">Nothing from the last seven days yet. Either the wire is quiet or the first ingest hasn't run.</p>
+      )
+    }
+  </section>
+  <div class="grid">
+    {
+      TOPICS.map((t) => {
+        const list = data.byTopic[t].filter((c) => !topIds.has(c.id)).slice(0, SECTION_COUNT);
+        return (
+          <section class="section">
+            <div class="section-head">
+              <h2>
+                <a href={href(topicPath(t))}>{TOPIC_LABEL[t]}</a>
+              </h2>
+              <a class="more" href={href(topicPath(t))}>
+                All {data.byTopic[t].length} →
+              </a>
+            </div>
+            <p class="section-blurb">{TOPIC_BLURB[t]}</p>
+            {list.length ? (
+              <ul class="stories">
+                {list.map((c) => (
+                  <StoryRow cluster={c} variant="compact" showTopic={false} />
+                ))}
+              </ul>
+            ) : (
+              <p class="empty">Quiet on this beat.</p>
+            )}
+          </section>
+        );
+      })
+    }
+  </div>
+</Base>

@@ -1,0 +1,56 @@
+---
+import Base from "../../layouts/Base.astro";
+import TierBadge from "../../components/TierBadge.astro";
+import type { Cluster } from "../../../pipeline/types";
+import { headlineGroups } from "../../../pipeline/rank";
+import { dedupeMembers } from "../../../pipeline/cluster";
+import { TOPIC_LABEL, formatDate, getSiteData, hostOf, href, itemsOf, primaryOf, topicPath } from "../../lib/site";
+
+export function getStaticPaths() {
+  return getSiteData().clusters.map((cluster) => ({ params: { id: cluster.id }, props: { cluster } }));
+}
+
+interface Props {
+  cluster: Cluster;
+}
+const { cluster } = Astro.props;
+const data = getSiteData();
+const members = dedupeMembers(itemsOf(cluster, data));
+const primary = primaryOf(cluster, data);
+const headlines = headlineGroups(members).size;
+const outlets = cluster.publishers.length;
+---
+
+<Base title={cluster.title} description={cluster.snippet ?? `${outlets} ${outlets === 1 ? "outlet" : "outlets"} on: ${cluster.title}`}>
+  <article class="story-page">
+    <div class="kicker">
+      <TierBadge tier={cluster.tier} />
+      {cluster.topics.map((t) => <a class:list={["tag", t]} href={href(topicPath(t))}>{TOPIC_LABEL[t]}</a>)}
+      <span>First seen {formatDate(cluster.first_published)}</span>
+      {cluster.corroboration >= 2 && <span class="corroborated">{cluster.corroboration} independent press write-ups</span>}
+      {cluster.flags.map((f) => <span class="flag">demoted: {f}</span>)}
+    </div>
+    <h1>{cluster.title}</h1>
+    <a class="primary" href={primary.url}>Read at {primary.publisher} →</a>
+    {cluster.snippet && <p class="snippet">{cluster.snippet}</p>}
+    <h2>Coverage · {outlets} {outlets === 1 ? "outlet" : "outlets"}</h2>
+    <ul class="coverage">
+      {
+        members.map((m) => (
+          <li>
+            <span class="who">
+              <a href={m.url}>{m.publisher}</a> <TierBadge tier={m.tier} />
+            </span>
+            <span class="when">
+              <time datetime={m.published_at}>{formatDate(m.published_at)}</time> · {hostOf(m)}
+            </span>
+            {m.title !== cluster.title && <span class="what">{m.title}</span>}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="section-blurb">
+      Grouped automatically by headline similarity — {headlines === 1 ? "every outlet ran the same headline" : `${headlines} distinct headlines`}. Tiers describe the publisher, not the claim.
+    </p>
+  </article>
+</Base>
