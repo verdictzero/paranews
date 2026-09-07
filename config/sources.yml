@@ -147,8 +147,8 @@ sources:
     url: https://feeds.feedburner.com/UnexplainedMysteries
     tier: genre
     topics: auto
-    default_topic: fortean
     enabled: true
+    note: Also posts general weird science (dark matter, solar storms); only headlines the classifier matches are kept.
   - id: black-vault
     name: The Black Vault
     kind: rss

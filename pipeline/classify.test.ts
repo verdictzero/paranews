@@ -11,7 +11,7 @@ test("topics from real headlines", () => {
   assert.deepEqual(classifyTopics("Archive of Luis Elizondo's \"Deleted\" Emails"), ["ufo"]);
   assert.deepEqual(classifyTopics("Conflict in the Final Frontier: The U.S. and China prepare for war"), []);
   assert.deepEqual(classifyTopics("Yeti launches textured Riverhead Collection for fall"), []);
-  assert.deepEqual(classifyTopics("Iconic singer-songwriter vanished without a trace 52 years ago"), ["fortean"]);
+  assert.deepEqual(classifyTopics("Iconic singer-songwriter vanished without a trace 52 years ago"), [], "disappearances are true crime, not Fortean, unless something else marks them");
 });
 
 test("serialized fiction is off-topic outright", () => {

@@ -33,7 +33,7 @@ scripts/quarantine-report.ts  issue payloads for newly quarantined sources
 data/items/               committed archive, one file per UTC publication day
 data/health.json          per-source status, validators, last error
 data/meta.json            last run time and counts
-src/                      Astro site: front page, beat pages, story pages, about, sources, rss.xml, sitemap
+src/                      Astro site: front page, beat pages, story pages, about, sources, rss.xml + rss/<beat>.xml, sitemap
 .github/workflows/update.yml   schedule → test → ingest → commit → build → deploy
 .github/workflows/ci.yml       test + typecheck + build on pull requests
 ```

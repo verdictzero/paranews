@@ -2,7 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import StoryRow from "../../components/StoryRow.astro";
 import { TOPICS, type Topic } from "../../../pipeline/types";
-import { TOPIC_BLURB, TOPIC_LABEL, getSiteData } from "../../lib/site";
+import { TOPIC_BLURB, TOPIC_LABEL, getSiteData, href } from "../../lib/site";
 
 export function getStaticPaths() {
   return TOPICS.map((topic) => ({ params: { topic } }));
@@ -17,7 +17,7 @@ const list = data.byTopic[topic];
   <section class="section">
     <div class="section-head">
       <h2>{TOPIC_LABEL[topic]}</h2>
-      <span class="more">{list.length} {list.length === 1 ? "story" : "stories"} · last 30 days</span>
+      <span class="more">{list.length} {list.length === 1 ? "story" : "stories"} · last 30 days · <a href={href(`rss/${topic}.xml`)}>RSS</a></span>
     </div>
     <p class="section-blurb">{TOPIC_BLURB[topic]}</p>
     {
