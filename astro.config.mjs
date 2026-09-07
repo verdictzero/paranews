@@ -5,7 +5,9 @@ import sitemap from "@astrojs/sitemap";
 // The update workflow passes the values GitHub Pages reports (actions/configure-pages),
 // so a custom domain or a user site (base "") just works. Local builds default to the
 // project-site shape.
-const site = process.env.SITE_URL || "https://verdictzero.github.io";
+// Pages reports an http:// origin until "Enforce HTTPS" is switched on; the
+// site is served over https either way, so canonical links always say so.
+const site = (process.env.SITE_URL || "https://verdictzero.github.io").replace(/^http:/, "https:");
 // A custom domain reports an empty base path, which is a real value, not "unset".
 const base = process.env.BASE_PATH === undefined ? "/paranews" : process.env.BASE_PATH || "/";
 
