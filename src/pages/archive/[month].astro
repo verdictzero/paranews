@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import ArchiveView from "../../components/ArchiveView.astro";
+import { getSiteData } from "../../lib/site";
+
+export function getStaticPaths() {
+  return getSiteData().archive.map((m) => ({ params: { month: m.key }, props: { label: m.label } }));
+}
+
+const { month } = Astro.params;
+const { label } = Astro.props as { label: string };
+---
+
+<Base title={`Archive · ${label}`} description={`Stories from ${label} with reader copies.`} current="archive">
+  <ArchiveView month={month} />
+</Base>

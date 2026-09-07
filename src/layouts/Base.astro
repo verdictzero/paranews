@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { TOPICS } from "../../pipeline/types";
+import Reader from "../components/Reader.astro";
 import { SITE_NAME, SITE_TAGLINE, TOPIC_LABEL, getSiteData, href, timeAgo, topicPath } from "../lib/site";
 
 interface Props {
@@ -32,6 +33,7 @@ const storyCount = data.clusters.length;
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta name="robots" content="index,follow" />
+    <script is:inline>document.documentElement.classList.add("js");</script>
   </head>
   <body>
     <header class="masthead">
@@ -46,6 +48,7 @@ const storyCount = data.clusters.length;
             <a href={href(topicPath(t))} aria-current={current === t ? "page" : undefined}>{TOPIC_LABEL[t]}</a>
           ))}
           <span class="spacer"></span>
+          <a href={href("archive/")} aria-current={current === "archive" ? "page" : undefined}>Archive</a>
           <a href={href("sources/")} aria-current={current === "sources" ? "page" : undefined}>Sources</a>
           <a href={href("about/")} aria-current={current === "about" ? "page" : undefined}>About</a>
           <a class="rss" href={href("rss.xml")}>RSS</a>
@@ -64,6 +67,7 @@ const storyCount = data.clusters.length;
       </div>
     </div>
     <main class="wrap"><slot /></main>
+    <Reader />
     <footer>
       <div class="wrap">
         <p>Headlines and links only; tiers describe the publisher, not the claim. <a href={href("about/")}>How this works</a>.</p>

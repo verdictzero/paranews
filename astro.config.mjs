@@ -13,5 +13,6 @@ export default defineConfig({
   base,
   trailingSlash: "always",
   build: { format: "directory" },
-  integrations: [sitemap()],
+  // Reader copies are fetched by the dialog, not pages to index.
+  integrations: [sitemap({ filter: (page) => !page.includes("/reader/") })],
 });

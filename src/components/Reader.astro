@@ -1,0 +1,184 @@
+---
+import { href } from "../lib/site";
+---
+
+<dialog id="reader" class="reader" aria-labelledby="reader-title" data-base={href("reader/")}>
+  <form method="dialog" class="reader-bar">
+    <a id="reader-source" class="reader-source" href="#" target="_blank" rel="noopener">Original ↗</a>
+    <button type="submit" class="reader-close" aria-label="Close" autofocus>×</button>
+  </form>
+  <div class="reader-body">
+    <p id="reader-status" class="reader-status">Loading…</p>
+    <article id="reader-article" hidden>
+      <img id="reader-hero" class="reader-hero" alt="" decoding="async" hidden />
+      <h2 id="reader-title"></h2>
+      <p id="reader-meta" class="reader-meta"></p>
+      <div id="reader-content" class="reader-content"></div>
+      <p class="reader-foot"><a id="reader-foot" href="#" target="_blank" rel="noopener"></a></p>
+    </article>
+  </div>
+</dialog>
+
+<script>
+  interface ReaderPayload {
+    id: string;
+    title: string;
+    byline?: string;
+    site_name?: string;
+    publisher?: string;
+    published_at?: string;
+    url: string;
+    words: number;
+    image: { src: string; width: number; height: number } | null;
+    content: string;
+  }
+
+  const dialog = document.getElementById("reader") as HTMLDialogElement | null;
+
+  if (dialog && typeof dialog.showModal === "function") {
+    const base = dialog.dataset.base ?? "";
+    const part = <T extends HTMLElement>(id: string): T => dialog.querySelector<T>(`#reader-${id}`)!;
+    const status = part<HTMLParagraphElement>("status");
+    const article = part<HTMLElement>("article");
+    const hero = part<HTMLImageElement>("hero");
+    const title = part<HTMLHeadingElement>("title");
+    const meta = part<HTMLParagraphElement>("meta");
+    const content = part<HTMLDivElement>("content");
+    const source = part<HTMLAnchorElement>("source");
+    const foot = part<HTMLAnchorElement>("foot");
+    const body = dialog.querySelector<HTMLElement>(".reader-body")!;
+    const cache = new Map<string, Promise<ReaderPayload>>();
+    let current: string | null = null;
+    let opener: HTMLElement | null = null;
+    let pushed = false;
+    /** Set while our own history.back() is in flight, so an older #read= entry does not reopen. */
+    let closing = false;
+
+    const hashId = (): string | null => location.hash.match(/^#read=([0-9a-f]{16})$/)?.[1] ?? null;
+
+    function load(id: string): Promise<ReaderPayload> {
+      let p = cache.get(id);
+      if (!p) {
+        p = fetch(`${base}${id}.json`).then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json() as Promise<ReaderPayload>;
+        });
+        p.catch(() => cache.delete(id));
+        cache.set(id, p);
+      }
+      return p;
+    }
+
+    function hostOf(url: string): string {
+      try {
+        return new URL(url).host.replace(/^www\./, "");
+      } catch {
+        return "";
+      }
+    }
+
+    function render(p: ReaderPayload): void {
+      title.textContent = p.title;
+      const when = p.published_at ? new Date(p.published_at).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
+      const minutes = Math.max(1, Math.round(p.words / 220));
+      meta.textContent = [p.publisher ?? p.site_name, p.byline, when, `${minutes} min read`].filter(Boolean).join(" · ");
+      if (p.image) {
+        hero.src = p.image.src;
+        hero.width = p.image.width;
+        hero.height = p.image.height;
+        hero.hidden = false;
+      } else {
+        hero.removeAttribute("src");
+        hero.hidden = true;
+      }
+      content.innerHTML = p.content;
+      for (const img of content.querySelectorAll("img")) {
+        img.addEventListener("error", () => (img.closest("figure") ?? img).remove(), { once: true });
+      }
+      source.href = p.url;
+      foot.href = p.url;
+      foot.textContent = `Read the original at ${hostOf(p.url) || p.publisher || "the source"} →`;
+      status.hidden = true;
+      article.hidden = false;
+      body.scrollTop = 0;
+    }
+
+    function showError(fallback: string | undefined): void {
+      status.textContent = "This copy did not load. ";
+      if (fallback) {
+        const a = document.createElement("a");
+        a.href = fallback;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = "Open the original ↗";
+        status.append(a);
+      }
+    }
+
+    function open(id: string, push: boolean, trigger?: HTMLElement | null): void {
+      current = id;
+      opener = trigger ?? null;
+      article.hidden = true;
+      status.hidden = false;
+      status.textContent = "Loading…";
+      source.href = trigger?.dataset.readerUrl ?? "#";
+      if (!dialog.open) dialog.showModal();
+      document.documentElement.classList.add("reader-open");
+      if (push) {
+        history.pushState({ reader: id }, "", `#read=${id}`);
+        pushed = true;
+      }
+      load(id)
+        .then((p) => {
+          if (current === id) render(p);
+        })
+        .catch(() => {
+          if (current === id) showError(trigger?.dataset.readerUrl);
+        });
+    }
+
+    dialog.addEventListener("close", () => {
+      document.documentElement.classList.remove("reader-open");
+      current = null;
+      if (pushed) {
+        pushed = false;
+        closing = true;
+        history.back();
+      } else if (hashId()) {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+      opener?.focus();
+      opener = null;
+    });
+
+    // The dialog box has no padding, so a click on the element itself is a click on the backdrop.
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    document.addEventListener("click", (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const trigger = (e.target as Element).closest<HTMLElement>("[data-reader]");
+      if (!trigger) return;
+      e.preventDefault();
+      open(trigger.dataset.reader!, true, trigger);
+    });
+
+    window.addEventListener("popstate", () => {
+      const id = hashId();
+      if (closing) {
+        closing = false;
+        if (id) history.replaceState(null, "", location.pathname + location.search);
+        return;
+      }
+      if (id) open(id, false);
+      else if (dialog.open) {
+        pushed = false;
+        dialog.close();
+      }
+    });
+
+    const initial = hashId();
+    if (initial) open(initial, false);
+  }
+</script>

@@ -1,0 +1,44 @@
+---
+import StoryRow from "./StoryRow.astro";
+import { getSiteData, href } from "../lib/site";
+
+interface Props {
+  /** YYYY-MM; the newest month when absent. */
+  month?: string;
+}
+const data = getSiteData();
+const selected = Astro.props.month ? data.archive.find((m) => m.key === Astro.props.month) : data.archive[0];
+const total = data.archive.reduce((n, m) => n + m.clusters.length, 0);
+---
+
+<section class="section">
+  <div class="section-head">
+    <h2>Archive</h2>
+    <span class="more">{total} {total === 1 ? "story" : "stories"} with reader copies</span>
+  </div>
+  {
+    data.archive.length > 0 && (
+      <nav class="months" aria-label="Months">
+        {data.archive.map((m) => (
+          <a href={href(`archive/${m.key}/`)} aria-current={m.key === selected?.key ? "page" : undefined}>
+            {m.label} <span>{m.clusters.length}</span>
+          </a>
+        ))}
+      </nav>
+    )
+  }
+  {
+    selected ? (
+      <>
+        <h3 class="month-title">{selected.label}</h3>
+        <ol class="stories">
+          {selected.clusters.map((c) => (
+            <StoryRow cluster={c} variant="standard" />
+          ))}
+        </ol>
+      </>
+    ) : (
+      <p class="empty">Nothing archived yet.</p>
+    )
+  }
+</section>

@@ -186,6 +186,13 @@ sources:
     tier: genre
     topics: [cryptids]
     enabled: true
+  - id: newsnation-ufo
+    name: NewsNation
+    kind: rss
+    url: https://www.newsnationnow.com/space/ufo/feed/
+    tier: press
+    topics: [ufo]
+    enabled: true
   - id: livescience
     name: Live Science
     kind: rss

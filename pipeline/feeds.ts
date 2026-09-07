@@ -75,7 +75,7 @@ export async function fetchFeed(url: string, opts: FetchOptions = {}): Promise<F
   }
 }
 
-function describe(err: unknown): string {
+export function describe(err: unknown): string {
   if (err instanceof Error) {
     const cause = (err as { cause?: { code?: string } }).cause;
     return cause?.code ? `${err.message} (${cause.code})` : err.message;
@@ -83,7 +83,7 @@ function describe(err: unknown): string {
   return String(err);
 }
 
-function sleep(ms: number): Promise<void> {
+export function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 

@@ -9,7 +9,9 @@ A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids and h
 ```
 GitHub Actions cron (*/30)
   fetch ─► normalize ─► store (data/items/YYYY-MM-DD.json, committed)
-                                     │
+                          │
+                          ├─► resolve link ─► reader copy + lead image (data/articles/, data/images/, committed)
+                          │
                           astro build ─► cluster ─► rank ─► static HTML ─► GitHub Pages
 ```
 
@@ -19,22 +21,29 @@ GitHub Actions cron (*/30)
 - **Tiers are a lookup, not a judgement.** `official` (wires, government, journals) → `press` (mainstream and local newsrooms) → `genre` (genre press, tabloids, enthusiast sites) → `unverified` (social, single-witness blogs). Assigned per publisher from `config/sources.yml`, never from the story text. Deterministic and auditable.
 - **Ranking:** `Σ tier weight per independent write-up × (1 + ln write-ups) ÷ (hours since latest coverage + 6)`. Twenty affiliates running one syndicated headline count as one write-up. Halloween-attraction stories are demoted, never hidden.
 - **Entertainment is filtered out, not demoted.** Films, television, games, books, stage and music — fiction and its promotion — never reach the site. Two signals: contextual headline patterns in `pipeline/classify.ts` (tuned against the archive so "witness films three orbs", "investigation at the Opera House" and "study shows" don't match) and an entertainment-outlet list under `publishers.entertainment` in `config/sources.yml` (IMDb, Deadline, Bloody Disgusting, JoBlo, Playbill, …). A cluster is hidden when a strict majority of its members carry the flag, so a celebrity's real sighting survives an entertainment site also running it. Two more filters hide the noise a search backbone drags in: `offbeat` (a beat word as a ticker, product or team name — "NASDAQ: UFO", "Norco Bigfoot 2 for sale", "Raleigh Aaro girls soccer") and `weak-match` (a Google News hit whose headline names nothing from any beat — in practice explosions, crashes, obituaries and game guides). Flags are recomputed at build time, so a classifier fix applies to the whole archive on the next run; `npm run clusters -- --hidden` lists what the filters removed.
+- **One reader copy per story, kept for good.** After ingest, `scripts/articles.ts` takes each visible story's best outlet, resolves its link (Google News ids are decoded through the interstitial's signature and the page's own data endpoint; older ids carry the URL in the base64), checks robots.txt, fetches the page as a browser would, and keeps what reader mode would show: Mozilla Readability picks the article, `sanitize-html` reduces it to plain document markup, the lead image (og:image, else the first body image) becomes an 800px WebP. Pages behind a bot wall, galleries, videos, social platforms and anything under 150 words are skipped and the story's next outlet is tried; failures back off (2 h, 8 h) and stop after three. Copies live under `data/articles/<item id>.json` and `data/images/<item id>.webp` and are never pruned. The site serves them as `/reader/<id>.json` + `.webp`; "Read here" opens the copy in a dialog over the blurred page, with the original linked top and bottom; `/archive/` lists every story with a copy, by month. Resolved links also replace the opaque Google News URLs in `data/items/`, so story links go straight to the publisher.
 - **Source health:** per-feed ETag/Last-Modified caching, browser user agent (several publishers refuse anything else), three consecutive failures → quarantine → daily re-probe → auto-heal, and a `source-health` GitHub issue when a feed is quarantined.
 
 ## Repository layout
 
 ```
 config/sources.yml        feed registry, publisher → tier table, retired feeds with notes
-pipeline/                 pure modules: feeds, normalize, classify, store, health, cluster, rank
+pipeline/                 pure modules: feeds, normalize, classify, store, health, cluster, rank,
+                          gnews (Google News link decoding), fetch, robots, reader, images, articles
 pipeline/*.test.ts        node:test suites
 scripts/ingest.ts         poll sources → data/  (npm run ingest)
+scripts/articles.ts       reader copies for new stories → data/articles/, data/images/  (npm run articles)
 scripts/clusters.ts       dump clusters to .cache/clusters.json for inspection (npm run clusters)
 scripts/quarantine-report.ts  issue payloads for newly quarantined sources
 data/items/               committed archive, one file per UTC publication day
+data/articles/            reader copies, one JSON per item, kept for good
+data/images/              lead-image thumbnails (WebP, ≤800px), kept for good
+data/article-status.json  failed fetch attempts in the current window and when to retry
 data/health.json          per-source status, validators, last error
 data/meta.json            last run time and counts
-src/                      Astro site: front page, beat pages, story pages, about, sources, rss.xml + rss/<beat>.xml, sitemap
-.github/workflows/update.yml   schedule → test → ingest → commit → build → deploy
+src/                      Astro site: front page, beat pages, story pages, archive, about, sources,
+                          reader dialog, /reader/<id>.json + .webp, rss.xml + rss/<beat>.xml, sitemap
+.github/workflows/update.yml   schedule → test → ingest → archive articles → commit → build → deploy
 .github/workflows/ci.yml       test + typecheck + build on pull requests
 ```
 
@@ -56,6 +65,7 @@ The schedule runs on whichever branch is the repository's **default branch** —
 ```sh
 npm ci
 npm run ingest      # poll every enabled source into data/ (idempotent; safe to re-run)
+npm run articles    # reader copies for stories that lack one (--limit N, --budget S, --dry-run)
 npm run clusters    # print the ranked clusters, write .cache/clusters.json
 npm run dev         # Astro dev server on http://localhost:4321/paranews/
 npm test
@@ -87,7 +97,7 @@ Query words that looked reasonable and were not: `haunted`/`haunting` (metaphors
 
 ## What it deliberately doesn't do
 
-- Republish article bodies or images. Snippets are the feeds' own descriptions, capped at 300 characters; image URLs are stored but not displayed.
+- Summarize or rewrite anything. The reader copy is the publisher's text as reader mode would show it, sanitized, with the original linked; snippets are the feeds' own descriptions or the copy's first lines, capped at 300 characters.
 - Scrape sighting databases. NUFORC's terms forbid scraping and redistribution; that data is available by asking them, not by crawling.
-- Resolve Google News links server-side. They are opaque redirects that only resolve in a browser, so identity is `hash(headline, publisher)`, and a cluster's primary link prefers a direct feed's real URL when one exists.
+- Depend on Google News links resolving. Identity is `hash(headline, publisher)`, so a decode failure costs a reader copy, not a story; the decode path is undocumented and may stop working without notice.
 - Judge claims. The tier says what kind of outlet published something; nothing here says whether it happened.

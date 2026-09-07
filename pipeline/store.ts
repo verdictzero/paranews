@@ -81,6 +81,17 @@ export class ShardStore {
     return "updated";
   }
 
+  /** Change fields on a loaded item in place (a resolved link, for instance). */
+  patch(id: string, changes: Partial<Item>): boolean {
+    const date = this.index.get(id);
+    const shard = date ? this.shards.get(date) : undefined;
+    const current = shard?.get(id);
+    if (!shard || !current) return false;
+    shard.set(id, { ...current, ...changes });
+    this.dirty.add(date!);
+    return true;
+  }
+
   /** Every loaded item. Call loadWindow() first for the site's working set. */
   all(): Item[] {
     const out: Item[] = [];

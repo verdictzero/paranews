@@ -45,6 +45,12 @@ jobs:
       - name: Ingest feeds
         run: npm run ingest
 
+      # Reader copies and lead images for new stories. Budgeted so the run
+      # always fits the half-hour cadence; the backlog drains across runs.
+      - name: Archive articles
+        continue-on-error: true
+        run: npm run articles
+
       - name: Commit new data
         run: |
           git config user.name "github-actions[bot]"

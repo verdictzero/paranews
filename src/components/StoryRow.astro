@@ -1,6 +1,6 @@
 ---
 import type { Cluster } from "../../pipeline/types";
-import { TOPIC_LABEL, getSiteData, href, primaryOf, storyPath, timeAgo, topicPath } from "../lib/site";
+import { TOPIC_LABEL, getSiteData, href, primaryOf, readerFor, readerImagePath, snippetOf, storyPath, timeAgo, topicPath } from "../lib/site";
 import TierBadge from "./TierBadge.astro";
 
 interface Props {
@@ -13,18 +13,40 @@ const { cluster, variant = "standard", index, showTopic = true } = Astro.props;
 const data = getSiteData();
 const primary = primaryOf(cluster, data);
 const others = cluster.publishers.length - 1;
+const reader = readerFor(cluster, data);
+const snippet = variant !== "compact" ? snippetOf(cluster, data) : undefined;
 ---
 
 <li class:list={["story", variant]}>
+  {
+    reader?.article.image && (
+      <img
+        class="thumb"
+        src={href(readerImagePath(reader.item.id))}
+        width={reader.article.image.width}
+        height={reader.article.image.height}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        data-reader={reader.item.id}
+        data-reader-url={reader.item.url}
+      />
+    )
+  }
   <div class="head">
     {index !== undefined && <span class="num">{index}.</span>}
     <a href={primary.url}>{cluster.title}</a>
   </div>
-  {variant !== "compact" && cluster.snippet && <p class="snippet">{cluster.snippet}</p>}
+  {snippet && <p class="snippet">{snippet}</p>}
   <div class="meta">
     <TierBadge tier={cluster.tier} />
     <span class="pub">{primary.publisher}</span>
     <time datetime={cluster.latest_published} data-relative>{timeAgo(cluster.latest_published, data.now)}</time>
+    {reader && (
+      <button type="button" class="read" data-reader={reader.item.id} data-reader-url={reader.item.url}>
+        Read here
+      </button>
+    )}
     {others > 0 && (
       <a class="more" href={href(storyPath(cluster))}>
         +{others} {others === 1 ? "outlet" : "outlets"}

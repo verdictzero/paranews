@@ -3,10 +3,10 @@ import Base from "../../layouts/Base.astro";
 import TierBadge from "../../components/TierBadge.astro";
 import type { Cluster } from "../../../pipeline/types";
 import { dedupeMembers } from "../../../pipeline/cluster";
-import { TOPIC_LABEL, formatDate, getSiteData, hostOf, href, itemsOf, primaryOf, topicPath } from "../../lib/site";
+import { TOPIC_LABEL, formatDate, getSiteData, hostOf, href, itemsOf, primaryOf, readerFor, readerImagePath, snippetOf, topicPath } from "../../lib/site";
 
 export function getStaticPaths() {
-  return getSiteData().clusters.map((cluster) => ({ params: { id: cluster.id }, props: { cluster } }));
+  return getSiteData().storyPages.map((cluster) => ({ params: { id: cluster.id }, props: { cluster } }));
 }
 
 interface Props {
@@ -17,9 +17,11 @@ const data = getSiteData();
 const members = dedupeMembers(itemsOf(cluster, data));
 const primary = primaryOf(cluster, data);
 const outlets = cluster.publishers.length;
+const reader = readerFor(cluster, data);
+const snippet = snippetOf(cluster, data);
 ---
 
-<Base title={cluster.title} description={cluster.snippet ?? `${outlets} ${outlets === 1 ? "outlet" : "outlets"} on: ${cluster.title}`}>
+<Base title={cluster.title} description={snippet ?? `${outlets} ${outlets === 1 ? "outlet" : "outlets"} on: ${cluster.title}`}>
   <article class="story-page">
     <div class="kicker">
       <TierBadge tier={cluster.tier} />
@@ -29,8 +31,29 @@ const outlets = cluster.publishers.length;
       {cluster.flags.map((f) => <span class="flag">demoted: {f}</span>)}
     </div>
     <h1>{cluster.title}</h1>
-    <a class="primary" href={primary.url}>Read at {primary.publisher} →</a>
-    {cluster.snippet && <p class="snippet">{cluster.snippet}</p>}
+    <div class="actions">
+      <a class="primary" href={primary.url}>Read at {primary.publisher} →</a>
+      {reader && (
+        <button type="button" class="primary read" data-reader={reader.item.id} data-reader-url={reader.item.url}>
+          Read here
+        </button>
+      )}
+    </div>
+    {
+      reader?.article.image && (
+        <img
+          class="hero"
+          src={href(readerImagePath(reader.item.id))}
+          width={reader.article.image.width}
+          height={reader.article.image.height}
+          alt=""
+          decoding="async"
+          data-reader={reader.item.id}
+          data-reader-url={reader.item.url}
+        />
+      )
+    }
+    {snippet && <p class="snippet">{snippet}</p>}
     <h2>Coverage · {outlets} {outlets === 1 ? "outlet" : "outlets"}</h2>
     <ul class="coverage">
       {
@@ -38,6 +61,11 @@ const outlets = cluster.publishers.length;
           <li>
             <span class="who">
               <a href={m.url}>{m.publisher}</a> <TierBadge tier={m.tier} />
+              {data.articles.has(m.id) && (
+                <button type="button" class="read" data-reader={m.id} data-reader-url={m.url}>
+                  Read here
+                </button>
+              )}
             </span>
             <span class="when">
               <time datetime={m.published_at}>{formatDate(m.published_at)}</time> · {hostOf(m)}

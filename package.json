@@ -9,6 +9,7 @@
   },
   "scripts": {
     "ingest": "node scripts/ingest.ts",
+    "articles": "node scripts/articles.ts",
     "clusters": "node scripts/clusters.ts",
     "test": "node --test pipeline/*.test.ts",
     "typecheck": "tsc --noEmit",
@@ -19,12 +20,18 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
+    "@mozilla/readability": "^0.6.0",
     "astro": "^7.3.1",
     "fast-xml-parser": "^5.11.1",
+    "jsdom": "^27.4.0",
+    "sanitize-html": "^2.17.7",
+    "sharp": "^0.35.4",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^22",
+    "@types/sanitize-html": "^2.16.1",
     "typescript": "^5.9"
   }
 }

@@ -14,7 +14,10 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
     <p class="lede">Paranews is a machine-assembled wire for UFOs, hauntings, cryptids and high strangeness. Every half hour it re-reads its sources, folds the same story from different outlets into one entry, grades it by who published it, and ranks the result.</p>
 
     <h2>What it does not do</h2>
-    <p>It publishes no article text, generates no summaries, and uses no language model. Snippets are the publishers' own feed descriptions, cut to 300 characters. Nothing here is verified.</p>
+    <p>It generates no summaries and uses no language model. Snippets are the publishers' own feed descriptions, or the opening of the reader copy, cut to 300 characters. Nothing here is verified.</p>
+
+    <h2>Reader copies</h2>
+    <p>For each story the site keeps a reader-mode copy of one outlet's article: the text a browser's reader view would show, its lead image reduced to a thumbnail, and nothing else from the page. "Read here" opens it over the front page; the original is linked at the top and bottom of every copy. Pages that ask not to be crawled, pages behind a bot wall and pages with fewer than 150 words of text are skipped, and the story's next outlet is tried instead.</p>
     <p>It carries no entertainment: films, television, games, books, stage and music are filtered out by headline keywords and by a list of entertainment outlets. Two filters catch the rest of the noise — a beat word used as a ticker, product or team name ("NASDAQ: UFO"), and a search hit whose headline names nothing from any beat. Together they removed {data.hiddenCount} {data.hiddenCount === 1 ? "story" : "stories"} from the current window. A story is hidden only when more than half the outlets covering it trip a filter.</p>
 
     <h2>Sources</h2>
@@ -48,7 +51,7 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
     <p>Score = publisher weight × corroboration ÷ age. Weight sums the best tier of each independent write-up, corroboration grows logarithmically with the number of write-ups, and age is measured from the latest coverage, so a developing story stays up. The front page never shows more than two consecutive stories from one beat.</p>
 
     <h2>Archive</h2>
-    <p>Every item ever seen is committed to the repository as JSON, one file per publication day, so the state of the site on any date can be reconstructed from git history. The site shows the last 30 days.</p>
+    <p>Every item ever seen is committed to the repository as JSON, one file per publication day, so the state of the site on any date can be reconstructed from git history. Reader copies and their images are committed too and never removed. The front page and beats show the last 30 days; the <a href={href("archive/")}>archive</a> lists every story with a reader copy, by month.</p>
 
     <h2>Corrections</h2>
     <p>A mis-tiered publisher, a dead feed, a missing beat: all are one-line edits to <code>config/sources.yml</code>. Open an issue or a pull request.</p>
