@@ -2,7 +2,6 @@
 import Base from "../../layouts/Base.astro";
 import TierBadge from "../../components/TierBadge.astro";
 import type { Cluster } from "../../../pipeline/types";
-import { headlineGroups } from "../../../pipeline/rank";
 import { dedupeMembers } from "../../../pipeline/cluster";
 import { TOPIC_LABEL, formatDate, getSiteData, hostOf, href, itemsOf, primaryOf, topicPath } from "../../lib/site";
 
@@ -17,7 +16,6 @@ const { cluster } = Astro.props;
 const data = getSiteData();
 const members = dedupeMembers(itemsOf(cluster, data));
 const primary = primaryOf(cluster, data);
-const headlines = headlineGroups(members).size;
 const outlets = cluster.publishers.length;
 ---
 
@@ -49,8 +47,5 @@ const outlets = cluster.publishers.length;
         ))
       }
     </ul>
-    <p class="section-blurb">
-      Grouped automatically by headline similarity — {headlines === 1 ? "every outlet ran the same headline" : `${headlines} distinct headlines`}. Tiers describe the publisher, not the claim.
-    </p>
   </article>
 </Base>

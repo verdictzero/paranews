@@ -8,17 +8,17 @@ const data = getSiteData();
 const enabled = data.sources.sources.filter((s) => s.enabled).length;
 ---
 
-<Base title="About" description="How Paranews collects, groups, grades and ranks paranormal news without writing a word of it." current="about">
+<Base title="About" description="How Paranews collects, groups, grades and ranks paranormal news." current="about">
   <div class="prose">
     <h1>How this works</h1>
-    <p class="lede">Paranews is a machine-assembled wire for UFOs, hauntings, cryptids and high strangeness. It links out; it never rewrites. Every half hour it re-reads its sources, folds the same story from different outlets into one entry, grades each entry by who published it, and ranks the result.</p>
+    <p class="lede">Paranews is a machine-assembled wire for UFOs, hauntings, cryptids and high strangeness. Every half hour it re-reads its sources, folds the same story from different outlets into one entry, grades it by who published it, and ranks the result.</p>
 
     <h2>What it does not do</h2>
-    <p>It publishes no article text, generates no summaries, and uses no language model. Snippets are the publishers' own feed descriptions, cut to 300 characters. Nothing here is verified; the tiers exist precisely because nothing here is verified.</p>
-    <p>It also carries no entertainment. Films, television, games, books, stage and music — fiction and its promotion — are filtered out entirely, by headline keywords and by a list of entertainment outlets. Two more filters keep the search backbone honest: a beat word used as a ticker, product or team name ("NASDAQ: UFO", "Norco Bigfoot 2 for sale") is off-beat, and a search hit whose headline names nothing from any beat (explosions, crashes, obituaries, game guides that merely mention a keyword in the body) is a weak match. Together these removed {data.hiddenCount} {data.hiddenCount === 1 ? "story" : "stories"} from the current window. A story is hidden only when more than half the outlets covering it trip a filter, so a celebrity's real sighting survives even if an entertainment site also ran it.</p>
+    <p>It publishes no article text, generates no summaries, and uses no language model. Snippets are the publishers' own feed descriptions, cut to 300 characters. Nothing here is verified.</p>
+    <p>It carries no entertainment: films, television, games, books, stage and music are filtered out by headline keywords and by a list of entertainment outlets. Two filters catch the rest of the noise — a beat word used as a ticker, product or team name ("NASDAQ: UFO"), and a search hit whose headline names nothing from any beat. Together they removed {data.hiddenCount} {data.hiddenCount === 1 ? "story" : "stories"} from the current window. A story is hidden only when more than half the outlets covering it trip a filter.</p>
 
     <h2>Sources</h2>
-    <p>{enabled} feeds are polled: Google News topic searches for each beat (the backbone — broad, fast, no bot walls) plus direct feeds from genre outlets, science desks and a couple of subreddits. Each source has a health record; three consecutive failures quarantine it, a daily probe lets it heal, and a GitHub issue is opened so someone notices. The <a href={href("sources/")}>sources page</a> shows the live state.</p>
+    <p>{enabled} feeds are polled: Google News topic searches for each beat, plus direct feeds from genre outlets and science desks. Three consecutive failures quarantine a source, a daily probe lets it heal, and a GitHub issue is opened. The <a href={href("sources/")}>sources page</a> shows the live state.</p>
 
     <h2>Beats</h2>
     <ul>
@@ -28,10 +28,10 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
         </li>
       ))}
     </ul>
-    <p>A story can sit on more than one beat. Beats come from the search that found the story plus a keyword pass over the headline.</p>
+    <p>A story can sit on more than one beat. Beats come from the search that found it plus a keyword pass over the headline.</p>
 
     <h2>Tiers</h2>
-    <p>Each publisher is assigned a tier by lookup table, never by reading the story. It is an honest, boring, auditable signal: it tells you what kind of outlet said it, not whether it's true.</p>
+    <p>Each publisher is assigned a tier by lookup table, never by reading the story. It tells you what kind of outlet said it, not whether it is true.</p>
     <ul>
       {TIERS.map((t) => (
         <li>
@@ -39,18 +39,18 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
         </li>
       ))}
     </ul>
-    <p>Unknown Google News publishers default to <i>genre press</i>. Local broadcast call signs and newspaper naming conventions are recognised by pattern; the table lives in <code>config/sources.yml</code> and is easy to correct.</p>
+    <p>Unknown Google News publishers default to <i>genre press</i>. Broadcast call signs and newspaper naming conventions are matched by pattern; the table lives in <code>config/sources.yml</code>.</p>
 
     <h2>Grouping</h2>
-    <p>Headlines are compared as bags of stemmed words weighted by rarity across the current month, so two stories that share "ufo" and "sighting" are not the same story, but two that share "pentagon", "private" and "archive" are. Twenty affiliates running one syndicated headline count as a single write-up. The threshold was tuned on live data; it errs toward keeping stories apart.</p>
+    <p>Headlines are compared as bags of stemmed words weighted by rarity across the current month, so two stories sharing "ufo" and "sighting" are not the same story, but two sharing "pentagon", "private" and "archive" are. Twenty affiliates running one syndicated headline count as a single write-up.</p>
 
     <h2>Ranking</h2>
-    <p>Score = publisher weight × corroboration ÷ age. Weight sums the best tier of each independent write-up, corroboration grows logarithmically with the number of write-ups, and age is measured from the latest coverage so a developing story stays up. Halloween attractions are flagged and demoted rather than hidden. The front page never shows more than two consecutive stories from one beat.</p>
+    <p>Score = publisher weight × corroboration ÷ age. Weight sums the best tier of each independent write-up, corroboration grows logarithmically with the number of write-ups, and age is measured from the latest coverage, so a developing story stays up. The front page never shows more than two consecutive stories from one beat.</p>
 
     <h2>Archive</h2>
-    <p>Every item ever seen is committed to the repository as JSON, one file per publication day, so the exact state of the site on any date can be reconstructed from git history. The site itself only shows the last 30 days.</p>
+    <p>Every item ever seen is committed to the repository as JSON, one file per publication day, so the state of the site on any date can be reconstructed from git history. The site shows the last 30 days.</p>
 
     <h2>Corrections</h2>
-    <p>A mis-tiered publisher, a dead feed, a missing beat: all are one-line edits to <code>config/sources.yml</code>. Open an issue or a pull request on the repository.</p>
+    <p>A mis-tiered publisher, a dead feed, a missing beat: all are one-line edits to <code>config/sources.yml</code>. Open an issue or a pull request.</p>
   </div>
 </Base>

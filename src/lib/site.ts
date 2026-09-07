@@ -8,7 +8,7 @@ import { isVisible, refreshFlags } from "../../pipeline/visibility.ts";
 import { TOPICS, type Cluster, type HealthFile, type Item, type MetaFile, type SourceConfig, type SourcesFile, type Tier, type Topic } from "../../pipeline/types.ts";
 
 export const SITE_NAME = "Paranews";
-export const SITE_TAGLINE = "The Fortean wire. UFOs, hauntings, cryptids and high strangeness, refreshed every half hour.";
+export const SITE_TAGLINE = "UFOs, hauntings, cryptids and high strangeness.";
 
 export const TOPIC_LABEL: Record<Topic, string> = {
   ufo: "UFO / UAP",

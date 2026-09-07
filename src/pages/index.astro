@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import StoryRow from "../components/StoryRow.astro";
 import { TOPICS } from "../../pipeline/types";
-import { SITE_NAME, TOPIC_BLURB, TOPIC_LABEL, getSiteData, href, topicPath } from "../lib/site";
+import { SITE_NAME, TOPIC_LABEL, getSiteData, href, topicPath } from "../lib/site";
 
 const data = getSiteData();
 const topIds = new Set(data.top.map((c) => c.id));
@@ -13,7 +13,6 @@ const SECTION_COUNT = 8;
   <section class="section">
     <div class="section-head">
       <h2>Top stories</h2>
-      <span class="more">Ranked by coverage, publisher tier and freshness</span>
     </div>
     {
       data.top.length ? (
@@ -41,7 +40,6 @@ const SECTION_COUNT = 8;
                 All {data.byTopic[t].length} →
               </a>
             </div>
-            <p class="section-blurb">{TOPIC_BLURB[t]}</p>
             {list.length ? (
               <ul class="stories">
                 {list.map((c) => (
