@@ -16,9 +16,11 @@ permissions:
   id-token: write
   issues: write
 
-# Never let two ingests race on the data branch.
+# Never let two ingests race on the same branch. Per ref, because a run on any
+# other branch (its job skipped below) would otherwise take the group's one
+# pending slot and cancel a queued default-branch run.
 concurrency:
-  group: update-site
+  group: update-site-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
