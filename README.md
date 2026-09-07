@@ -1,8 +1,20 @@
 # Paranews
 
-A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids and high strangeness. It reads ~27 feeds every half hour, folds the same story from different outlets into one entry, grades every entry by *who* published it, ranks the result and publishes a static site to GitHub Pages. It links out and writes nothing of its own — no article text, no generated summaries, no language model anywhere in the pipeline.
+A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids and high strangeness. It reads ~28 feeds every half hour, folds the same story from different outlets into one entry, grades every entry by *who* published it, ranks the result and publishes a static site to GitHub Pages. It writes nothing of its own: no generated summaries, no language model anywhere in the pipeline. Each story keeps a reader-mode copy of one outlet's article, opened in place with the original linked.
 
-**Live site:** https://verdictzero.github.io/paranews/ (after the one-time setup below)
+**Live site:** https://news.asr.institute/
+
+## Screenshots
+
+![Front page: ranked stories with tier badges, beats, thumbnails and a Read here button](docs/screenshots/front.webp)
+
+![Reader copy opened in a dialog over the blurred front page](docs/screenshots/reader.webp)
+
+![The same reader dialog in dark mode](docs/screenshots/reader-dark.webp)
+
+![Archive: every story with a reader copy, by month](docs/screenshots/archive.webp)
+
+<img src="docs/screenshots/mobile.webp" width="390" alt="Reader copy full-screen on a phone">
 
 ## How it works
 

@@ -510,6 +510,7 @@ publishers:
   # by nature. Everything they publish gets the entertainment flag, which hides
   # the story (a cluster is hidden when at least half its members carry it).
   entertainment:
+    - Player Elimination
     - IMDb
     - The Hollywood Reporter
     - Deadline
