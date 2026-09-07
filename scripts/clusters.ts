@@ -1,13 +1,15 @@
 /**
  * Build clusters from the current window and dump them to .cache/clusters.json
  * for inspection. `--threshold 0.45` overrides the similarity cutoff so the
- * dedup can be tuned against real data.
+ * dedup can be tuned against real data; `--hidden` lists what the
+ * entertainment filter removed instead of what the site shows.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { CACHE_DIR } from "../pipeline/config.ts";
 import { ShardStore } from "../pipeline/store.ts";
 import { buildClusters } from "../pipeline/cluster.ts";
 import { byScore } from "../pipeline/rank.ts";
+import { isVisible, refreshFlags } from "../pipeline/visibility.ts";
 
 const args = process.argv.slice(2);
 const flag = (name: string): string | undefined => {
@@ -20,16 +22,20 @@ const limit = Number(flag("limit") ?? 40);
 const now = new Date();
 const store = new ShardStore();
 store.loadWindow(now);
-const items = store.all();
+const items = refreshFlags(store.all());
 const byId = new Map(items.map((i) => [i.id, i]));
-const clusters = buildClusters(items, { now, threshold }).sort(byScore);
+const everything = buildClusters(items, { now, threshold }).sort(byScore);
+const visible = everything.filter(isVisible);
+const hidden = everything.filter((c) => !isVisible(c));
+const showHidden = args.includes("--hidden");
+const clusters = showHidden ? hidden : visible;
 
 mkdirSync(CACHE_DIR, { recursive: true });
-writeFileSync(`${CACHE_DIR}/clusters.json`, JSON.stringify(clusters, null, 2) + "\n");
+writeFileSync(`${CACHE_DIR}/clusters.json`, JSON.stringify(visible, null, 2) + "\n");
 
-const multi = clusters.filter((c) => c.items.length > 1);
-console.log(`${items.length} items -> ${clusters.length} clusters (${multi.length} with 2+ members; largest ${Math.max(0, ...clusters.map((c) => c.items.length))})`);
-console.log(`\nTop ${limit} by score:`);
+const multi = visible.filter((c) => c.items.length > 1);
+console.log(`${items.length} items -> ${everything.length} clusters, ${visible.length} shown (${multi.length} with 2+ members; largest ${Math.max(0, ...visible.map((c) => c.items.length))}), ${hidden.length} hidden as entertainment`);
+console.log(`\n${showHidden ? "Hidden" : "Top"} ${limit} by score:`);
 for (const c of clusters.slice(0, limit)) {
   const flags = c.flags.length ? ` [${c.flags.join(",")}]` : "";
   console.log(`\n${c.score.toFixed(3)}  ${c.tier.padEnd(10)} ${c.topics.join("+").padEnd(14)} x${c.items.length} pub=${c.corroboration}/${c.publishers.length}${flags}`);

@@ -1,6 +1,6 @@
 import type { RawEntry } from "./feeds.ts";
-import { TOPICS, type Item, type SourceConfig, type Topic } from "./types.ts";
-import { publisherTier } from "./config.ts";
+import { TOPICS, type Flag, type Item, type SourceConfig, type Topic } from "./types.ts";
+import { isEntertainmentPublisher, publisherTier } from "./config.ts";
 import { classifyFlags, classifyTopics, isOffTopic } from "./classify.ts";
 import { cleanTitle, collapseWhitespace, itemId, normalizeTitle, stripHtml, stripPublisherSuffix, truncate } from "./text.ts";
 
@@ -29,17 +29,14 @@ export function normalizeEntry(entry: RawEntry, source: SourceConfig, now: Date)
   if (!/^https?:\/\//i.test(url)) return undefined;
 
   const classified = classifyTopics(title);
-  const flags = classifyFlags(title);
   let topics: Topic[];
   if (source.topics === "auto") {
     topics = classified.length ? classified : source.default_topic ? [source.default_topic] : [];
     if (!topics.length) return undefined;
   } else {
     topics = sortTopics([...source.topics, ...classified]);
-    // A beat search matched the article body, but the headline names nothing from any beat.
-    // Direct feeds are on-beat by construction, so only searches get the flag.
-    if (isGoogle && !classified.length) flags.push("weak-match");
   }
+  const flags = computeFlags(title, publisher, isGoogle);
 
   const title_norm = normalizeTitle(title);
   return {
@@ -59,6 +56,19 @@ export function normalizeEntry(entry: RawEntry, source: SourceConfig, now: Date)
     snippet: makeSnippet(entry, title, publisher, isGoogle),
     image: entry.image && /^https:\/\//i.test(entry.image) ? entry.image : undefined,
   };
+}
+
+/**
+ * Every editorial flag for a headline. Shared by ingest (recorded on the item)
+ * and by the build (recomputed, so classifier fixes apply to the whole archive).
+ */
+export function computeFlags(title: string, publisher: string, isGoogle: boolean): Flag[] {
+  const flags = new Set<Flag>(classifyFlags(title));
+  if (isEntertainmentPublisher(publisher)) flags.add("entertainment");
+  // A beat search matched the article body, but the headline names nothing from any
+  // beat. Direct feeds are on-beat by construction, so only searches get the flag.
+  if (isGoogle && !classifyTopics(title).length) flags.add("weak-match");
+  return [...flags].sort();
 }
 
 /** Feed dates are unreliable: missing, unparseable or in the future all collapse to "now". */

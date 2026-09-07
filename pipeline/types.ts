@@ -15,7 +15,7 @@ export type Tier = (typeof TIERS)[number];
 
 /**
  * Editorial flags that demote (never hide) a story in ranking.
- *   entertainment - films, shows, games, merchandise
+ *   entertainment - fiction and its promotion: films, shows, games, books, stage, music, merch (hidden from the site)
  *   attraction    - Halloween attractions, ghost tours
  *   weak-match    - found by a beat search but the headline names no beat keyword
  */
@@ -52,6 +52,10 @@ export interface SourcesFile {
     /** Regexes (string form) matched against the publisher name, in tier order. */
     patterns: { tier: Tier; pattern: string }[];
     default: Tier;
+    /** Outlets whose paranormal coverage is film/TV/games/stage/music by nature. Every item gets the entertainment flag. */
+    entertainment: string[];
+    /** Regexes (string form) matched against the publisher name for the same purpose. */
+    entertainment_patterns: string[];
   };
 }
 

@@ -72,6 +72,17 @@ test("beat searches whose headline names no beat keyword get the weak-match flag
   assert.equal(normalizeEntry({ title: "Mushoku Tensei: Jobless Reincarnation III ‒ Episode 10 - ANN", link: "https://news.google.com/rss/articles/z", source: { name: "ANN" } }, gn, now), undefined);
 });
 
+test("entertainment outlets flag every item; the flag is a set, sorted", () => {
+  const imdb = normalizeEntry({ title: "John Wick Meets Bigfoot In Development For New Wild Horror", link: "https://news.google.com/rss/articles/i", source: { name: "IMDb" } }, gn, now)!;
+  assert.deepEqual(imdb.flags, ["entertainment"]);
+  const trade = normalizeEntry({ title: "Badlands picks up Bigfoot script", link: "https://news.google.com/rss/articles/j", source: { name: "The Hollywood Reporter" } }, gn, now)!;
+  assert.deepEqual(trade.flags, ["entertainment"], "publisher signal alone is enough");
+  const pattern = normalizeEntry({ title: "Bigfoot returns to Willow Creek this autumn", link: "https://news.google.com/rss/articles/k", source: { name: "Horror Movie Fan Club" } }, gn, now)!;
+  assert.deepEqual(pattern.flags, ["entertainment"]);
+  const real = normalizeEntry({ title: "Bigfoot sighting reported near Fresno", link: "https://news.google.com/rss/articles/l", source: { name: "Fresno Bee" } }, gn, now)!;
+  assert.deepEqual(real.flags, []);
+});
+
 test("junk, short and non-http entries are dropped", () => {
   assert.equal(normalizeEntry({ title: "MY LAST TIME PLAYING ROBLOX.. Ufo Files (sP0cjhR31l)", link: "https://x.com/" }, gn, now), undefined);
   assert.equal(normalizeEntry({ title: "UFO", link: "https://x.com/" }, gn, now), undefined);

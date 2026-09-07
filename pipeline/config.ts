@@ -59,6 +59,9 @@ function validate(file: SourcesFile): void {
     new RegExp(p.pattern, "i"); // throws on a bad pattern
   }
   if (!TIER_SET.has(file.publishers.default)) throw new Error("sources.yml: publishers.default invalid");
+  file.publishers.entertainment ??= [];
+  file.publishers.entertainment_patterns ??= [];
+  for (const p of file.publishers.entertainment_patterns) new RegExp(p, "i");
 }
 
 const GN_EDITIONS = { US: { hl: "en-US", gl: "US", ceid: "US:en" }, GB: { hl: "en-GB", gl: "GB", ceid: "GB:en" } };
@@ -98,6 +101,21 @@ export function publisherTier(name: string): Tier {
   return lookup.fallback;
 }
 
+let entertainment: { exact: Set<string>; patterns: RegExp[] } | undefined;
+
+/** True for outlets whose coverage of the paranormal is always about media, never about events. */
+export function isEntertainmentPublisher(name: string): boolean {
+  if (!entertainment) {
+    const { publishers } = loadSources();
+    entertainment = {
+      exact: new Set(publishers.entertainment.map(publisherKey)),
+      patterns: publishers.entertainment_patterns.map((p) => new RegExp(p, "i")),
+    };
+  }
+  if (entertainment.exact.has(publisherKey(name))) return true;
+  return entertainment.patterns.some((re) => re.test(name));
+}
+
 export function tierRank(t: Tier): number {
   return TIERS.indexOf(t);
 }
@@ -114,4 +132,5 @@ export function isTopic(s: string): s is Topic {
 export function resetConfigCache(): void {
   cached = undefined;
   lookup = undefined;
+  entertainment = undefined;
 }

@@ -497,6 +497,127 @@ publishers:
     - Vocal Media
     - Mshale
     - mshale.com
+  # Outlets whose paranormal coverage is about films, shows, games, stage or music
+  # by nature. Everything they publish gets the entertainment flag, which hides
+  # the story (a cluster is hidden when at least half its members carry it).
+  entertainment:
+    - IMDb
+    - The Hollywood Reporter
+    - Deadline
+    - Variety
+    - TheWrap
+    # Not Entertainment Weekly: celebrity sighting claims are real claims, and
+    # its film coverage carries headline keywords anyway.
+    - Vulture
+    - IndieWire
+    - Screen Daily
+    - Screen Rant
+    - ScreenRant
+    - Collider
+    - MovieWeb
+    - JoBlo
+    - Dread Central
+    - Bloody Disgusting
+    - Fangoria
+    - Rue Morgue
+    - Comic Basics
+    - ComicBook.com
+    - Comic Book Resources
+    - CBR
+    - FandomWire
+    - Yardbarker
+    - ComingSoon.net
+    - WhatCulture
+    - WhatCulture.com
+    - Cinema Sentries
+    - CinemaBlend
+    - SlashFilm
+    - /Film
+    - ScreenCrush
+    - Den of Geek
+    - Empire
+    - Total Film
+    - GamesRadar+
+    - Nerdist
+    - The A.V. Club
+    - Rotten Tomatoes
+    - Digital Spy
+    - Radio Times
+    - TV Insider
+    - TVLine
+    - Decider
+    - The Futon Critic
+    - Bleeding Cool
+    - Mandatory
+    - mandatory.com
+    - Enstarz
+    - Bubbleblabber
+    - Kinoafisha.info
+    - movies & mania
+    - moviesandmania.com
+    - No Film School
+    - Media Play News
+    - PopMatters
+    - Scified
+    - Soap Central
+    - Epicstream
+    - Dexerto
+    - Only Kollywood
+    - Tupaki English
+    - Sky HISTORY TV channel
+    - Disney Plus
+    - Disney.com
+    - IGN
+    - IGN India
+    - Game Rant
+    - GameRant
+    - GameDaily
+    - Kotaku
+    - Polygon
+    - PC Gamer
+    - Eurogamer
+    - Push Square
+    - Nintendo Life
+    - Siliconera
+    - Gematsu
+    - Giant Bomb
+    - giantbomb.com
+    - Final Weapon
+    - Destructoid
+    - Anime News Network
+    - Anime Corner
+    - Crunchyroll
+    - But Why Tho?
+    - Playbill
+    - BroadwayWorld
+    - Broadway News
+    - Broadway Shows
+    - Broadway.com
+    - New York Theatre Guide
+    - New York Broadway Tours
+    - WhatsOnStage
+    - AussieTheatre.com
+    - front mezz junkies
+    - Ticketmaster Blog
+    - TheaterMania
+    - Far Out Magazine
+    - Louder
+    - loudersound.com
+    - Ultimate Classic Rock
+    - Ultimate Guitar
+    - Six9ja
+    - Consequence
+    - Kerrang!
+    - NME
+    - Billboard
+    - side-line.com
+    - SIDE-LINE
+    - gbhbl
+    - UFO Network
+    - E! Online
+    - E! News
+  entertainment_patterns:
+    - '\b(?:movies?|films?|cinema|screen ?rant|comics?|anime|manga|otaku|gaming|game ?(?:rant|daily|spot|informer)|theatre|theater|broadway|playbill|fandom|geek|nerd|horror)\b'
   patterns:
     # Government, universities, journals
     - tier: official

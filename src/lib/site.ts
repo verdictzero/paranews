@@ -4,6 +4,7 @@ import { ShardStore } from "../../pipeline/store.ts";
 import { buildClusters } from "../../pipeline/cluster.ts";
 import { byScore, interleave } from "../../pipeline/rank.ts";
 import { loadHealth } from "../../pipeline/health.ts";
+import { isVisible, refreshFlags } from "../../pipeline/visibility.ts";
 import { TOPICS, type Cluster, type HealthFile, type Item, type MetaFile, type SourceConfig, type SourcesFile, type Tier, type Topic } from "../../pipeline/types.ts";
 
 export const SITE_NAME = "Paranews";
@@ -44,7 +45,10 @@ const FRONT_PAGE_COUNT = 12;
 export interface SiteData {
   now: Date;
   items: Map<string, Item>;
+  /** Visible clusters, best first. Entertainment clusters are already removed. */
   clusters: Cluster[];
+  /** Clusters in the window that the entertainment filter removed. */
+  hiddenCount: number;
   top: Cluster[];
   byTopic: Record<Topic, Cluster[]>;
   meta?: MetaFile;
@@ -61,14 +65,16 @@ export function getSiteData(): SiteData {
   const store = new ShardStore();
   store.loadWindow(now);
   const cutoff = new Date(now.getTime() - WINDOW_DAYS * 86_400_000).toISOString();
-  const windowItems = store.all().filter((i) => i.published_at >= cutoff);
+  const windowItems = refreshFlags(store.all().filter((i) => i.published_at >= cutoff));
   const items = new Map(windowItems.map((i) => [i.id, i]));
-  const clusters = buildClusters(windowItems, { now }).sort(byScore);
+  const everything = buildClusters(windowItems, { now }).sort(byScore);
+  const clusters = everything.filter(isVisible);
+  const hiddenCount = everything.length - clusters.length;
   const fresh = new Date(now.getTime() - FRONT_PAGE_DAYS * 86_400_000).toISOString();
   const top = interleave(clusters.filter((c) => c.latest_published >= fresh).slice(0, FRONT_PAGE_COUNT * 3)).slice(0, FRONT_PAGE_COUNT);
   const byTopic = Object.fromEntries(TOPICS.map((t) => [t, clusters.filter((c) => c.topics.includes(t))])) as Record<Topic, Cluster[]>;
   const meta = existsSync(META_FILE) ? (JSON.parse(readFileSync(META_FILE, "utf8")) as MetaFile) : undefined;
-  cache = { now, items, clusters, top, byTopic, meta, health: loadHealth(), sources: loadSources() };
+  cache = { now, items, clusters, hiddenCount, top, byTopic, meta, health: loadHealth(), sources: loadSources() };
   return cache;
 }
 

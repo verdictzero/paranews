@@ -17,7 +17,8 @@ GitHub Actions cron (*/30)
 - **Google News searches are the backbone.** One RSS search per beat (US and UK editions) returns ~100 fresh headlines with the publisher name — no auth, no bot walls. Direct feeds from genre outlets, science desks and subreddits add real links, snippets and personality.
 - **Grouping is lexical.** Headlines become bags of stemmed words weighted by rarity across the current month (IDF-weighted Jaccard). Sharing "ufo" and "sighting" means nothing; sharing "pentagon", "private" and "archive" means a lot. Union-find with a 72-hour pair window and a 7-day span guard. The 0.3 threshold was chosen against live data: every extra merge between 0.5 and 0.3 was a genuine match.
 - **Tiers are a lookup, not a judgement.** `official` (wires, government, journals) → `press` (mainstream and local newsrooms) → `genre` (genre press, tabloids, enthusiast sites) → `unverified` (social, single-witness blogs). Assigned per publisher from `config/sources.yml`, never from the story text. Deterministic and auditable.
-- **Ranking:** `Σ tier weight per independent write-up × (1 + ln write-ups) ÷ (hours since latest coverage + 6)`. Twenty affiliates running one syndicated headline count as one write-up. Film/TV/merch and Halloween-attraction stories are flagged and demoted, never hidden.
+- **Ranking:** `Σ tier weight per independent write-up × (1 + ln write-ups) ÷ (hours since latest coverage + 6)`. Twenty affiliates running one syndicated headline count as one write-up. Halloween-attraction stories and beat-search hits whose headline names no beat keyword are demoted, never hidden.
+- **Entertainment is filtered out, not demoted.** Films, television, games, books, stage and music — fiction and its promotion — never reach the site. Two signals: contextual headline patterns in `pipeline/classify.ts` (tuned against the archive so "witness films three orbs", "investigation at the Opera House" and "study shows" don't match) and an entertainment-outlet list under `publishers.entertainment` in `config/sources.yml` (IMDb, Deadline, Bloody Disgusting, JoBlo, Playbill, …). A cluster is hidden when a strict majority of its members carry the flag, so a celebrity's real sighting survives an entertainment site also running it. Flags are recomputed at build time, so a classifier fix applies to the whole archive on the next run; `npm run clusters -- --hidden` lists what the filter removed.
 - **Source health:** per-feed ETag/Last-Modified caching, browser user agent (several publishers refuse anything else), three consecutive failures → quarantine → daily re-probe → auto-heal, and a `source-health` GitHub issue when a feed is quarantined.
 
 ## Repository layout
@@ -71,6 +72,7 @@ Everything editorial lives in `config/sources.yml`:
 - **Add a feed:** an entry with `kind: rss`, a `url`, a `tier`, and either fixed `topics: [ufo]` or `topics: auto` (headline classifier decides; add `default_topic` to keep unmatched items, omit it to drop them — the right choice for a general science feed).
 - **Add a Google News beat:** `kind: google-news`, `edition: US|GB`, and a `query` of **at most 190 characters**. Google silently drops the `when:7d` recency operator on long queries and returns years-old results; validation refuses longer queries. Split a beat into several short queries instead.
 - **Fix a tier:** add the publisher's name to the right list under `publishers:`. Exact names win over the regex patterns (local call signs, newspaper naming conventions); anything unknown defaults to `genre`.
+- **Hide an outlet's coverage:** add it to `publishers.entertainment` (or extend `entertainment_patterns`). Use it for outlets that only ever cover the paranormal as media — trades, fan sites, theatre and music press.
 - **Retire a feed:** `enabled: false` plus a `note:` saying why, so the next person doesn't rediscover the same dead path.
 
 Query words that looked reasonable and were not: `haunted`/`haunting` (metaphors, LEGO sets), `yeti` (coolers), `dogman` (children's books), bare `loch ness` (tourism), `jersey devil` (NHL), `skinwalker ranch`/`ancient aliens`/`bermuda triangle` (TV promos). They are documented in the registry.
@@ -79,7 +81,8 @@ Query words that looked reasonable and were not: `haunted`/`haunting` (metaphors
 
 - Similarity threshold, pair window and span guard: `pipeline/cluster.ts` (`DEFAULTS`).
 - Tier weights, flag penalties and the age offset: `pipeline/rank.ts`.
-- Topic and flag keyword rules: `pipeline/classify.ts` — precision over recall; a wrong beat is worse than a missed one.
+- Topic and flag keyword rules: `pipeline/classify.ts` — precision over recall; a wrong beat is worse than a missed one, and a false entertainment match hides a real story.
+- Which flags hide a story: `HIDDEN_FLAGS` in `pipeline/visibility.ts` (add `attraction` there to hide Halloween attractions too).
 - Window (30 days on site), max age at ingest (45 days), quarantine threshold (3), re-probe interval (24 h): `pipeline/config.ts`, `scripts/ingest.ts`, `pipeline/health.ts`.
 
 ## What it deliberately doesn't do

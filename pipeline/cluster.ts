@@ -206,9 +206,13 @@ export function distinctPublishers(members: Item[]): string[] {
   return [...byKey.values()];
 }
 
-/** A flag sticks to the cluster when at least half its members carry it. */
+/**
+ * A flag sticks to the cluster only when a strict majority of members carry
+ * it. One entertainment outlet among two does not hide a story; the other
+ * outlet's headline is evidence it is about an event, not a film.
+ */
 function majorityFlags(members: Item[]): Flag[] {
   const counts = new Map<Flag, number>();
   for (const m of members) for (const f of m.flags) counts.set(f, (counts.get(f) ?? 0) + 1);
-  return [...counts].filter(([, c]) => c * 2 >= members.length).map(([f]) => f).sort();
+  return [...counts].filter(([, c]) => c * 2 > members.length).map(([f]) => f).sort();
 }
