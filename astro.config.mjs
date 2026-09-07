@@ -6,7 +6,8 @@ import sitemap from "@astrojs/sitemap";
 // so a custom domain or a user site (base "") just works. Local builds default to the
 // project-site shape.
 const site = process.env.SITE_URL || "https://verdictzero.github.io";
-const base = process.env.BASE_PATH || "/paranews";
+// A custom domain reports an empty base path, which is a real value, not "unset".
+const base = process.env.BASE_PATH === undefined ? "/paranews" : process.env.BASE_PATH || "/";
 
 export default defineConfig({
   site,
