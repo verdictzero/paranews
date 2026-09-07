@@ -10,6 +10,10 @@ test("stripHtml removes tags and scripts, decodes entities", () => {
   assert.equal(stripHtml('<p>Hello <b>world</b></p><script>alert(1)</script><a href="x">link &amp; more</a>').replace(/\s+/g, " ").trim(), "Hello world link & more");
 });
 
+test("cleanTitle strips soft hyphens and zero-width characters", () => {
+  assert.equal(cleanTitle("Forgotten case of 'Willie' the cottage poltergeis\u00ADt\u200B"), "Forgotten case of 'Willie' the cottage poltergeist");
+});
+
 test("cleanTitle unifies curly quotes and whitespace", () => {
   assert.equal(cleanTitle("  ‘Case closed’:  Police   say &quot;no&quot; "), "'Case closed': Police say \"no\"");
 });

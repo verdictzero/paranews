@@ -37,6 +37,8 @@ export function collapseWhitespace(s: string): string {
 export function cleanTitle(raw: string): string {
   return collapseWhitespace(
     decodeEntities(raw)
+      // Soft hyphens and zero-width characters split words invisibly ("poltergeis\u00ADt").
+      .replace(/[\u00AD\u200B-\u200D\uFEFF\u2060]/g, "")
       .replace(/[‘’‚′]/g, "'")
       .replace(/[“”„″]/g, '"')
       .replace(/ /g, " "),

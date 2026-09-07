@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildClusters } from "./cluster.ts";
-import { isVisible, refreshFlags } from "./visibility.ts";
+import { HIDDEN_FLAGS, isVisible, refreshFlags } from "./visibility.ts";
 import { itemId, normalizeTitle } from "./text.ts";
 import type { Cluster, Item, Tier } from "./types.ts";
 
@@ -18,12 +18,26 @@ test("refreshFlags recomputes from the current classifier and publisher lists", 
   const wrong = mk("Paranormal group to host investigation at King Opera House", "KFSM", "press", "gn-ghosts-a-us", ["entertainment"]);
   const direct = mk("Can't get this out of my head", "r/Paranormal", "unverified", "reddit-paranormal", ["weak-match"]);
   const unknownFeed = mk("Antique appraisal fundraiser at the library", "Sentinel", "press", "gn-retired-query");
-  const [a, b, c, d] = refreshFlags([stale, wrong, direct, unknownFeed]);
+  const softHyphen = mk("Forgotten case of 'Willie' the cottage poltergeis\u00ADt", "Express", "genre", "gn-ghosts-a-gb", ["weak-match"]);
+  const [a, b, c, d, e] = refreshFlags([stale, wrong, direct, unknownFeed, softHyphen]);
+  assert.deepEqual(e.flags, [], "invisible characters in stored titles are ignored");
   assert.deepEqual(a.flags, ["entertainment"], "headline and outlet both say film");
   assert.deepEqual(b.flags, [], "old false positive cleared");
   assert.deepEqual(c.flags, [], "direct feeds never get weak-match");
   assert.deepEqual(d.flags, ["weak-match"], "retired gn- feeds are still treated as searches");
   assert.equal(refreshFlags([a])[0], a, "unchanged items are returned as-is");
+});
+
+test("weak matches and offbeat items are hidden; attractions are not", () => {
+  assert.deepEqual([...HIDDEN_FLAGS].sort(), ["entertainment", "offbeat", "weak-match"]);
+  const junk = mk("Neighbor reacts to Granville explosion killing two", "WSYX", "press", "gn-fortean-b-us");
+  const ticker = mk("Procure Space ETF (NASDAQ: UFO) Share Price & Updates", "MarketBeat", "genre", "gn-ufo-us");
+  const fair = mk("Madworld Haunted Attraction opens in Piedmont", "KJCT", "press", "gn-ghosts-b-us");
+  const clusters = buildClusters(refreshFlags([junk, ticker, fair]), { now });
+  const find = (s: string): Cluster => clusters.find((c) => c.title.includes(s))!;
+  assert.equal(isVisible(find("Granville")), false);
+  assert.equal(isVisible(find("NASDAQ")), false);
+  assert.equal(isVisible(find("Madworld")), true);
 });
 
 test("a cluster is hidden when at least half its members are entertainment, otherwise shown", () => {

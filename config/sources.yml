@@ -139,7 +139,8 @@ sources:
     tier: genre
     topics: auto
     default_topic: fortean
-    enabled: true
+    enabled: false
+    note: HTTP 403 from GitHub Actions IP ranges (the feed works from residential IPs). Re-enable if the site changes hosting.
   - id: unexplained-mysteries
     name: Unexplained Mysteries
     kind: rss
@@ -219,16 +220,17 @@ sources:
     url: https://www.reddit.com/r/UFOs/top/.rss?t=day
     tier: unverified
     topics: [ufo]
-    enabled: true
-    note: Reddit rate-limits datacenter IPs aggressively (429). Expect quarantine cycles.
+    enabled: false
   - id: reddit-paranormal
     name: r/Paranormal
     kind: rss
     url: https://www.reddit.com/r/Paranormal/top/.rss?t=day
     tier: unverified
     topics: [ghosts]
-    enabled: true
-    note: Reddit rate-limits datacenter IPs aggressively (429). Expect quarantine cycles.
+    enabled: false
+    note: Reddit returns 429 to GitHub Actions runners, and top-post titles carry no story.
+
+
 
   # ── Retired: dead paths and bot walls found on 2026-09-06 ──
   - id: mysterious-universe

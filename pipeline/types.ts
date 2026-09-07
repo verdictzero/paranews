@@ -19,7 +19,7 @@ export type Tier = (typeof TIERS)[number];
  *   attraction    - Halloween attractions, ghost tours
  *   weak-match    - found by a beat search but the headline names no beat keyword
  */
-export type Flag = "entertainment" | "attraction" | "weak-match";
+export type Flag = "entertainment" | "attraction" | "weak-match" | "offbeat";
 
 export interface SourceConfig {
   id: string;

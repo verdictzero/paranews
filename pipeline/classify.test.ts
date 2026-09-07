@@ -83,6 +83,47 @@ test("entertainment: real stories with media-sounding words are not flagged", ()
   for (const t of no) assert.deepEqual(classifyFlags(t), [], t);
 });
 
+test("expanded beat keywords catch real stories that used to be weak matches", () => {
+  assert.deepEqual(classifyTopics("Conjuring House cases 'are a mess,' says RI judge"), ["ghosts"]);
+  assert.deepEqual(classifyTopics("Kisii village in frenzy as 'Virgin Mary' image 'appears' on a kitchen wall"), ["fortean"]);
+  assert.deepEqual(classifyTopics("Black Country locals claim to hear 'strange noise' overnight - did you hear it?"), ["fortean"]);
+  assert.deepEqual(classifyTopics("Mystery Creature Found Lurking in Supermarket Bread Aisle"), ["fortean"]);
+  assert.deepEqual(classifyTopics("Sandra Bullock confirms there are 'alien ships flying around' the sky"), ["ufo"]);
+  assert.deepEqual(classifyTopics("Whistleblower describes non-human intelligence programme to senators"), ["ufo"]);
+  assert.deepEqual(classifyTopics("Loch Ness witness spots 'seven-metre' creature moving 'like a very large eel'"), ["cryptids"]);
+  assert.deepEqual(classifyTopics("Tourist spots 'dark, mound-like shape' in Loch Ness"), ["cryptids"]);
+  assert.deepEqual(classifyTopics("CT doll said to be inhabited by an 'inhuman spirit' brought to new site"), ["ghosts"]);
+  assert.deepEqual(classifyTopics("Victor Marx says he 'met' the devil at a Texas prison"), ["ghosts"]);
+  assert.deepEqual(classifyTopics("CIA Recording From 1972 Reveals 50-Year Time Loop!"), ["fortean"]);
+  assert.deepEqual(classifyTopics("Loch Ness cruise firm achieves Gold Green tourism award"), [], "tourism is not a sighting");
+});
+
+test("offbeat: tickers, products and teams that borrow a beat word", () => {
+  const yes = [
+    "Procure Space ETF (NASDAQ: UFO) Share Price, UFO Stock News, UFO Share Price & Updates",
+    "Alien Metals Stock Price Forecast. Should You Buy UFO.L?",
+    "UFO Moviez India Ltd. Key Financial Ratios – Valuation, Profitability & More",
+    "Sasquatch Resources Engages Departures Capital to Conduct Digital Marketing Program",
+    "2018 Norco Bigfoot 2 - medium For Sale",
+    "2026 Folkstyle Tour of America - Northwest Bigfoot Battle",
+    "Raleigh Aaro - Gonzaga Prep Bullpups Girls Soccer (Spokane, WA)",
+    "Lufthansa and cabin crew union UFO resume talks",
+    "iQOO 16 Real Device Design Leaked Featuring a Futuristic UFO-Inspired Square Camera Module",
+    "Best Position 5 Supports in Dota 2 — Patch 7.41b Guide to Gain MMR",
+    "SPECTER codes (September 2026)",
+    "Yeti's Biggest Labor Day Deals Yet Just Dropped—Shop Discounted Coolers, Tumblers, and More",
+  ];
+  for (const t of yes) assert.ok(classifyFlags(t).includes("offbeat"), t);
+  const no = [
+    "Pentagon seeks access to vast private UFO records collection",
+    "Bigfoot sighting was just a man in a costume, Maine police department assures residents",
+    "Historic Hotel Alex Johnson nominated for 'Best Haunted Hotel' in national contest",
+    "Stock footage of 1967 sighting resurfaces in new UFO archive",
+    "Pilots report mysterious lights 'moving at extreme speeds' across Oregon skies",
+  ];
+  for (const t of no) assert.ok(!classifyFlags(t).includes("offbeat"), t);
+});
+
 test("flags demote entertainment and attractions", () => {
   assert.deepEqual(classifyFlags("Wildman: Bigfoot will go John Wick in bloody revenge thriller"), ["entertainment"]);
   assert.deepEqual(classifyFlags("The 20 best exorcist-themed movies, ranked"), ["entertainment"]);

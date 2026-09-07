@@ -9,20 +9,20 @@ import type { Flag, Topic } from "./types.ts";
 const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
   {
     topic: "ufo",
-    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|extraterrestrials?|alien (?:spacecraft|craft|abduction|encounter|contact|life|bod(?:y|ies)|mummies|technology)|space aliens?|roswell|area 51|close encounters?|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker)\b/i,
+    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|extraterrestrials?|alien (?:spacecraft|craft|abduction|encounter|contact|life|bod(?:y|ies)|mummies|technology)|space aliens?|roswell|area 51|close encounters?|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|the aliens|aliens (?:are|exist|among|visit\w*|contact\w*)|non-?human (?:intelligence|biologics?|craft)|nhi|interstellar (?:object|visitor)s?|3i\/atlas|oumuamua|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
   },
   {
     topic: "ghosts",
-    re: /\b(ghosts?|ghostly|haunted|hauntings?|poltergeists?|paranormal|apparitions?|spirits? (?:of|in|at)|s[eé]ances?|exorcis(?:m|t|ts)|demonic|possession|ouija|medium(?:s|ship)?|afterlife|phantoms?|spectres?|specters?|shadow (?:people|figures?))\b/i,
+    re: /\b(ghosts?|ghostly|haunted|hauntings?|poltergeists?|paranormal|apparitions?|spirits? (?:of|in|at)|s[eé]ances?|exorcis(?:m|t|ts)|demonic|possession|ouija|medium(?:s|ship)?|afterlife|phantoms?|spectres?|specters?|shadow (?:people|figures?)|conjuring house|annabelle|warren collection|amityville|enfield|most haunted|ghost hunters?|ghost hunting|ghostly|(?:inhuman|evil|malevolent) spirits?|haunted dolls?|possessed dolls?|spirit box|met the devil|the devil at|satan(?:ic)?|demons?|overnight investigation|paranormal (?:investigat\w+|research\w+|group|team|society|activity))\b/i,
   },
   {
     topic: "cryptids",
     // "yeti" (coolers), "dogman" (children's books) and "jersey devil" (NHL) need context.
-    re: /\b(bigfoot|sasquatch|cryptids?|cryptozoolog(?:y|ist|ists)|yeti (?:footprints?|sightings?|legend|myth|hunt|expedition|dna|scalp|creature)|abominable snowman|loch ness monster|nessie|lake monsters?|sea (?:monsters?|serpents?)|dogman sightings?|mothman|chupacabras?|skinwalkers?|wendigo|yowie|thunderbird sightings?|jersey devil sightings?|goatman|ogopogo|mokele|thylacine|living dinosaurs?)\b/i,
+    re: /\b(bigfoot|sasquatch|cryptids?|cryptozoolog(?:y|ist|ists)|yeti (?:footprints?|sightings?|legend|myth|hunt|expedition|dna|scalp|creature)|abominable snowman|loch ness (?:monster|witness|sighting|creature|hunter|footage)s?|(?:in|on|at|over|from) loch ness|nessie|lake monsters?|sea (?:monsters?|serpents?)|dogman sightings?|mothman|chupacabras?|skinwalkers?|wendigo|yowie|thunderbird sightings?|jersey devil sightings?|goatman|ogopogo|mokele|thylacine|living dinosaurs?)\b/i,
   },
   {
     topic: "fortean",
-    re: /\b(unexplained|high strangeness|fortean|anomal(?:y|ies|ous)|crop circles?|mysterious(?:ly)? (?:disappear|vanish|death|light|sound|boom|object|signal|creature|figure|craft)\w*|vanished? without a trace|unsolved myster(?:y|ies)|near[- ]death experiences?|out[- ]of[- ]body|reincarnation|premonitions?|psychic|telepath(?:y|ic)|remote viewing|time slips?|simulation theory|mandela effect|spontaneous human combustion|cursed|the curse of|ancient (?:aliens|astronauts|mystery)|lost civili[sz]ation|atlantis|bermuda triangle|missing 411|dyatlov|skinwalker ranch|men in black|rains? of (?:fish|frogs))\b/i,
+    re: /\b(unexplained|high strangeness|fortean|anomal(?:y|ies|ous)|crop circles?|mysterious(?:ly)? (?:disappear|vanish|death|light|sound|boom|object|signal|creature|figure|craft)\w*|vanished? without a trace|unsolved myster(?:y|ies)|near[- ]death experiences?|out[- ]of[- ]body|reincarnation|premonitions?|psychic|telepath(?:y|ic)|remote viewing|time slips?|simulation theory|mandela effect|spontaneous human combustion|cursed|the curse of|ancient (?:aliens|astronauts|mystery)|lost civili[sz]ation|atlantis|bermuda triangle|missing 411|dyatlov|skinwalker ranch|men in black|rains? of (?:fish|frogs)|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?|unexplained (?:noises?|sounds?|lights?)|virgin mary|weeping (?:statue|madonna)|marian apparitions?|consciousness (?:exists )?beyond|life after death|the other side|fermi paradox|simulation hypothesis|eerie|time loops?|time travel(?:l?ers?)?|lost cit(?:y|ies)|el dorado|percy fawcett|approved miracles|miracle (?:healing|cure)s?|lourdes|mysterious (?:find|discovery|remains|bones?|skull)s?|mystery (?:find|discovery|remains|bones?|skull)s?|past life|previous life)\b/i,
   },
 ];
 
@@ -136,6 +136,30 @@ const ENTERTAINMENT: RegExp[] = [
   /\b(?:the conjuring(?! house)|(?<!real-life |real life )ghostbusters|beetlejuice|x-files|twilight zone|doctor who|skinwalker ranch|ancient aliens|expedition bigfoot|finding bigfoot|mountain monsters|paranormal caught on camera|kindred spirits|the dead files|ghost files|ghost adventures|john wick|sasquatch sunset|alien: earth)\b/i,
 ];
 
+/**
+ * Off-beat: a beat word used as a ticker, brand, product or team name.
+ * "Procure Space ETF (NASDAQ: UFO)", "Norco Bigfoot 2 for sale", "Raleigh
+ * Aaro girls soccer". Hidden from the site.
+ */
+const OFFBEAT: RegExp[] = [
+  /\b(?:stock|share) prices?\b/i,
+  /\bstocks?\b(?! footage)/i,
+  /\b(?:etfs?|nasdaq|nyse|tsx|asx|lse|otc markets?|market cap|dividends?|earnings|valuation|financial ratios?|analyst (?:blog|ratings?|forecast)|price (?:forecast|target)|should you buy|buy or sell|ticker)\b/i,
+  /\b(?:ltd|inc|corp|plc|gmbh|llc)\.?\b/i,
+  /\b(?:digital marketing|press release|investor relations|quarterly results|q[1-4] results|ipo)\b/i,
+  /\bfor sale\b/i,
+  /\b(?:deal alert|coupon|discount code|promo code|% off|lowest price|price drop|black friday|prime day|labor day (?:sale|deals?)|best deals?)\b/i,
+  /\b(?:smartphone|camera module|device design|leaked design|specs? leak|firmware|android devices?|iphone \d+|galaxy s\d+|iqoo|xiaomi|oneplus|realme|patch \d|patch notes|mmr|meta guide|codes \(|\(codes\)|redeem codes?|cards? guide|tier list)\b/i,
+  /\b(?:wrestling|folkstyle|soccer|football|basketball|hockey|baseball|volleyball|lacrosse|rugby|cricket|nfl|nba|nhl|mlb|ncaa|bullpups|varsity|junior varsity|prep (?:girls|boys)|high school (?:girls|boys)|box score|final score|touchdown|playoffs?)\b/i,
+  /\b(?:cabin crew|flight attendants?|pilots?) union\b/i,
+  /\blufthansa\b/i,
+  /\b(?:coolers?|tumblers?|drinkware|water bottles?|rambler)\b/i,
+];
+
+export function isOffbeat(title: string): boolean {
+  return OFFBEAT.some((re) => re.test(title));
+}
+
 const ATTRACTION =
   /\b(haunted (?:house|houses|attraction|attractions|trail|trails|hayride|maze|mansion tickets)|halloween (?:event|events|attraction|attractions)|ghost tours?|escape rooms?|theme parks?|scare (?:zone|zones|actors?)|fright fest|spirit halloween|halloween horror nights)\b/i;
 
@@ -158,6 +182,7 @@ export function isEntertainmentTitle(title: string): boolean {
 export function classifyFlags(title: string): Flag[] {
   const out: Flag[] = [];
   if (isEntertainmentTitle(title) || isOffTopic(title)) out.push("entertainment");
+  if (isOffbeat(title)) out.push("offbeat");
   if (ATTRACTION.test(title)) out.push("attraction");
   return out;
 }
