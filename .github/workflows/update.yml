@@ -2,9 +2,10 @@ name: Update site
 
 on:
   schedule:
-    # Every 30 minutes. GitHub runs schedules best-effort; expect drift under load.
+    # Every 30 minutes, off the hour and half-hour: GitHub drops scheduled runs
+    # queued at :00 and :30 under load. Still best-effort; expect some drift.
     # Schedules only ever run on the repository's default branch.
-    - cron: "*/30 * * * *"
+    - cron: "7,37 * * * *"
   workflow_dispatch:
   push:
     branches: ["**"]
