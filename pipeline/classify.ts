@@ -13,7 +13,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
   },
   {
     topic: "ghosts",
-    re: /\b(ghosts?|ghostly|haunted|hauntings?|poltergeists?|paranormal|apparitions?|spirits? (?:of|in|at)|s[eé]ances?|exorcis(?:m|t|ts)|demonic|possession|ouija|medium(?:s|ship)?|afterlife|phantoms?|spectres?|specters?|shadow (?:people|figures?)|conjuring house|annabelle|warren collection|amityville|enfield|most haunted|ghost hunters?|ghost hunting|ghostly|(?:inhuman|evil|malevolent) spirits?|haunted dolls?|possessed dolls?|spirit box|met the devil|the devil at|satan(?:ic)?|demons?|overnight investigation|paranormal (?:investigat\w+|research\w+|group|team|society|activity))\b/i,
+    re: /\b(ghosts?|ghostly|haunted|hauntings\b|haunting\b(?=\s+(?:at|in|of|on|near|inside|that|which|was|is|began|continues|reported|claims?)\b|[.,;:!?"'\)]|$)|poltergeists?|paranormal|apparitions?|spirits? (?:of|in|at)|s[eé]ances?|exorcis(?:m|t|ts)|demonic|possession|ouija|medium(?:s|ship)?|afterlife|phantoms?|spectres?|specters?|shadow (?:people|figures?)|conjuring house|annabelle|warren collection|amityville|enfield|most haunted|ghost hunters?|ghost hunting|ghostly|(?:inhuman|evil|malevolent) spirits?|haunted dolls?|possessed dolls?|spirit box|met the devil|the devil at|satan(?:ic)?|demons?|overnight investigation|paranormal (?:investigat\w+|research\w+|group|team|society|activity))\b/i,
   },
   {
     topic: "cryptids",
@@ -22,7 +22,24 @@ const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
   },
   {
     topic: "fortean",
-    re: /\b(high strangeness|fortean|crop circles?|unsolved myster(?:y|ies)|near[- ]death experiences?|shared death experiences?|terminal lucidity|out[- ]of[- ]body|reincarnation|past[- ]life (?:memor\w+|regression|recall)|past lives (?:research|memor\w+|stud\w+|regression|recall)|(?:recall\w*|remember\w*|stud(?:y|ies) of|research into) past lives|premonitions?|psychic|telepath(?:y|ic)|remote viewing|parapsycholog\w+|survival of consciousness|time slips?|time loops?|time anomal\w+|time travel(?:l?ers?)?|simulation theory|simulation hypothesis|mandela effect|spontaneous human combustion|ancient (?:aliens|astronauts|mystery)|lost civili[sz]ation|atlantis|el dorado|percy fawcett|bermuda triangle|missing 411|dyatlov|skinwalker ranch|men in black|rains? of (?:fish|frogs)|anomalous (?:phenomen\w+|experiences?|objects?|craft|signals?|readings?)|unexplained (?:phenomen\w+|activity|noises?|sounds?|lights?|objects?|howls?|footage|video|events?|deaths?|disappearances?|marks?)|mysterious(?:ly)? (?:light|sound|boom|object|signal|creature|figure|craft)\w*|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?|virgin mary|weeping (?:statue|madonna)|marian apparitions?|approved miracles|miracle (?:healing|cure)s?|lourdes|consciousness (?:exists )?beyond|life after death|the other side|fermi paradox|mysterious (?:find|discovery|remains|bones?|skull)s?|mystery (?:find|discovery|remains|bones?|skull)s?)\b/i,
+    re: /\b(high strangeness|fortean|crop circles?|unsolved myster(?:y|ies)|near[- ]death experiences?|shared death experiences?|terminal lucidity|out[- ]of[- ]body|reincarnation|past[- ]life (?:memor\w+|regression|recall)|past lives (?:research|memor\w+|stud\w+|regression|recall)|(?:recall\w*|remember\w*|stud(?:y|ies) of|research into) past lives|premonitions?|psychic|telepath(?:y|ic)|remote viewing|parapsycholog\w+|survival of consciousness|time slips?|time loops?|time anomal\w+|time travel(?:l?ers?)?|simulation theory|simulation hypothesis|mandela effect|spontaneous human combustion|bermuda triangle|missing 411|dyatlov|skinwalker ranch|men in black|rains? of (?:fish|frogs)|anomalous (?:phenomen\w+|experiences?|objects?|craft|signals?|readings?)|unexplained (?:phenomen\w+|activity|noises?|sounds?|lights?|objects?|howls?|footage|video|events?|deaths?|disappearances?|marks?)|mysterious(?:ly)? (?:light|sound|boom|object|signal|creature|figure|craft)\w*|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?|virgin mary|weeping (?:statue|madonna)|marian apparitions?|approved miracles|miracle (?:healing|cure)s?|lourdes|consciousness (?:exists )?beyond|life after death|the other side|fermi paradox|mysterious (?:find|discovery|remains|bones?|skull)s?|mystery (?:find|discovery|remains|bones?|skull)s?)\b/i,
+  },
+  {
+    topic: "archaeology",
+    // Anomalous archaeology, not archaeology. A Roman villa is a dig; a
+    // structure nobody can explain, a chamber found by radar, or a site that
+    // does not fit the timeline is this beat. Named sites are listed because
+    // the anomaly is in the site, not in the wording of the headline.
+    re: /\b(anomalous archaeolog\w+|forbidden archaeolog\w+|g[oö]bekli tepe|gunung padang|yonaguni|nan madol|puma ?punku|bimini road|derinkuyu|karahan tepe|elongated skulls?|paracas skulls?|giant skeletons?|nephilim|underwater (?:ruins?|cit(?:y|ies)|pyramids?|structures?)|sunken (?:cit(?:y|ies)|ruins?)|submerged (?:cit(?:y|ies)|ruins?)|hidden (?:chambers?|voids?)|(?:radar|lidar|sonar|scans?)[^.]{0,24}anomal\w+|subsurface anomal\w+|lost civili[sz]ation|lost city of|el dorado|percy fawcett|ancient (?:aliens|astronauts)|ancient astronaut theor\w+|mysterious (?:inscriptions?|monoliths?|ruins?|structures?)|unexplained (?:inscriptions?|ruins?|structures?)|megalithic (?:myster|anomal)\w*|impossible (?:engineering|masonry|geometry)|atlantis)\b/i,
+  },
+  {
+    topic: "ooparts",
+    // Out-of-place artifacts: an object in a context it should not be in.
+    // Every name is qualified. Bare "oopart" is a Korean mobile game, bare
+    // "antikythera" is a shipwreck dive site, and "crystal skull" without
+    // "Indiana Jones" is still usually the film — which the entertainment
+    // filter catches separately.
+    re: /\b(out[- ]of[- ]place artifacts?|ooparts?|antikythera (?:mechanism|device|fragment)s?|baghdad batter(?:y|ies)|london hammer|coso artifact|klerksdorp spheres?|dorchester pot|aiud (?:wedge|aluminium|aluminum)|piri reis map|voynich manuscript|ica stones?|saqqara bird|dendera light|baigong pipes?|kensington runestone|bat creek stone|los lunas inscription|fuente magna|quimbaya (?:artifacts?|figurines?|aeroplanes?|airplanes?)|nazca (?:lines|mummies)|crystal skulls?|anachronistic (?:artifacts?|objects?|technolog\w+)|impossible artifacts?|anomalous artifacts?)\b/i,
   },
 ];
 
@@ -180,7 +197,7 @@ const ROUNDUP: RegExp[] = [
   /(?<![\d,])\d{1,2}(?![\d,])\s+(?:of\s+the\s+)?(?:most|best|worst|scariest|creepiest|spookiest|weirdest|strangest|eeriest|haunted|creepy|spooky|terrifying|chilling|bizarre|unexplained|mysterious)\b/i,
   /\b(?:top|best)\s+(?<![\d,])\d{1,2}(?![\d,])\b/i,
   /\b(?:the\s+)?(?:most|best|scariest|creepiest|spookiest)\s+haunted\s+(?:places?|spots?|hotels?|towns?|cities|roads?|destinations?|pubs?|castles?|buildings?|houses?)\b/i,
-  /\b(?:places?|spots?|destinations?|towns?|hotels?)\s+(?:to\s+(?:visit|stay|explore|see)|you\s+(?:can|should|must))\b/i,
+  /\b(?:places?|spots?|destinations?|towns?|hotels?|sites?|ruins?)\s+(?:to\s+(?:visit|stay|explore|see)|you\s+(?:can|should|must)|(?:that\s+)?every[^.]{0,28}?(?:should|must|need to)\s+(?:visit|see|explore))\b/i,
   /,\s*ranked\b/i,
 ];
 

@@ -76,7 +76,13 @@ jobs:
             echo "Push rejected (attempt ${attempt}); rebasing onto the remote."
             sleep $((attempt * 5))
             git fetch origin "${GITHUB_REF_NAME}"
-            git rebase "origin/${GITHUB_REF_NAME}"
+            # Two runs polling at once write the same shards, which git cannot
+            # merge on its own. These files have a merge rule, so apply it
+            # rather than dying mid-rebase.
+            if ! git rebase "origin/${GITHUB_REF_NAME}"; then
+              npm run resolve-conflicts
+              GIT_EDITOR=true git rebase --continue || { git rebase --abort; exit 1; }
+            fi
           done
           echo "Could not push data after 4 attempts." >&2
           exit 1

@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import { TOPICS } from "../../pipeline/types";
 import Reader from "../components/Reader.astro";
-import { SITE_NAME, SITE_TAGLINE, TOPIC_LABEL, getSiteData, href, timeAgo, topicPath } from "../lib/site";
+import { SITE_NAME, SITE_TAGLINE, TOPIC_LABEL, TOPIC_NAV_LABEL, getSiteData, href, timeAgo, topicPath } from "../lib/site";
 
 interface Props {
   title: string;
@@ -43,15 +43,18 @@ const storyCount = data.clusters.length;
           <div class="tagline">{SITE_TAGLINE}</div>
         </div>
         <nav class="nav" aria-label="Sections">
-          <a href={href("")} aria-current={current === "home" ? "page" : undefined}>Front page</a>
-          {TOPICS.map((t) => (
-            <a href={href(topicPath(t))} aria-current={current === t ? "page" : undefined}>{TOPIC_LABEL[t]}</a>
-          ))}
-          <span class="spacer"></span>
-          <a href={href("archive/")} aria-current={current === "archive" ? "page" : undefined}>Archive</a>
-          <a href={href("sources/")} aria-current={current === "sources" ? "page" : undefined}>Sources</a>
-          <a href={href("about/")} aria-current={current === "about" ? "page" : undefined}>About</a>
-          <a class="rss" href={href("rss.xml")}>RSS</a>
+          <div class="beats">
+            <a href={href("")} aria-current={current === "home" ? "page" : undefined}>Front page</a>
+            {TOPICS.map((t) => (
+              <a href={href(topicPath(t))} aria-current={current === t ? "page" : undefined}>{TOPIC_NAV_LABEL[t]}</a>
+            ))}
+          </div>
+          <div class="utility">
+            <a href={href("archive/")} aria-current={current === "archive" ? "page" : undefined}>Archive</a>
+            <a href={href("sources/")} aria-current={current === "sources" ? "page" : undefined}>Sources</a>
+            <a href={href("about/")} aria-current={current === "about" ? "page" : undefined}>About</a>
+            <a class="rss" href={href("rss.xml")}>RSS</a>
+          </div>
         </nav>
       </div>
     </header>

@@ -17,6 +17,8 @@ export const TOPIC_LABEL: Record<Topic, string> = {
   ghosts: "Hauntings",
   cryptids: "Cryptids",
   fortean: "High Strangeness",
+  archaeology: "Anomalous Archaeology",
+  ooparts: "OOPArts",
 };
 
 export const TOPIC_BLURB: Record<Topic, string> = {
@@ -24,7 +26,12 @@ export const TOPIC_BLURB: Record<Topic, string> = {
   ghosts: "Investigations, poltergeists, exorcisms and the places that will not stay quiet.",
   cryptids: "Bigfoot, lake monsters, Mothman and every creature that keeps not being found.",
   fortean: "Mysterious lights and sounds, crop circles, psi research, time slips and Fortean classics.",
+  archaeology: "Sites that do not fit the timeline: sunken cities, chambers found by radar, impossible engineering.",
+  ooparts: "Out-of-place artifacts. The Antikythera mechanism, the Piri Reis map, and every object found where it should not be.",
 };
+
+/** Nav labels only. "Anomalous Archaeology" set in uppercase wraps the bar. */
+export const TOPIC_NAV_LABEL: Record<Topic, string> = { ...TOPIC_LABEL, archaeology: "Archaeology" };
 
 export const TIER_LABEL: Record<Tier, string> = {
   official: "Official / wire",

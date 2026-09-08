@@ -12,6 +12,8 @@
   --topic-ghosts: #6f42a8;
   --topic-cryptids: #4a7a2a;
   --topic-fortean: #b0521a;
+  --topic-archaeology: #8a6d24;
+  --topic-ooparts: #1f7a7a;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -30,6 +32,8 @@
     --topic-ghosts: #c09bff;
     --topic-cryptids: #9ad072;
     --topic-fortean: #f3a06a;
+    --topic-archaeology: #dcb75f;
+    --topic-ooparts: #6fc7c7;
   }
 }
 
@@ -56,10 +60,12 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.15; mar
 .masthead .title a { color: inherit; }
 .masthead .title a:hover { text-decoration: none; }
 .masthead .tagline { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 15px; max-width: 46ch; }
-.nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+/* Two groups so the utility links stay together on their own line once the
+   beats outgrow one row, instead of a flex spacer stranding them mid-bar. */
+.nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 24px; margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+.nav .beats, .nav .utility { display: flex; flex-wrap: wrap; gap: 4px 18px; }
 .nav a { color: var(--fg); padding: 4px 0; border-bottom: 2px solid transparent; }
 .nav a:hover, .nav a[aria-current="page"] { border-bottom-color: var(--accent); text-decoration: none; }
-.nav .spacer { flex: 1; }
 .nav .rss { color: var(--muted); }
 
 .strap { display: flex; flex-wrap: wrap; gap: 6px 22px; padding: 10px 0; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--rule); }
@@ -106,6 +112,8 @@ html:not(.js) .read { display: none; }
 .tag.ghosts { color: var(--topic-ghosts); }
 .tag.cryptids { color: var(--topic-cryptids); }
 .tag.fortean { color: var(--topic-fortean); }
+.tag.archaeology { color: var(--topic-archaeology); }
+.tag.ooparts { color: var(--topic-ooparts); }
 .corroborated { color: var(--accent); font-weight: 600; }
 
 .prose { max-width: 70ch; font-size: 17px; }

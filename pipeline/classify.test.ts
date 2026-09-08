@@ -145,6 +145,7 @@ test("perennial listicles are flagged, real events with superlative names are no
     "Explore Tennessee's Most Haunted Places on the Ultimate Halloween Road Trip",
     "Stay at America's Most Haunted Hotel in Eureka Springs",
     "Top 10 most haunted places in Britain",
+    "Göbekli Tepe and 8 Other Ancient Sites Every Design Lover Should Visit",
   ]) assert.equal(isRoundup(t), true, t);
 
   for (const t of [
@@ -190,8 +191,6 @@ test("high strangeness is a phenomenon claim, not an atmosphere word", () => {
   for (const t of [
     "UNEXPLAINED HOWLS, TREE KNOCKS, & THROWN ROCKS Near Vernon, Vermont",
     "The public joins a paranormal investigation and witnesses some unexplained activity",
-    "Lost city of Atlantis clues revealed in new scans of secret ocean site",
-    "Percy Fawcett: Did He Find the Lost City He Was Searching For?",
     "'Proof' time travel is 'real' with unusual detail spotted in 1937 painting",
     "Border Patrol agents report a time slip on West Texas I-10",
     "Dr. Pehlivanova discusses shared death experiences in Popular Mechanics",
@@ -218,4 +217,55 @@ test("high strangeness is a phenomenon claim, not an atmosphere word", () => {
     "NASA has successfully launched its next-generation space telescope",
     "Underground detector finds possible evidence of dark matter",
   ]) assert.equal(fortean(t), false, t);
+});
+
+test("anomalous archaeology and OOPArts are their own beats, not High Strangeness", () => {
+  const beat = (t: string) => classifyTopics(t);
+  // Lost cities and named anomalous sites belong to archaeology now. They used
+  // to land on High Strangeness, which is how that beat became a catch-all.
+  for (const t of [
+    "Lost city of Atlantis clues revealed in new scans of secret ocean site",
+    "Percy Fawcett: Did He Find the Lost City He Was Searching For?",
+    "Radar Detects Anomalies And Unknown Burial Mounds At Viking-Age Birka",
+    "New Radar Scans Reveal Mysterious 'Subsurface Anomalies' Beneath Noah's Ark site",
+    "Mysterious seven-mile 'sunken city' spotted near the Bermuda Triangle",
+    "Göbekli Tepe dig reopens the question of when building began",
+    "Elongated skulls from Paracas re-examined",
+    "Hidden chamber found in the Great Pyramid",
+  ]) {
+    assert.ok(beat(t).includes("archaeology"), t);
+    assert.ok(!beat(t).includes("ooparts"), `${t} is not an OOPArt`);
+  }
+
+  for (const t of [
+    "The Ghost of Columbus and the Impossible Geometry of the Piri Reis Map",
+    "The Antikythera mechanism was more sophisticated than anyone thought",
+    "Voynich manuscript decoded? Researchers claim a breakthrough",
+    "Baghdad battery reconsidered by materials scientists",
+  ]) assert.ok(beat(t).includes("ooparts"), t);
+
+  // Ordinary archaeology is still not a beat at all.
+  for (const t of [
+    "Roman Forum Found Beneath Barcelona Hotel Rewrites Barcino",
+    "Renaissance Gallows Unearthed in France With 32 Executed Victims",
+    "Denmark's Largest Viking Silver Treasure Found In A Private Garden",
+  ]) assert.deepEqual(beat(t), [], t);
+});
+
+test("'haunting' is only the beat when it is the noun", () => {
+  const ghosts = (t: string) => classifyTopics(t).includes("ghosts");
+  for (const t of [
+    "Investigators document hauntings across the county",
+    "Reports of a haunting at the old mill",
+    "The haunting of Borley Rectory revisited",
+    "Family flees after violent haunting",
+    "Most haunted pub in Britain reopens",
+  ]) assert.equal(ghosts(t), true, t);
+
+  // Adjectival "haunting" is ordinary English and was tagging news photography.
+  for (const t of [
+    "25 years ago, a NASA astronaut captured this haunting photo of the 9/11 attacks",
+    "A haunting melody echoes through the abandoned theatre",
+    "The haunting beauty of the Scottish highlands",
+  ]) assert.equal(ghosts(t), false, t);
 });

@@ -10,6 +10,7 @@
   "scripts": {
     "ingest": "node scripts/ingest.ts",
     "articles": "node scripts/articles.ts",
+    "resolve-conflicts": "node scripts/resolve-data-conflicts.ts",
     "clusters": "node scripts/clusters.ts",
     "test": "node --test pipeline/*.test.ts",
     "typecheck": "tsc --noEmit",

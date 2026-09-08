@@ -218,6 +218,36 @@ sources:
     topics: [ghosts]
     enabled: true
 
+  # ── Anomalous archaeology and out-of-place artifacts. These beats are fed
+  # mainly by Ancient Origins and Ancient Pages, which publish this material
+  # daily; the queries below are narrow because the obvious ones do not work.
+  # Probed and rejected on 2026-09-08: bare "oopart" returns a Korean mobile
+  # game, "crystal skull" returns Indiana Jones, "Baalbek" returns Lebanese war
+  # coverage, "el dorado" returns a California county newspaper, and bare
+  # "megalith" returns tourism. Every name here is qualified for that reason.
+  # topics: auto throughout — the headline decides which beat it lands on.
+  - id: gn-ooparts-us
+    name: Google News · Out-of-place artifacts
+    kind: google-news
+    edition: US
+    query: '"out-of-place artifact" OR "antikythera mechanism" OR "piri reis map" OR "voynich manuscript" OR "baghdad battery" OR "nazca lines"'
+    topics: auto
+    enabled: true
+  - id: gn-archaeology-sites-us
+    name: Google News · Anomalous sites
+    kind: google-news
+    edition: US
+    query: '"gobekli tepe" OR "gunung padang" OR yonaguni OR "puma punku" OR "nan madol" OR "elongated skulls" OR "karahan tepe"'
+    topics: auto
+    enabled: true
+  - id: gn-archaeology-deep-us
+    name: Google News · Sunken and hidden
+    kind: google-news
+    edition: US
+    query: '"underwater ruins" OR "sunken city" OR "submerged city" OR "lost civilization" OR "hidden chamber" OR "subsurface anomalies"'
+    topics: auto
+    enabled: true
+
   # ── Other English-language editions. Measured 2026-09-08 against the US and GB
   # results for the same query: each of these returns stories the two original
   # editions never carry (UFO: AU 14, CA 21, IE 33 in one week). IN and ZA were
