@@ -66,6 +66,21 @@ const ENTERTAINMENT: RegExp[] = [
   // "A film about Bigfoot" names no genre, so the adjective rule above misses it.
   // "films about" is never a verb phrase, so this cannot catch "witness films three orbs".
   /\bfilms? about\b/i,
+  /*
+   * Criticism. The geocoder has refused these since the beginning — a review
+   * names places it is not reporting from — but the entertainment classifier
+   * never got the same rules, so "A Haunting in Venice 2023 REVIEW" ran as news.
+   * The year anchor on the trailing form matters: a bare /review$/ would hide
+   * "Congress orders UFO review".
+   */
+  /\breview\b\s*[–—|:-]/i,
+  /[–—|]\s*review\b/i,
+  /\b(?:19|20)\d{2}\s+review\s*$/i,
+  /\bsendup\b/i,
+  // Games. A cryptid is a mascot in half of them.
+  /\b(?:apple arcade|steam page|xbox|playstation|nintendo|dlc|battle pass|gacha|azur lane|castlevania|5e supplements?|ttrpg)\b/i,
+  // Music and club nights: Ben UFO is a DJ, Poltergeist 9000 a band.
+  /\b(?:ben ufo|making music|open-air showcase|dj sets?|club night|residency|percussion)\b/i,
   /\b(?:tv|television|netflix|hulu|hbo|apple tv|streaming|animated|anthology|limited|drama|comedy|horror|reality|sci-?fi|hit|popular|paranormal tv) (?:shows?|series|specials?)\b/i,
   /\b(?:hulu|netflix|hbo|amazon|apple tv|paramount|disney|peacock|shudder)(?:'s)? (?:new |hit |original |upcoming |latest )?(?:shows?|series|specials?|movies?|films?|documentar(?:y|ies)|lineup|collection)\b/i,
   /\b(?:netflix|hulu|hbo|hbo max|apple tv|prime video|peacock tv|shudder|tubi|crunchyroll)\b/i,
@@ -174,6 +189,24 @@ const OFFBEAT: RegExp[] = [
   /\b(?:cabin crew|flight attendants?|pilots?) union\b/i,
   /\blufthansa\b/i,
   /\b(?:coolers?|tumblers?|drinkware|water bottles?|rambler)\b/i,
+  /*
+   * A beat word that is a company. UAP is a Bangladeshi university and a Kenyan
+   * insurer, Yowie is an ASX confectioner, UFO is two separate tickers. Their
+   * results announcements arrive on the beat every quarter, forever.
+   */
+  /\b(?:revenue|net loss|net income|full[- ]year results|fy\d{2}\b|h[12] results|narrows loss|shareholders?|price dynamics|execution-aware)\b/i,
+  /\bsecures?\s+(?:a\$|us\$|\$|£|€)?[\d.]+\s*(?:million|billion|m\b|bn\b)/i,
+  /\buap (?:old mutual|holdings|group|insurance|towers)\b|^uap\s+(?:honours?|honors?|celebrates?|announces?|launches?|partners?|reports?|appoints?)/i,
+  /\b(?:betting odds|sportsbook|wagers?|payouts?)\b|\bodds\b[^.]{0,20}\bbets?\b/i,
+  /*
+   * A beat word that is a product. Ritchey's Bigfoot is a bicycle, Squier's
+   * Paranormal a guitar, Rocket Lab's GHOST a launcher, and a Thunderbird is
+   * usually a motorbike.
+   */
+  /\b(?:pedals?|handlebars?|drivetrain|groupset|derailleur|seatpost|frameset|crankset|hardtail)\b/i,
+  /\b(?:squier|telecaster|stratocaster|signature guitar|fender launches)\b/i,
+  /\b(?:royal enfield|harley davidson|bobber|thunderbird \d{3}|\d{3,4}\s?cc)\b/i,
+  /\b(?:launch system|launch vehicle|portable launch)\b/i,
 ];
 
 export function isOffbeat(title: string): boolean {

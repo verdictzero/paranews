@@ -269,3 +269,55 @@ test("'haunting' is only the beat when it is the noun", () => {
     "The haunting beauty of the Scottish highlands",
   ]) assert.equal(ghosts(t), false, t);
 });
+
+test("a beat word that is a company or a product is not the beat", () => {
+  // All of these ran on the site as news. UAP is a Bangladeshi university and
+  // a Kenyan insurer; Yowie is an ASX confectioner; UFO is two tickers;
+  // Ritchey's Bigfoot is a bicycle and Squier's Paranormal a guitar.
+  const yes = [
+    "UAP honours outstanding researchers with Research Excellence Awards",
+    "Business: UAP Old Mutual celebrates international customer service week",
+    "Yowie Group Reports FY26 Revenue of US$8.76 Million with Net Loss Narrowing to US$0.20 Million",
+    "Yowie Narrows Loss as Turnaround Gains Traction Despite Revenue Drop",
+    "(UFO) Price Dynamics and Execution-Aware Positioning",
+    "West Coast Silver Secures A$6 Million to Boost Drilling; Alien Metals (UFO) Benefits",
+    "UFO Disclosure Odds & Alien Bets: Live 2026 Prices & Updates",
+    "Another Bigfoot Sighting? Ritchey's Alloy WCS & Classic Silver Flat Pedals Are Here.",
+    "Fender launches first Squier Paranormal signature guitar, the Troy Van Leeuwen Telecaster XII",
+    "Jawa All Stars 42 Bobber vs Royal Enfield Thunderbird 500",
+    "Rocket Lab Unveils 'GHOST,' a New Portable Launch System That Can Carry Payloads to Orbit",
+  ];
+  for (const t of yes) assert.ok(classifyFlags(t).includes("offbeat"), t);
+});
+
+test("criticism, games and club nights are entertainment", () => {
+  const yes = [
+    "Unidentified Murder review – playful sendup of alien abduction in Hong Kong",
+    "A Haunting in Venice 2023 REVIEW",
+    "Sneaky Sasquatch x Subway Surfers+ crossover goes live on Apple Arcade",
+    "Cryptids, Creepy One-Shots, And Mysteries Can Be Found In These 5E Supplements",
+    "Castlevania Haunted Castle - Beat of Clock Tower",
+    "Ben UFO Open - Close at Mooi Space presented by Standard Time x PARADOX",
+    "Poltergeist 9000: Making Music With Love, Energy and Mayhem",
+    "Notre Dame brings Paranormal event series to Paris for open-air showcase",
+  ];
+  for (const t of yes) assert.ok(classifyFlags(t).includes("entertainment"), t);
+});
+
+test("the new company, product and criticism rules leave real stories alone", () => {
+  // The reason /review$/ is anchored to a year: an official review is news.
+  const no = [
+    "Congress orders UFO review after whistleblower testimony",
+    "Pentagon releases declassified UFO files from various federal agencies",
+    "Pentagon seeks access to vast private UFO records collection",
+    "Two Separate Tourists Report New Nessie Sightings",
+    "Huge 'seven-metre' creature spotted lurking in Loch Ness 'like a very large eel'",
+    "Bankhead National Forest BIGFOOT ENCOUNTER: Massive Creature Growls at Alabama Angler",
+    "Victory Theatre shares 'unexplained' video of shadow figures, orbs",
+    "Mystery 'flying saucer' passed within 300 feet of Gatwick passenger jet",
+  ];
+  for (const t of no) {
+    const flags = classifyFlags(t);
+    assert.ok(!flags.includes("offbeat") && !flags.includes("entertainment"), `${t} -> ${flags}`);
+  }
+});
