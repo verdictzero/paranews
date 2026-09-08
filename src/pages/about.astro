@@ -55,6 +55,11 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
     <p>An independent write-up is not simply a distinct headline. Two reports count as one when they share a headline <i>or</i> share a publisher: twenty affiliates running one syndicated story are a single write-up, and so are three rewrites of one sighting by the same tabloid.</p>
     <p>Scholarly sources are rare and are covered once, so they score far below stories that many outlets picked up. Rather than weight the ranking in their favour, they get their own column on the front page.</p>
 
+    <h2>Maps</h2>
+    <p>The <a href={href("map/ufo/")}>UFO</a> and <a href={href("map/cryptids/")}>cryptid</a> maps place reported sightings against the whole run of the archive, not the rolling window, with a density layer and a date filter.</p>
+    <p>A story is placed only on evidence: a headline that puts an event somewhere ("spotted in Damariscotta"), a wire dateline, or a subject that names its own location — Nessie is Loch Ness by definition, and those pins are drawn hollow to say so. About one story in eight qualifies. The rest name no place that can be trusted and are left off rather than guessed at, because a wrong pin is worse than no pin. A pin marks where a report says something happened; it is not a verified location, and the tier still describes the publisher rather than the claim.</p>
+    <p>Places come from a GeoNames extract and a country list, with region centres computed from the populations of the towns inside them. A short curated list overrides population where it would mislead: "Roswell" is Roswell, Georgia by population and Roswell, New Mexico by every other measure. Map tiles are served by OpenStreetMap.</p>
+
     <h2>Archive</h2>
     <p>Every item ever seen is committed to the repository as JSON, one file per publication day, so the state of the site on any date can be reconstructed from git history. Reader copies and their images are committed too and never removed. The front page and beats show the last 30 days; the <a href={href("archive/")}>archive</a> lists every story with a reader copy, by month.</p>
 

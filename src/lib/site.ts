@@ -82,6 +82,8 @@ export interface SiteData {
   byTopic: Record<Topic, Cluster[]>;
   /** Stories with a reader copy, by month, newest month first. Kept for good. */
   archive: ArchiveMonth[];
+  /** Every visible cluster ever stored, newest first. The maps are archival. */
+  allClusters: Cluster[];
   /** Every cluster that gets a story page: the window plus everything archived. */
   storyPages: Cluster[];
   meta?: MetaFile;
@@ -121,7 +123,8 @@ export function getSiteData(): SiteData {
   const storyPages = [...clusters, ...archived.filter((c) => !pageIds.has(c.id))];
 
   const meta = existsSync(META_FILE) ? (JSON.parse(readFileSync(META_FILE, "utf8")) as MetaFile) : undefined;
-  cache = { now, items, articles, clusters, hiddenCount, top, scholarly, byTopic, archive, storyPages, meta, health: loadHealth(), sources: loadSources() };
+  const allClusters = everything.filter(isVisible);
+  cache = { now, items, articles, clusters, allClusters, hiddenCount, top, scholarly, byTopic, archive, storyPages, meta, health: loadHealth(), sources: loadSources() };
   return cache;
 }
 

@@ -1,0 +1,36 @@
+---
+import Base from "../../layouts/Base.astro";
+import { MAP_MODES, sightings } from "../../lib/sightings";
+import { href } from "../../lib/site";
+
+const modes = MAP_MODES.map((m) => ({ ...m, count: sightings(m.topic).length }));
+---
+
+<Base title="Maps" description="Reported sightings placed on a map, by beat." current="map">
+  <section class="section">
+    <div class="section-head">
+      <h2>Maps</h2>
+      <span class="more">Archival, from the whole run</span>
+    </div>
+    <ul class="stories">
+      {
+        modes.map((m) => (
+          <li class="story">
+            <div class="head">
+              <a href={href(`map/${m.slug}/`)}>{m.title}</a>
+            </div>
+            <p class="snippet">{m.blurb}</p>
+            <div class="meta">
+              <span class="pub">{m.count} placed {m.count === 1 ? "story" : "stories"}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="section-blurb">
+      A story is placed only when a headline puts an event somewhere ("spotted in Damariscotta"), a wire dateline
+      says so, or the creature names its own location (Nessie is Loch Ness). Roughly one story in eight qualifies;
+      the rest name no place that can be trusted, and are left off rather than guessed at.
+    </p>
+  </section>
+</Base>

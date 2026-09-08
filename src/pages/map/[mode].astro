@@ -1,0 +1,175 @@
+---
+import Base from "../../layouts/Base.astro";
+import { MAP_MODES, sightings, type MapMode } from "../../lib/sightings";
+import { href } from "../../lib/site";
+import "leaflet/dist/leaflet.css";
+
+export function getStaticPaths() {
+  return MAP_MODES.map((mode) => ({ params: { mode: mode.slug }, props: { mode } }));
+}
+
+const { mode } = Astro.props as { mode: MapMode };
+const points = sightings(mode.topic);
+const years = [...new Set(points.map((p) => p.date.slice(0, 4)))].sort();
+const first = points[0]?.date.slice(0, 10);
+const last = points[points.length - 1]?.date.slice(0, 10);
+---
+
+<Base title={mode.title} description={mode.blurb} current="map">
+  <section class="section map-section">
+    <div class="section-head">
+      <h2>{mode.title}</h2>
+      <span class="more">
+        {MAP_MODES.filter((m) => m.slug !== mode.slug).map((m) => (
+          <a href={href(`map/${m.slug}/`)}>{m.title} →</a>
+        ))}
+      </span>
+    </div>
+    <p class="section-blurb">{mode.blurb}</p>
+
+    <div class="map-wrap">
+      <div id="map" data-src={href(`map/${mode.slug}.json`)} data-base={href("")}></div>
+      <noscript><p class="empty">The map needs JavaScript. The stories themselves are on the beat pages.</p></noscript>
+    </div>
+
+    <div class="map-controls">
+      <label class="control">
+        <input type="checkbox" id="heat" checked />
+        Density
+      </label>
+      <label class="control">
+        <input type="checkbox" id="pins" checked />
+        Pins
+      </label>
+      <label class="control range">
+        <span>From <b id="from-label">{first ?? "—"}</b></span>
+        <input type="range" id="from" min="0" max={Math.max(0, points.length - 1)} value="0" />
+      </label>
+      <span class="control count"><b id="shown">{points.length}</b> of {points.length} placed</span>
+    </div>
+
+    <p class="map-note">
+      {points.length} of the stories on this beat could be placed, between {first ?? "—"} and {last ?? "—"}
+      {years.length > 1 ? ` across ${years.length} years` : ""}. A pin is where a report says something happened,
+      not a verified location, and a story with no trustworthy place is left off entirely.
+    </p>
+  </section>
+</Base>
+
+<script>
+  import L from "leaflet";
+  import "leaflet.heat";
+
+  interface Sighting {
+    id: string; title: string; date: string; place: string; admin?: string;
+    lat: number; lon: number; precision: string; from: string;
+    publisher: string; tier: string; outlets: number; href: string;
+  }
+
+  const el = document.getElementById("map");
+  if (el) {
+    const base = el.dataset.base ?? "/";
+    const map = L.map(el, { scrollWheelZoom: false, worldCopyJump: true }).setView([32, -40], 3);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+    // A wheel over a page-width map should scroll the page; ctrl+wheel zooms.
+    map.on("focus", () => map.scrollWheelZoom.enable());
+    map.on("blur", () => map.scrollWheelZoom.disable());
+
+    const pinLayer = L.layerGroup().addTo(map);
+    let heatLayer: L.Layer | undefined;
+    let all: Sighting[] = [];
+
+    const esc = (s: string): string =>
+      s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+    // Reports cluster on the same town, so identical coordinates would hide each
+    // other. Spread repeats around a small ring instead of stacking them.
+    function offset(p: Sighting, seenAt: Map<string, number>): [number, number] {
+      const key = `${p.lat.toFixed(3)},${p.lon.toFixed(3)}`;
+      const n = seenAt.get(key) ?? 0;
+      seenAt.set(key, n + 1);
+      if (n === 0) return [p.lat, p.lon];
+      const angle = (n * 2.4) % (Math.PI * 2);
+      const r = 0.05 + n * 0.012;
+      return [p.lat + r * Math.sin(angle), p.lon + r * Math.cos(angle)];
+    }
+
+    function radius(precision: string): number {
+      return precision === "landmark" || precision === "city" ? 6 : precision === "region" ? 8 : 10;
+    }
+
+    function render(points: Sighting[]): void {
+      pinLayer.clearLayers();
+      if (heatLayer) map.removeLayer(heatLayer);
+      const seenAt = new Map<string, number>();
+      const heat: [number, number, number][] = [];
+      for (const p of points) {
+        const [lat, lon] = offset(p, seenAt);
+        heat.push([lat, lon, p.precision === "country" ? 0.35 : 1]);
+        const marker = L.circleMarker([lat, lon], {
+          radius: radius(p.precision),
+          className: `pin pin-${p.precision} pin-from-${p.from}`,
+          weight: 1.5,
+          fillOpacity: 0.55,
+        });
+        const when = new Date(p.date).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+        marker.bindPopup(
+          `<a class="pop-title" href="${base}${p.href}">${esc(p.title)}</a>` +
+            `<div class="pop-meta">${esc(p.place)}${p.admin ? ", " + esc(p.admin) : ""} · ${when}</div>` +
+            `<div class="pop-meta">${esc(p.publisher)}${p.outlets > 1 ? ` and ${p.outlets - 1} more` : ""}` +
+            `${p.from === "implied" ? " · location implied by the subject" : ""}</div>`,
+        );
+        pinLayer.addLayer(marker);
+      }
+      heatLayer = (L as unknown as { heatLayer: (pts: unknown[], opts: unknown) => L.Layer }).heatLayer(heat, {
+        radius: 24,
+        blur: 20,
+        maxZoom: 6,
+        minOpacity: 0.22,
+        // Leaflet's default blue-to-lime reads as a weather map. This runs
+        // through the paper's own accent and beat colours instead.
+        gradient: { 0.2: "#2f6f5e", 0.45: "#8a6d24", 0.7: "#b0521a", 1: "#a02c1f" },
+      });
+      const shown = document.getElementById("shown");
+      if (shown) shown.textContent = String(points.length);
+      applyToggles();
+    }
+
+    function applyToggles(): void {
+      const wantHeat = (document.getElementById("heat") as HTMLInputElement | null)?.checked ?? true;
+      const wantPins = (document.getElementById("pins") as HTMLInputElement | null)?.checked ?? true;
+      if (heatLayer) {
+        if (wantHeat) heatLayer.addTo(map);
+        else map.removeLayer(heatLayer);
+      }
+      if (wantPins) pinLayer.addTo(map);
+      else map.removeLayer(pinLayer);
+    }
+
+    function applyFilter(): void {
+      const slider = document.getElementById("from") as HTMLInputElement | null;
+      const idx = slider ? Number(slider.value) : 0;
+      const cutoff = all[Math.min(idx, all.length - 1)]?.date ?? "";
+      const label = document.getElementById("from-label");
+      if (label && cutoff) label.textContent = cutoff.slice(0, 10);
+      render(all.filter((p) => p.date >= cutoff));
+    }
+
+    for (const id of ["heat", "pins"]) document.getElementById(id)?.addEventListener("change", applyToggles);
+    document.getElementById("from")?.addEventListener("input", applyFilter);
+
+    fetch(el.dataset.src!)
+      .then((r) => r.json() as Promise<Sighting[]>)
+      .then((data) => {
+        all = data;
+        render(all);
+        if (all.length) map.fitBounds(L.latLngBounds(all.map((p) => [p.lat, p.lon] as [number, number])).pad(0.15));
+      })
+      .catch(() => {
+        el.insertAdjacentHTML("beforeend", '<p class="empty">The map data did not load.</p>');
+      });
+  }
+</script>

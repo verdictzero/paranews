@@ -3,6 +3,7 @@ import Base from "../../layouts/Base.astro";
 import StoryRow from "../../components/StoryRow.astro";
 import { TOPICS, type Topic } from "../../../pipeline/types";
 import { TOPIC_BLURB, TOPIC_LABEL, getSiteData, href } from "../../lib/site";
+import { MAP_MODES, sightings } from "../../lib/sightings";
 
 export function getStaticPaths() {
   return TOPICS.map((topic) => ({ params: { topic } }));
@@ -11,6 +12,8 @@ export function getStaticPaths() {
 const topic = Astro.params.topic as Topic;
 const data = getSiteData();
 const list = data.byTopic[topic];
+const mapMode = MAP_MODES.find((m) => m.topic === topic);
+const mapped = mapMode ? sightings(mapMode.topic).length : 0;
 ---
 
 <Base title={TOPIC_LABEL[topic]} description={TOPIC_BLURB[topic]} current={topic}>
@@ -19,7 +22,15 @@ const list = data.byTopic[topic];
       <h2>{TOPIC_LABEL[topic]}</h2>
       <span class="more">{list.length} {list.length === 1 ? "story" : "stories"} · last 30 days · <a href={href(`rss/${topic}.xml`)}>RSS</a></span>
     </div>
-    <p class="section-blurb">{TOPIC_BLURB[topic]}</p>
+    <p class="section-blurb">
+      {TOPIC_BLURB[topic]}
+      {mapMode && mapped > 0 && (
+        <>
+          {" "}
+          <a href={href(`map/${mapMode.slug}/`)}>See {mapped} of them on the map →</a>
+        </>
+      )}
+    </p>
     {
       list.length ? (
         <ol class="stories">

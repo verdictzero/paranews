@@ -14,6 +14,8 @@ A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids, high
 
 ![Archive: every story with a reader copy, by month](docs/screenshots/archive.webp)
 
+![Cryptid sightings map with density layer](docs/screenshots/map.webp)
+
 <img src="docs/screenshots/mobile.webp" width="390" alt="Reader copy full-screen on a phone">
 
 ## How it works
@@ -38,6 +40,7 @@ GitHub Actions cron (*/30)
 - **One reader copy per story, kept for good.** After ingest, `scripts/articles.ts` takes each visible story's best outlet, resolves its link (Google News ids are decoded through the interstitial's signature and the page's own data endpoint; older ids carry the URL in the base64), checks robots.txt, fetches the page as a browser would, and keeps what reader mode would show: Mozilla Readability picks the article, `sanitize-html` reduces it to plain document markup, the lead image (og:image, else the first body image) becomes an 800px WebP. Pages behind a bot wall, galleries, videos, social platforms and anything under 150 words are skipped and the story's next outlet is tried; failures back off (2 h, 8 h) and stop after three. Copies live under `data/articles/<item id>.json` and `data/images/<item id>.webp` and are never pruned. The site serves them as `/reader/<id>.json` + `.webp`; "Read here" opens the copy in a dialog over the blurred page, with the original linked top and bottom; `/archive/` lists every story with a copy, by month. Resolved links also replace the opaque Google News URLs in `data/items/`, so story links go straight to the publisher.
 - **Six beats, and the headline decides which.** UFO/UAP, hauntings, cryptids, high strangeness, anomalous archaeology and out-of-place artifacts. A source's declared topic is a fallback for headlines that name nothing, never an addition to what the headline does name — otherwise every beat leaks into the broadest one. Beats are re-derived on every build, so a tightened rule reaches the whole archive rather than only new stories.
 - **Two runs can write the same shard.** When a scheduled ingest and a manual one race, git cannot merge two versions of one JSON array and the push retry dies mid-rebase. These files have a merge rule already — items are keyed by id and the first sighting wins — so `scripts/resolve-data-conflicts.ts` applies it and the rebase continues.
+- **Sightings maps.** `/map/ufo/` and `/map/cryptids/` plot reported sightings across the whole archive with a Leaflet heat layer and a date filter. Locations are derived, never sourced: NUFORC's terms forbid redistribution, so the only permissible input is the wire's own stories. A story is placed only when a headline puts an event somewhere ("spotted in Damariscotta"), a wire dateline says so, or the subject names its own location (Nessie is Loch Ness — those pins are drawn hollow). Body prose was tried and rejected by measurement: it put Nessie sightings in Barcelona, because a page mentions many places and only one is where the thing happened. About one story in eight resolves; the rest are absent, because a wrong pin is worse than no pin.
 - **An empty feed is not a broken feed.** Rolling tag feeds (`/tag/<slug>/feed/`, Reach's `/all-about/<slug>?service=rss`) carry a seven-day window and are legitimately empty in a quiet week. Treating that as a failure quarantined every one of them within 90 minutes, so emptiness is tolerated for a day of polls before it counts.
 - **Source health:** per-feed ETag/Last-Modified caching, browser user agent (several publishers refuse anything else), three consecutive failures → quarantine → daily re-probe → auto-heal, and a `source-health` GitHub issue when a feed is quarantined.
 
@@ -45,6 +48,8 @@ GitHub Actions cron (*/30)
 
 ```
 config/sources.yml        feed registry, publisher → tier table, retired feeds with notes
+pipeline/places.ts        gazetteer: GeoNames extract + country centroids + curated landmarks
+pipeline/geocode.ts       where a sighting happened, from headline, dateline or subject
 pipeline/                 pure modules: feeds, normalize, classify, store, health, cluster, rank,
                           gnews (Google News link decoding), reddit (OAuth app-only client),
                           fetch, robots, reader, images, articles
