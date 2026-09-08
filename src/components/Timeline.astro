@@ -1,0 +1,91 @@
+---
+import type { Day } from "../lib/sightings";
+
+interface Props {
+  days: Day[];
+  label: string;
+}
+const { days, label } = Astro.props;
+
+// A viewBox in abstract units; CSS sizes it. One bar per day, ≤24 wide, with a
+// 2px surface gap doing the separating rather than a stroke.
+const W = 1000;
+const H = 150;
+const PAD = { top: 14, right: 8, bottom: 22, left: 30 };
+const plotW = W - PAD.left - PAD.right;
+const plotH = H - PAD.top - PAD.bottom;
+const band = days.length ? plotW / days.length : plotW;
+const barW = Math.max(1, Math.min(24, band - 2));
+const peak = days.reduce((m, d) => Math.max(m, d.count), 0);
+// Clean axis numbers rather than the raw maximum.
+const step = peak <= 4 ? 1 : peak <= 10 ? 2 : peak <= 25 ? 5 : 10;
+const top = Math.max(step, Math.ceil(peak / step) * step);
+const ticks = Array.from({ length: Math.floor(top / step) + 1 }, (_, i) => i * step);
+const y = (v: number): number => PAD.top + plotH - (v / top) * plotH;
+const busiest = days.find((d) => d.count === peak);
+
+function bar(d: Day, i: number): string {
+  const h = (d.count / top) * plotH;
+  if (h <= 0) return "";
+  const x = PAD.left + i * band + (band - barW) / 2;
+  const t = y(d.count);
+  const r = Math.min(4, barW / 2, h);
+  // Rounded data-end, square at the baseline.
+  return `M${x},${PAD.top + plotH} L${x},${t + r} Q${x},${t} ${x + r},${t} L${x + barW - r},${t} Q${x + barW},${t} ${x + barW},${t + r} L${x + barW},${PAD.top + plotH} Z`;
+}
+
+const monthTicks = days
+  .map((d, i) => ({ d, i }))
+  .filter(({ d }) => d.date.endsWith("-01") || d.date === days[0]?.date);
+---
+
+<figure class="timeline" data-band={band} data-left={PAD.left}>
+  <figcaption>{label}</figcaption>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label}>
+    {
+      ticks.map((t) => (
+        <>
+          <line class="grid" x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} />
+          <text class="tick" x={PAD.left - 6} y={y(t) + 3.5} text-anchor="end">{t}</text>
+        </>
+      ))
+    }
+    {
+      monthTicks.map(({ d, i }) => (
+        <text class="tick date" x={PAD.left + i * band} y={H - 6}>
+          {new Date(`${d.date}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" })}
+        </text>
+      ))
+    }
+    <g class="bars">
+      {days.map((d, i) => (d.count > 0 ? <path d={bar(d, i)} data-date={d.date} data-count={d.count} data-placed={d.placed} /> : null))}
+    </g>
+  </svg>
+  {
+    busiest && peak > 1 && (
+      <p class="peak">
+        Busiest day: <b>{new Date(`${busiest.date}T00:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" })}</b>
+        {" "}with {peak} reports.
+      </p>
+    )
+  }
+  <details class="table-view">
+    <summary>Table of reports per day</summary>
+    <div class="table-wrap">
+      <table class="sources">
+        <thead>
+          <tr><th>Day</th><th>Reports</th><th>Placed on the map</th></tr>
+        </thead>
+        <tbody>
+          {days.filter((d) => d.count > 0).reverse().map((d) => (
+            <tr>
+              <td>{d.date}</td>
+              <td>{d.count}</td>
+              <td>{d.placed}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>

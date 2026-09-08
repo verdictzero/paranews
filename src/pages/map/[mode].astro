@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { MAP_MODES, sightings, type MapMode } from "../../lib/sightings";
+import { MAP_MODES, sightings, timeline, type MapMode } from "../../lib/sightings";
+import Timeline from "../../components/Timeline.astro";
 import { href } from "../../lib/site";
 import "leaflet/dist/leaflet.css";
 
@@ -10,6 +11,8 @@ export function getStaticPaths() {
 
 const { mode } = Astro.props as { mode: MapMode };
 const points = sightings(mode.topic);
+const days = timeline(mode.topic);
+const totalReports = days.reduce((n, d) => n + d.count, 0);
 const years = [...new Set(points.map((p) => p.date.slice(0, 4)))].sort();
 const first = points[0]?.date.slice(0, 10);
 const last = points[points.length - 1]?.date.slice(0, 10);
@@ -41,12 +44,12 @@ const last = points[points.length - 1]?.date.slice(0, 10);
         <input type="checkbox" id="pins" checked />
         Pins
       </label>
-      <label class="control range">
-        <span>From <b id="from-label">{first ?? "—"}</b></span>
-        <input type="range" id="from" min="0" max={Math.max(0, points.length - 1)} value="0" />
-      </label>
-      <span class="control count"><b id="shown">{points.length}</b> of {points.length} placed</span>
+      <span class="control count"><b id="shown">{points.length}</b> of {points.length} placed shown</span>
+      <button type="button" id="reset" class="read" hidden>Clear date range</button>
+      <span class="control" id="range-label"></span>
     </div>
+
+    <Timeline days={days} label={`Reports per day on this beat — ${totalReports} in total. Drag across the chart to filter the map.`} />
 
     <p class="map-note">
       {points.length} of the stories on this beat could be placed, between {first ?? "—"} and {last ?? "—"}
@@ -149,17 +152,82 @@ const last = points[points.length - 1]?.date.slice(0, 10);
       else map.removeLayer(pinLayer);
     }
 
+    let range: { from: string; to: string } | undefined;
+
     function applyFilter(): void {
-      const slider = document.getElementById("from") as HTMLInputElement | null;
-      const idx = slider ? Number(slider.value) : 0;
-      const cutoff = all[Math.min(idx, all.length - 1)]?.date ?? "";
-      const label = document.getElementById("from-label");
-      if (label && cutoff) label.textContent = cutoff.slice(0, 10);
-      render(all.filter((p) => p.date >= cutoff));
+      const inRange = range ? all.filter((p) => p.date.slice(0, 10) >= range!.from && p.date.slice(0, 10) <= range!.to) : all;
+      const label = document.getElementById("range-label");
+      const reset = document.getElementById("reset");
+      if (label) label.textContent = range ? `${range.from} to ${range.to}` : "";
+      if (reset) reset.hidden = !range;
+      render(inRange);
+      if (range && inRange.length) {
+        map.fitBounds(L.latLngBounds(inRange.map((p) => [p.lat, p.lon] as [number, number])).pad(0.2));
+      }
     }
 
     for (const id of ["heat", "pins"]) document.getElementById(id)?.addEventListener("change", applyToggles);
-    document.getElementById("from")?.addEventListener("input", applyFilter);
+    document.getElementById("reset")?.addEventListener("click", () => { range = undefined; applyFilter(); });
+
+    // Brushing the chart is the date filter, and hovering it reads the counts.
+    const figure = document.querySelector<HTMLElement>(".timeline");
+    const svg = figure?.querySelector("svg");
+    if (figure && svg) {
+      const bars = [...svg.querySelectorAll<SVGPathElement>(".bars path")];
+      const dates = bars.map((b) => b.dataset.date!);
+      const tip = document.createElement("div");
+      tip.className = "chart-tip";
+      tip.hidden = true;
+      figure.appendChild(tip);
+
+      const nearest = (e: PointerEvent): string | undefined => {
+        const box = svg.getBoundingClientRect();
+        let best: { d: string; dist: number } | undefined;
+        for (const b of bars) {
+          const r = b.getBoundingClientRect();
+          const dist = Math.abs((r.left + r.right) / 2 - e.clientX);
+          if (!best || dist < best.dist) best = { d: b.dataset.date!, dist };
+        }
+        return box.width && best ? best.d : undefined;
+      };
+
+      let anchor: string | undefined;
+      svg.addEventListener("pointermove", (e) => {
+        const d = nearest(e);
+        if (!d) return;
+        const bar = bars.find((b) => b.dataset.date === d)!;
+        for (const b of bars) b.classList.toggle("hot", b === bar);
+        const when = new Date(`${d}T00:00:00Z`).toLocaleDateString(undefined, { month: "short", day: "numeric", timeZone: "UTC" });
+        tip.textContent = `${when}: ${bar.dataset.count} reports, ${bar.dataset.placed} placed`;
+        tip.hidden = false;
+        const box = figure.getBoundingClientRect();
+        tip.style.left = `${Math.min(Math.max(e.clientX - box.left, 8), box.width - 8)}px`;
+        if (anchor) {
+          range = { from: anchor < d ? anchor : d, to: anchor < d ? d : anchor };
+          applyFilter();
+        }
+      });
+      svg.addEventListener("pointerleave", () => {
+        tip.hidden = true;
+        for (const b of bars) b.classList.remove("hot");
+      });
+      svg.addEventListener("pointerdown", (e) => {
+        anchor = nearest(e);
+        if (anchor) {
+          range = { from: anchor, to: anchor };
+          svg.setPointerCapture(e.pointerId);
+          applyFilter();
+        }
+      });
+      const finish = (e: PointerEvent): void => {
+        anchor = undefined;
+        if (svg.hasPointerCapture(e.pointerId)) svg.releasePointerCapture(e.pointerId);
+      };
+      svg.addEventListener("pointerup", finish);
+      svg.addEventListener("pointercancel", finish);
+      // Keyboard and no-pointer users get the whole range; the map is the fallback.
+      if (dates.length === 0) figure.remove();
+    }
 
     fetch(el.dataset.src!)
       .then((r) => r.json() as Promise<Sighting[]>)

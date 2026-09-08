@@ -14,6 +14,10 @@
   --topic-fortean: #b0521a;
   --topic-archaeology: #8a6d24;
   --topic-ooparts: #1f7a7a;
+  /* Data marks sit a step richer than UI chrome. Validated for chroma,
+     lightness band and contrast against the chart surface in both modes. */
+  --data: #0f7d59;
+  --grid: #ddd7c9;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -34,6 +38,8 @@
     --topic-fortean: #f3a06a;
     --topic-archaeology: #dcb75f;
     --topic-ooparts: #6fc7c7;
+    --data: #3aa886;
+    --grid: #2d302b;
   }
 }
 
@@ -228,3 +234,22 @@ html.reader-open { overflow: hidden; }
   .leaflet-tile { filter: grayscale(0.5) brightness(0.72) contrast(1.05); }
 }
 :root[data-theme="dark"] .leaflet-tile { filter: grayscale(0.5) brightness(0.72) contrast(1.05); }
+
+/* Sightings over time. One series, so no legend: the caption names it. */
+.timeline { margin: 18px 0 0; padding: 0; }
+.timeline figcaption { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.timeline svg { width: 100%; height: auto; display: block; touch-action: pan-y; cursor: crosshair; }
+.timeline .bars path { fill: var(--data); }
+.timeline .bars path.hot { fill: var(--fg); }
+/* Hairline, solid, recessive — never dashed, never competing with the data. */
+.timeline .grid { stroke: var(--grid); stroke-width: 1; }
+.timeline .tick { fill: var(--muted); font-family: var(--sans); font-size: 10px; }
+.timeline .peak { color: var(--muted); font-size: 13px; margin: 4px 0 0; }
+.timeline .peak b { color: var(--fg); }
+.timeline { position: relative; }
+.chart-tip { position: absolute; top: 0; transform: translateX(-50%); background: var(--fg); color: var(--bg); font-size: 12px; padding: 3px 8px; border-radius: 3px; white-space: nowrap; pointer-events: none; }
+#range-label { font-variant-numeric: tabular-nums; }
+.table-view { margin-top: 8px; font-size: 13px; }
+.table-view summary { color: var(--link); cursor: pointer; }
+.table-view table { margin-top: 8px; max-width: 420px; }
+.table-view td { font-variant-numeric: tabular-nums; }

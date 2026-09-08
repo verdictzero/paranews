@@ -67,6 +67,47 @@ export function sightings(topic: Topic, data: SiteData = getSiteData()): Sightin
   return out;
 }
 
+export interface Day {
+  /** YYYY-MM-DD */
+  date: string;
+  /** Stories on the beat first reported that day. */
+  count: number;
+  /** How many of them the map could place. */
+  placed: number;
+}
+
+/**
+ * Reports per day across the whole archive, every day present including the
+ * empty ones — a flap is as much about the quiet either side of it as the
+ * spike itself, so gaps must take up space.
+ *
+ * Counts every story on the beat, not just the placeable ones: the map needs a
+ * location but the timeline does not, and using only mapped stories would throw
+ * away seven eighths of the signal.
+ */
+export function timeline(topic: Topic, data: SiteData = getSiteData()): Day[] {
+  const counts = new Map<string, { count: number; placed: number }>();
+  const placedIds = new Set(sightings(topic, data).map((s) => s.id));
+  for (const cluster of data.allClusters) {
+    if (!cluster.topics.includes(topic)) continue;
+    const day = cluster.first_published.slice(0, 10);
+    const acc = counts.get(day) ?? { count: 0, placed: 0 };
+    acc.count++;
+    if (placedIds.has(cluster.id)) acc.placed++;
+    counts.set(day, acc);
+  }
+  const days = [...counts.keys()].sort();
+  if (!days.length) return [];
+  const out: Day[] = [];
+  const last = Date.parse(days[days.length - 1]);
+  for (let t = Date.parse(days[0]); t <= last; t += 86_400_000) {
+    const date = new Date(t).toISOString().slice(0, 10);
+    const acc = counts.get(date);
+    out.push({ date, count: acc?.count ?? 0, placed: acc?.placed ?? 0 });
+  }
+  return out;
+}
+
 export interface MapMode {
   topic: Topic;
   slug: string;
