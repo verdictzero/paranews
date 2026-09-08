@@ -63,6 +63,9 @@ const ENTERTAINMENT: RegExp[] = [
   /\bmovies?\b/i,
   /\b(?:horror|new|upcoming|indie|feature|short|sci-?fi|found[- ]footage|animated|monster|korean|japanese|bollywood|hollywood|hindi|tamil|telugu|malayalam|kannada|cult|classic|iconic) films?\b/i,
   /\bfilms? (?:reviews?|festivals?|adaptations?|franchises?|trailers?|premieres?|starring|directors?|studios?|releases?|posters?|universe)\b/i,
+  // "A film about Bigfoot" names no genre, so the adjective rule above misses it.
+  // "films about" is never a verb phrase, so this cannot catch "witness films three orbs".
+  /\bfilms? about\b/i,
   /\b(?:tv|television|netflix|hulu|hbo|apple tv|streaming|animated|anthology|limited|drama|comedy|horror|reality|sci-?fi|hit|popular|paranormal tv) (?:shows?|series|specials?)\b/i,
   /\b(?:hulu|netflix|hbo|amazon|apple tv|paramount|disney|peacock|shudder)(?:'s)? (?:new |hit |original |upcoming |latest )?(?:shows?|series|specials?|movies?|films?|documentar(?:y|ies)|lineup|collection)\b/i,
   /\b(?:netflix|hulu|hbo|hbo max|apple tv|prime video|peacock tv|shudder|tubi|crunchyroll)\b/i,

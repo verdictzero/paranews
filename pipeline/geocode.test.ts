@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { locate, locateDateline, locateHeadline, locateImplied } from "./geocode.ts";
+import { isSightingReport, locate, locateDateline, locateHeadline, locateImplied } from "./geocode.ts";
 
 test("a place only counts when something happened there", () => {
   // The sighting location beats the witness's home.
@@ -47,4 +47,32 @@ test("the most specific place wins", () => {
   const hit = locateHeadline("Bigfoot spotted in Damariscotta, Maine over the weekend");
   assert.equal(hit?.place.name, "Damariscotta");
   assert.equal(hit?.place.kind, "landmark");
+});
+
+test("a gathering about the subject is not a sighting of it", () => {
+  // Every one of these placed a pin before the gate existed, and every one of
+  // them placed it somewhere plausible — which is exactly why they were wrong.
+  assert.equal(isSightingReport("Mothman Festival announces vendor, safety, entertainment updates"), false);
+  assert.equal(isSightingReport("Exeter UFO Festival marks 65th anniversary of Hill abduction"), false);
+  assert.equal(isSightingReport("Niece of couple who claimed to have encountered UFO in 1960s speaks at Exeter UFO Festival"), false);
+  assert.equal(isSightingReport("ConCon Brings Bigfoot, Tin Foil Hats and Conspiracy Fun to Wilmington"), false);
+  assert.equal(isSightingReport("Owensboro nurse turns Bigfoot sighting into books, Squatch Fest"), false);
+  assert.equal(isSightingReport("Bloody Revenge: A film about Bigfoot hunting down hunters in Hollywood"), false);
+  assert.equal(isSightingReport("Glasgow's giant Commonwealth Games Nessie has surfaced in an unexpected new home"), false);
+  assert.equal(isSightingReport("Today in History—July 8: A Local Newspaper Kicks Off Roswell's UFO Mania"), false);
+  // The classifier already knows some of these; the map should not ask twice.
+  assert.equal(isSightingReport("Michigan Haunted Trail Brings Cryptids Into the Woods", ["attraction"]), false);
+  assert.equal(isSightingReport("10 most haunted places in Ohio, ranked", ["roundup"]), false);
+});
+
+test("a report of something witnessed survives the gate", () => {
+  // The near misses: a headline can carry "video", a radio show, or a "hunt"
+  // and still be a report of something someone saw.
+  assert.ok(isSightingReport("Video: Five Horses Found Mutilated Following UFO Sighting in Argentina"));
+  assert.ok(isSightingReport("Odd 'Ogopogo Tooth' Found at Canadian Lake | Coast to Coast AM with George Noory"));
+  assert.ok(isSightingReport("Truth behind 'Bigfoot' spotted in Maine sparking huge police hunt"));
+  assert.ok(isSightingReport("Rhode Island dad claims he saw Bigfoot in Connecticut woods"));
+  assert.ok(isSightingReport("Two Separate Tourists Report New Nessie Sightings"));
+  assert.ok(isSightingReport("100-foot triangular UFO over Colorado base captured in video"));
+  assert.ok(isSightingReport("Small bipedal Bigfoot-like creatures spotted twice in Pennsylvania"));
 });

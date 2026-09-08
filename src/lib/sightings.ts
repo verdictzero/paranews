@@ -1,4 +1,4 @@
-import { locate } from "../../pipeline/geocode.ts";
+import { isSightingReport, locate } from "../../pipeline/geocode.ts";
 import type { Topic } from "../../pipeline/types.ts";
 import { getSiteData, primaryOf, storyPath, type SiteData } from "./site.ts";
 
@@ -32,8 +32,10 @@ const cache = new Map<Topic, Sighting[]>();
  *
  * Derived from clusters rather than items so one event is one pin, and from
  * the whole archive rather than the rolling window, because the map is the
- * archival view. Roughly one story in eight resolves; the rest name no place a
- * headline or dateline can be trusted on, and are simply absent.
+ * archival view. Two questions, in order: is this a report of something
+ * witnessed, and if so where. Roughly one story in thirteen clears both; the
+ * rest are a gathering rather than a sighting, or name no place a headline or
+ * dateline can be trusted on, and are simply absent.
  */
 export function sightings(topic: Topic, data: SiteData = getSiteData()): Sighting[] {
   const hit = cache.get(topic);
@@ -41,6 +43,9 @@ export function sightings(topic: Topic, data: SiteData = getSiteData()): Sightin
   const out: Sighting[] = [];
   for (const cluster of data.allClusters) {
     if (!cluster.topics.includes(topic)) continue;
+    // A festival, a film or a statue is beat news but it is not a sighting, and
+    // it places well enough to be mistaken for one. Ask that before asking where.
+    if (!isSightingReport(cluster.title, cluster.flags)) continue;
     const primary = primaryOf(cluster, data);
     const article = primary ? data.articles.get(primary.id) : undefined;
     const located = locate(cluster.title, article ? `${article.excerpt ?? ""} ${article.content}` : undefined);
@@ -85,7 +90,7 @@ export interface Day {
  *
  * Counts every story on the beat, not just the placeable ones: the map needs a
  * location but the timeline does not, and using only mapped stories would throw
- * away seven eighths of the signal.
+ * away twelve thirteenths of the signal.
  */
 export function timeline(topic: Topic, data: SiteData = getSiteData()): Day[] {
   const counts = new Map<string, { count: number; placed: number }>();

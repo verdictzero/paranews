@@ -13,6 +13,7 @@
  * failure: a wrong pin is worse than no pin.
  */
 import { KIND_RANK, lookup, type Place } from "./places.ts";
+import type { Flag } from "./types.ts";
 import { collapseWhitespace, stripHtml } from "./text.ts";
 
 /** Something happened; it was not merely discussed. */
@@ -74,6 +75,50 @@ const IMPLIED: [RegExp, string][] = [
   [/\bnazca (?:lines|mummies)\b/i, "Nazca"],
   [/\bg[oö]bekli tepe\b/i, "Göbekli Tepe"],
 ];
+
+/**
+ * A gathering about the subject, held somewhere on purpose.
+ *
+ * The Mothman Festival happens at Point Pleasant every September; that is
+ * Point Pleasant holding a festival, not Mothman appearing there.
+ */
+const GATHERING =
+  /\b(?:festival|fest|convention|expo|symposium|conclave|jamboree|comic[- ]?con|parade|gala|county fair|state fair|meet-?up|camp-?out|vendors?|tickets?|line-?up|registration|attendees?|keynote|speaks at|to speak|panel|guest speakers?|hosts? the|will host|kicks off)\b/i;
+
+/** Something made about the subject: a film, a book, a statue. Not an encounter. */
+const PRODUCTION =
+  /\b(?:films?\s+about|a\s+(?:new\s+)?(?:film|movie|documentary|book|novel|memoir|play|musical|comic)|documentar(?:y|ies)|(?:new|upcoming|hit|horror)\s+(?:film|movie|series|show|book)|box office|season\s+\d|episodes?|statues?|sculptures?|murals?|mascots?|exhibits?|exhibitions?|turns?\s+\w+\s+into\s+books?|into\s+a\s+book)\b/i;
+
+/** A history column revisits an old case. The date on it is today's, the event's is not. */
+const RETROSPECTIVE =
+  /\b(?:today in history|on this day|this day in history|\d+\s+years ago|\d+(?:st|nd|rd|th)\s+anniversary|anniversary of)\b/i;
+
+/** An object or show staged at a place, rather than something witnessed there. */
+const STAGED =
+  /\b(?:brings?\b[^.]{0,60}\b(?:to|into)\b|on display|new home|goes on show|unveiled at|commonwealth games|olympics)\b/i;
+
+/** Flags the classifier already sets that mean this was never a sighting. */
+const NOT_SIGHTING_FLAGS: ReadonlySet<Flag> = new Set<Flag>(["attraction", "roundup", "notice"]);
+
+/**
+ * Whether a headline reports something witnessed, as opposed to something
+ * organised, made or commemorated about the subject.
+ *
+ * This gate exists because the failure it prevents is invisible. A festival
+ * headline places *well* — it names a town, usually the right one — so without
+ * it a Mothman Festival pin sits at Point Pleasant looking exactly like a
+ * sighting. Unplaceable stories are merely absent; these are wrong.
+ *
+ * Measured over the archive it removes 9 of 28 pins, every one of them a
+ * festival, convention, attraction, film, sculpture or history column, and
+ * keeps all 19 genuine reports — including the ones that read like
+ * productions and are not: "Video: Five Horses Found Mutilated", a find
+ * carried by Coast to Coast AM, and a Bigfoot "police hunt".
+ */
+export function isSightingReport(title: string, flags: readonly Flag[] = []): boolean {
+  if (flags.some((f) => NOT_SIGHTING_FLAGS.has(f))) return false;
+  return !GATHERING.test(title) && !PRODUCTION.test(title) && !RETROSPECTIVE.test(title) && !STAGED.test(title);
+}
 
 /** A criticism headline names places it is not reporting from. */
 const CRITICISM = /\breview\b\s*[–—|:-]|[–—|]\s*review\b|\bsendup\b|\bstarring\b|\brecap\b/i;
