@@ -5,7 +5,8 @@ export type Topic = (typeof TOPICS)[number];
 /**
  * Publisher credibility tiers. Deterministic: assigned by publisher lookup
  * (config/sources.yml), never inferred from the story text.
- *   official    - wire services, government, peer-reviewed journals
+ *   official    - wire services, government, and scholarly publishers (journals,
+ *                 preprint servers, university research units)
  *   press       - mainstream newsrooms, local broadcast
  *   genre       - genre press, tabloids, enthusiast sites
  *   unverified  - social media, single-witness blogs
@@ -24,11 +25,19 @@ export type Flag = "entertainment" | "attraction" | "weak-match" | "offbeat";
 export interface SourceConfig {
   id: string;
   name: string;
-  kind: "rss" | "google-news";
+  kind: "rss" | "google-news" | "reddit";
   /** Feed URL for rss sources. */
   url?: string;
   /** Search query for google-news sources; the URL is built from it. */
   query?: string;
+  /** Subreddits for reddit sources; one request covers all of them. */
+  subreddits?: string[];
+  /** Minimum score for a reddit post that links to a publisher. */
+  min_score?: number;
+  /** Minimum score for a reddit self post, which is one person's unverified claim. */
+  min_self_score?: number;
+  /** Keep only reddit posts whose flair contains one of these. */
+  flairs?: string[];
   /** Google News edition for google-news sources. */
   edition?: "US" | "GB";
   /** Tier applied to items from this feed. Google News items use the publisher lookup instead. */
@@ -112,6 +121,8 @@ export interface SourceHealth {
   last_error?: string;
   last_http_status?: number;
   last_item_count?: number;
+  /** Polls in a row that parsed cleanly but held no items. */
+  consecutive_empty?: number;
   quarantined_at?: string;
   etag?: string;
   last_modified?: string;

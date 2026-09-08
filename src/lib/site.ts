@@ -34,7 +34,7 @@ export const TIER_LABEL: Record<Tier, string> = {
 };
 
 export const TIER_BLURB: Record<Tier, string> = {
-  official: "Wire services, government releases and peer-reviewed journals.",
+  official: "Wire services, government releases and scholarly publishers.",
   press: "Mainstream newsrooms and local broadcasters with editorial standards.",
   genre: "Genre outlets, tabloids and enthusiast sites. Real reporting, looser bar.",
   unverified: "Social media and single-witness blogs. A claim, not a report.",

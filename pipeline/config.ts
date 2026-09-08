@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { TIERS, TOPICS, type SourceConfig, type SourcesFile, type Tier, type Topic } from "./types.ts";
 import { publisherKey } from "./text.ts";
+import { listingUrl } from "./reddit.ts";
 
 // Resolved from the working directory, not import.meta.url: Astro bundles this
 // module under dist/.prerender/ at build time, which would point ROOT at dist.
@@ -40,7 +41,10 @@ function validate(file: SourcesFile): void {
     if (!s.id || seen.has(s.id)) throw new Error(`sources.yml: duplicate or missing source id "${s.id}"`);
     seen.add(s.id);
     if (!/^[a-z0-9-]+$/.test(s.id)) throw new Error(`sources.yml: source id "${s.id}" must be kebab-case`);
-    if (s.kind !== "rss" && s.kind !== "google-news") throw new Error(`sources.yml: ${s.id}: bad kind "${s.kind}"`);
+    if (s.kind !== "rss" && s.kind !== "google-news" && s.kind !== "reddit") throw new Error(`sources.yml: ${s.id}: bad kind "${s.kind}"`);
+    if (s.kind === "reddit" && !s.subreddits?.length) throw new Error(`sources.yml: ${s.id}: reddit sources need subreddits`);
+    if (s.kind === "reddit" && !s.subreddits!.every((n) => /^[A-Za-z0-9_]{2,21}$/.test(n)))
+      throw new Error(`sources.yml: ${s.id}: subreddit names must be bare names, not URLs`);
     if (s.kind === "rss" && !/^https?:\/\//.test(s.url ?? "")) throw new Error(`sources.yml: ${s.id}: rss sources need a url`);
     if (s.kind === "google-news" && !s.query) throw new Error(`sources.yml: ${s.id}: google-news sources need a query`);
     if (s.kind === "google-news" && s.query!.length > MAX_GN_QUERY_LENGTH)
@@ -49,6 +53,7 @@ function validate(file: SourcesFile): void {
       throw new Error(`sources.yml: ${s.id}: edition must be US or GB`);
     if (s.tier && !TIER_SET.has(s.tier)) throw new Error(`sources.yml: ${s.id}: bad tier "${s.tier}"`);
     if (s.kind === "rss" && !s.tier) throw new Error(`sources.yml: ${s.id}: rss sources need a tier`);
+    if (s.kind === "reddit" && !s.tier) throw new Error(`sources.yml: ${s.id}: reddit sources need a tier for their self posts`);
     if (s.topics !== "auto") {
       for (const t of s.topics) if (!TOPIC_SET.has(t)) throw new Error(`sources.yml: ${s.id}: bad topic "${t}"`);
     }
@@ -74,7 +79,9 @@ export function googleNewsUrl(query: string, edition: "US" | "GB" = "US"): strin
 }
 
 export function sourceUrl(s: SourceConfig): string {
-  return s.kind === "google-news" ? googleNewsUrl(s.query!, s.edition) : s.url!;
+  if (s.kind === "google-news") return googleNewsUrl(s.query!, s.edition);
+  if (s.kind === "reddit") return listingUrl(s.subreddits ?? []);
+  return s.url!;
 }
 
 export function enabledSources(): SourceConfig[] {

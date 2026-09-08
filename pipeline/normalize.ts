@@ -17,7 +17,11 @@ export function sortTopics(topics: Iterable<Topic>): Topic[] {
 /** Turn a feed entry into an Item, or undefined when it is off-topic or unusable. */
 export function normalizeEntry(entry: RawEntry, source: SourceConfig, now: Date): Item | undefined {
   const isGoogle = source.kind === "google-news";
-  const publisher = isGoogle ? entry.source?.name?.trim() || "Google News" : source.name;
+  // Google News and Reddit both report who actually published the story: for
+  // Reddit that is the outlet a post links to, or the subreddit for a self post.
+  const fromEntry = isGoogle || source.kind === "reddit";
+  const fallbackPublisher = isGoogle ? "Google News" : source.name;
+  const publisher = fromEntry ? entry.source?.name?.trim() || fallbackPublisher : source.name;
 
   let title = cleanTitle(entry.title);
   if (isGoogle) title = stripPublisherSuffix(title, publisher);
@@ -46,8 +50,8 @@ export function normalizeEntry(entry: RawEntry, source: SourceConfig, now: Date)
     url,
     url_opaque: OPAQUE_LINK.test(url),
     publisher,
-    publisher_url: isGoogle ? entry.source?.url : undefined,
-    tier: isGoogle ? publisherTier(publisher) : source.tier!,
+    publisher_url: fromEntry ? entry.source?.url : undefined,
+    tier: fromEntry ? publisherTier(publisher) : source.tier!,
     topics,
     flags,
     published_at: parseDate(entry.published, now),

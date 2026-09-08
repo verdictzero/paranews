@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { QUARANTINE_AFTER, recordFailure, recordSuccess, shouldSkip } from "./health.ts";
+import { EMPTY_POLLS_ALLOWED, QUARANTINE_AFTER, emptyIsFailure, recordFailure, recordSuccess, shouldSkip } from "./health.ts";
 import type { HealthFile } from "./types.ts";
 
 test("three failures quarantine, a success heals, quarantined sources are probed daily", () => {
@@ -30,4 +30,34 @@ test("three failures quarantine, a success heals, quarantined sources are probed
 
   recordFailure(h, "x", "boom", 0, t(33));
   assert.equal(h.sources.x.etag, undefined, "failure drops validators");
+});
+
+test("an empty poll is tolerated until the feed has been empty for a day", () => {
+  const health: HealthFile = { sources: {} };
+  const now = new Date("2026-09-08T00:00:00Z");
+  recordSuccess(health, "tag-feed", { status: 200, itemCount: 3 }, now);
+  assert.equal(health.sources["tag-feed"].consecutive_empty, undefined);
+  assert.equal(emptyIsFailure(health, "tag-feed"), false);
+
+  for (let i = 1; i < EMPTY_POLLS_ALLOWED; i++) {
+    recordSuccess(health, "tag-feed", { status: 200, itemCount: 0 }, now);
+    assert.equal(emptyIsFailure(health, "tag-feed"), false, `still fine after ${i} empty polls`);
+  }
+  recordSuccess(health, "tag-feed", { status: 200, itemCount: 0 }, now);
+  assert.equal(health.sources["tag-feed"].consecutive_empty, EMPTY_POLLS_ALLOWED);
+  assert.equal(emptyIsFailure(health, "tag-feed"), true, "a day of empty polls is a dead feed");
+  assert.equal(health.sources["tag-feed"].status, "ok", "still ok until the caller records a failure");
+
+  // One real item resets the count.
+  recordSuccess(health, "tag-feed", { status: 200, itemCount: 1 }, now);
+  assert.equal(emptyIsFailure(health, "tag-feed"), false);
+
+  // A 304 says nothing about emptiness either way.
+  recordSuccess(health, "tag-feed", { status: 200, itemCount: 0 }, now);
+  recordSuccess(health, "tag-feed", { status: 304, itemCount: 0, notModified: true }, now);
+  assert.equal(health.sources["tag-feed"].consecutive_empty, 1);
+
+  // A hard failure clears it: the next empty poll starts a fresh count.
+  recordFailure(health, "tag-feed", "HTTP 500", 500, now);
+  assert.equal(health.sources["tag-feed"].consecutive_empty, undefined);
 });

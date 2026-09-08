@@ -221,23 +221,294 @@ sources:
     tier: genre
     topics: auto
     enabled: true
-  - id: reddit-ufos
-    name: r/UFOs
-    kind: rss
-    url: https://www.reddit.com/r/UFOs/top/.rss?t=day
+  # ── Reddit, by the only route Reddit permits ──
+  # reddit.com/robots.txt is "User-agent: * / Disallow: /" on every host it
+  # serves, .rss included, and Reddit's API rules ban browser-UA spoofing, so
+  # the old scraped feeds are gone for good. This uses the sanctioned
+  # application-only OAuth route instead. It needs REDDIT_CLIENT_ID and
+  # REDDIT_CLIENT_SECRET (repository secrets); without them the source is
+  # skipped, never failed, so a fork with no Reddit app still builds.
+  # Reddit's unauthenticated budget is ~1 request/minute per IP, which an
+  # Actions runner shares with every other tenant in its Azure range — that is
+  # what the old 429s were, and no amount of backoff would have fixed it.
+  - id: reddit-ufo
+    name: Reddit
+    kind: reddit
+    subreddits: [UFOs, UFOB, ufo]
     tier: unverified
     topics: [ufo]
-    enabled: false
-  - id: reddit-paranormal
-    name: r/Paranormal
-    kind: rss
-    url: https://www.reddit.com/r/Paranormal/top/.rss?t=day
+    min_score: 25
+    min_self_score: 250
+    enabled: true
+    note: >-
+      A post linking to a publisher is filed under that publisher and graded by
+      its tier; a self post stays unverified and needs heavy community
+      endorsement, because most of a subreddit's new queue is anecdote.
+  - id: reddit-strange
+    name: Reddit
+    kind: reddit
+    subreddits: [HighStrangeness, Paranormal, bigfoot, Ghosts]
     tier: unverified
+    topics: auto
+    min_score: 50
+    min_self_score: 500
+    enabled: true
+    note: Anecdote-heavy, so the bar is higher and unclassified titles are dropped.
+
+
+
+  # ── Scholarly and institutional: the sources that can fill the official tier ──
+  # Measured on 2026-09-08 by running the repo's own classifier over every
+  # fetched title. General institutional feeds were probed and rejected: DoD,
+  # GAO, NASA, ESA, Nature, Science, PNAS, PLOS ONE and gov.uk MOD scored 0
+  # on-beat across 348 titles between them. The official tier can only be filled
+  # by feeds that are on-beat by construction, and it will stay small.
+  - id: conversation-ufos
+    name: The Conversation
+    kind: rss
+    url: https://theconversation.com/us/topics/ufos-129746/articles.atom
+    tier: official
+    topics: auto
+    enabled: true
+    note: >-
+      Per-topic Atom feed; 19/25 on beat where the general edition feed scored
+      0/50. The publisher is already in publishers.official.
+  - id: conversation-paranormal
+    name: The Conversation
+    kind: rss
+    url: https://theconversation.com/us/topics/paranormal-21949/articles.atom
+    tier: official
+    topics: auto
+    enabled: true
+    note: The /topics/ghosts-*/ and /topics/bigfoot-*/ feeds exist but are stale.
+  - id: arxiv-uap
+    name: arXiv
+    kind: rss
+    url: https://export.arxiv.org/api/query?search_query=abs:%22unidentified+anomalous+phenomena%22+OR+abs:%22unidentified+aerial+phenomena%22+OR+abs:%22unidentified+flying+object%22&sortBy=submittedDate&sortOrder=descending&max_results=30
+    tier: official
+    topics: [ufo]
+    enabled: true
+    note: >-
+      arXiv's Atom API, which parseFeed handles unmodified. These are preprints,
+      not peer-reviewed papers: the official tier here reflects scholarly
+      authorship, and the site says throughout that a tier describes the
+      publisher and never the claim.
+  - id: uva-dops
+    name: UVA Division of Perceptual Studies
+    kind: rss
+    url: https://med.virginia.edu/perceptual-studies/?feed=rss2
+    tier: official
+    topics: [fortean]
+    enabled: true
+    note: >-
+      University of Virginia medical school research division (near-death
+      experiences, claimed past-life memories, ESP). Fixed topic: the feed is
+      on-beat by construction but its academic titles name no beat keyword, so
+      the classifier scores it 0/10.
+  - id: spr
+    name: Society for Psychical Research
+    kind: rss
+    url: https://www.spr.ac.uk/rss.xml
+    tier: official
+    topics: auto
+    enabled: true
+    note: >-
+      /feed 404s; /rss.xml is the live path. Behind Cloudflare, so it may 403
+      from Actions runners the way Daily Grail does — the health check will
+      quarantine it by itself if so.
+  - id: scu
+    name: Scientific Coalition for UAP Studies
+    kind: rss
+    url: https://www.explorescu.org/blog-feed.xml
+    tier: genre
+    topics: [ufo]
+    enabled: true
+    note: >-
+      /feed 404s; /blog-feed.xml is the path its homepage advertises. Genre, not
+      official: a private research coalition is not a wire, a government or a
+      journal, whatever the subject matter.
+
+  # ── UFO/UAP reporting and research ──
+  - id: liberation-times
+    name: Liberation Times
+    kind: rss
+    url: https://www.liberationtimes.com/home?format=rss
+    tier: genre
+    topics: [ufo]
+    enabled: true
+    note: >-
+      Previously retired at a 404 because the old entry assumed WordPress. The
+      site is Squarespace, where feeds live at <collection>?format=rss. Lesson
+      worth repeating: before retiring a feed at 404, fetch the homepage and
+      grep for <link rel="alternate" type="application/rss+xml">.
+  - id: nypost-aliens
+    name: New York Post
+    kind: rss
+    url: https://nypost.com/tag/aliens/feed/
+    tier: genre
+    topics: [ufo]
+    enabled: true
+    note: Distinct articles from the /tag/ufos/ feed, not a duplicate.
+  - id: ufo-chronicles
+    name: The UFO Chronicles
+    kind: rss
+    url: https://www.theufochronicles.com/feeds/posts/default?alt=rss
+    tier: unverified
+    topics: [ufo]
+    enabled: true
+  - id: defensescoop
+    name: DefenseScoop
+    kind: rss
+    url: https://defensescoop.com/feed/
+    tier: press
+    topics: auto
+    enabled: true
+    note: Breaks AARO procurement and policy stories first; 1-in-10 on beat, which auto handles.
+  - id: disclosure-yearbook
+    name: The UFO Disclosure Yearbook
+    kind: rss
+    url: https://justinsnead.substack.com/feed
+    tier: unverified
+    topics: [ufo]
+    enabled: true
+  - id: avi-loeb
+    name: Avi Loeb
+    kind: rss
+    url: https://avi-loeb.medium.com/feed
+    tier: unverified
+    topics: auto
+    enabled: true
+    note: Frequently the primary source for stories the site otherwise carries second-hand.
+
+  # ── The sceptical side, which the search backbone rarely surfaces ──
+  - id: jason-colavito
+    name: Jason Colavito
+    kind: rss
+    url: https://www.jasoncolavito.com/1/feed
+    tier: genre
+    topics: auto
+    enabled: true
+  - id: bad-ufos
+    name: Bad UFOs
+    kind: rss
+    url: https://feeds.feedburner.com/BadUfosSkepticismUfosAndTheUniverse-ByRobertSheaffer
+    tier: genre
+    topics: auto
+    enabled: true
+  - id: kevin-randle
+    name: A Different Perspective
+    kind: rss
+    url: https://kevinrandle.blogspot.com/feeds/posts/default?alt=rss
+    tier: genre
+    topics: auto
+    enabled: true
+  - id: sharon-hill
+    name: Sharon Hill
+    kind: rss
+    url: https://sharonahill.com/feed/
+    tier: genre
+    topics: auto
+    enabled: true
+    note: spookygeology.com 301s here; this is the canonical path.
+  - id: skeptical-inquirer
+    name: Skeptical Inquirer
+    kind: rss
+    url: https://skepticalinquirer.org/feed/
+    tier: press
+    topics: auto
+    enabled: true
+    note: Publishes in bimonthly batches, so it is legitimately quiet between issues.
+
+  # ── Hauntings and cryptids: beats that had no direct feeds at all ──
+  - id: nypost-ghosts
+    name: New York Post
+    kind: rss
+    url: https://nypost.com/tag/ghosts/feed/
+    tier: genre
     topics: [ghosts]
-    enabled: false
-    note: Reddit returns 429 to GitHub Actions runners, and top-post titles carry no story.
+    enabled: true
+  - id: cfz
+    name: Centre for Fortean Zoology
+    kind: rss
+    url: https://cfz.org.uk/feed/
+    tier: genre
+    topics: auto
+    default_topic: cryptids
+    enabled: true
+    note: Original field reports only; every item is cryptozoology by construction.
+  - id: sasquatch-chronicles
+    name: Sasquatch Chronicles
+    kind: rss
+    url: https://sasquatchchronicles.com/feed/
+    tier: unverified
+    topics: [cryptids]
+    enabled: true
+  - id: lochness-mystery
+    name: Loch Ness Mystery
+    kind: rss
+    url: https://lochnessmystery.blogspot.com/feeds/posts/default?alt=rss
+    tier: unverified
+    topics: [cryptids]
+    enabled: true
+    note: Original research and hoax debunking rather than tourism copy.
+  - id: amys-crypt
+    name: Amy's Crypt
+    kind: rss
+    url: https://amyscrypt.com/feed/
+    tier: genre
+    topics: [ghosts]
+    enabled: true
+  - id: spooky-isles
+    name: Spooky Isles
+    kind: rss
+    url: https://www.spookyisles.com/feed/
+    tier: genre
+    topics: auto
+    enabled: true
+    note: No default_topic — about half its output is folklore and reviews that name no beat.
+  - id: new-england-folklore
+    name: New England Folklore
+    kind: rss
+    url: https://newenglandfolklore.blogspot.com/feeds/posts/default?alt=rss
+    tier: unverified
+    topics: auto
+    enabled: true
 
-
+  # ── Tabloid tag feeds. These carry a rolling seven-day window and are
+  # legitimately empty in a quiet week, which is why health.ts tolerates empty
+  # polls for a day before treating a feed as broken. ──
+  - id: mirror-ghosts
+    name: The Mirror
+    kind: rss
+    url: https://www.mirror.co.uk/all-about/ghosts?service=rss
+    tier: genre
+    topics: [ghosts]
+    enabled: true
+  - id: dailystar-bigfoot
+    name: Daily Star
+    kind: rss
+    url: https://www.dailystar.co.uk/all-about/bigfoot?service=rss
+    tier: genre
+    topics: [cryptids]
+    enabled: true
+  - id: dailyrecord-lochness
+    name: Daily Record
+    kind: rss
+    url: https://www.dailyrecord.co.uk/all-about/loch-ness-monster?service=rss
+    tier: genre
+    topics: [cryptids]
+    enabled: true
+    note: The Scottish Reach title, closest paper to the loch.
+  - id: dailymail-sciencetech
+    name: Daily Mail
+    kind: rss
+    url: https://www.dailymail.com/sciencetech/index.rss
+    tier: genre
+    topics: auto
+    enabled: true
+    note: >-
+      150 items a fetch of which ~14 are on beat — a bigger absolute yield than
+      any UFO-specific feed here, at the cost of fetching a lot that is dropped.
 
   # ── Retired: dead paths and bot walls found on 2026-09-06 ──
   - id: mysterious-universe
@@ -284,14 +555,6 @@ sources:
     default_topic: fortean
     enabled: false
     note: Feed URL serves the HTML homepage (ad-network consent script).
-  - id: liberation-times
-    name: Liberation Times
-    kind: rss
-    url: https://liberationtimes.com/feed/
-    tier: genre
-    topics: [ufo]
-    enabled: false
-    note: HTTP 404.
   - id: express-weird
     name: Daily Express
     kind: rss
