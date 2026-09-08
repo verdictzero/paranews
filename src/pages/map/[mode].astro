@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import { MAP_MODES, sightings, timeline, type MapMode } from "../../lib/sightings";
 import Timeline from "../../components/Timeline.astro";
+import SightingsTable from "../../components/SightingsTable.astro";
 import { href } from "../../lib/site";
 import "leaflet/dist/leaflet.css";
 
@@ -51,6 +52,17 @@ const last = points[points.length - 1]?.date.slice(0, 10);
 
     <Timeline days={days} label={`Reports per day on this beat — ${totalReports} in total. Drag across the chart to filter the map.`} />
 
+    <SightingsTable points={points} caption="Placed sightings" />
+
+    <div class="exports">
+      <span class="label">Download</span>
+      <a href={href(`map/${mode.slug}-sightings.csv`)}>Sightings (CSV)</a>
+      <a href={href(`map/${mode.slug}.json`)}>Sightings (JSON)</a>
+      <a href={href(`map/${mode.slug}-frequency.csv`)}>Reports per day (CSV)</a>
+      <a href={href(`map/${mode.slug}-frequency.json`)}>Reports per day (JSON)</a>
+      <button type="button" id="export-selection" class="read" hidden>Download selected range (CSV)</button>
+    </div>
+
     <p class="map-note">
       {points.length} of the stories on this beat could be placed, between {first ?? "—"} and {last ?? "—"}
       {years.length > 1 ? ` across ${years.length} years` : ""}. A pin is where a report says something happened,
@@ -62,6 +74,7 @@ const last = points[points.length - 1]?.date.slice(0, 10);
 <script>
   import L from "leaflet";
   import "leaflet.heat";
+  import { toCsv } from "../../../pipeline/csv";
 
   interface Sighting {
     id: string; title: string; date: string; place: string; admin?: string;
@@ -84,6 +97,8 @@ const last = points[points.length - 1]?.date.slice(0, 10);
     const pinLayer = L.layerGroup().addTo(map);
     let heatLayer: L.Layer | undefined;
     let all: Sighting[] = [];
+    let shownNow: Sighting[] = [];
+    const markers = new Map<string, L.CircleMarker>();
 
     const esc = (s: string): string =>
       s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -105,6 +120,8 @@ const last = points[points.length - 1]?.date.slice(0, 10);
     }
 
     function render(points: Sighting[]): void {
+      shownNow = points;
+      markers.clear();
       pinLayer.clearLayers();
       if (heatLayer) map.removeLayer(heatLayer);
       const seenAt = new Map<string, number>();
@@ -126,6 +143,7 @@ const last = points[points.length - 1]?.date.slice(0, 10);
             `${p.from === "implied" ? " · location implied by the subject" : ""}</div>`,
         );
         pinLayer.addLayer(marker);
+        markers.set(p.id, marker);
       }
       heatLayer = (L as unknown as { heatLayer: (pts: unknown[], opts: unknown) => L.Layer }).heatLayer(heat, {
         radius: 24,
@@ -138,7 +156,23 @@ const last = points[points.length - 1]?.date.slice(0, 10);
       });
       const shown = document.getElementById("shown");
       if (shown) shown.textContent = String(points.length);
+      syncTable(new Set(points.map((p) => p.id)));
       applyToggles();
+    }
+
+    /** The table shows exactly what the map shows. */
+    function syncTable(ids: Set<string>): void {
+      const rows = document.querySelectorAll<HTMLTableRowElement>("table.sightings tbody tr");
+      let n = 0;
+      for (const row of rows) {
+        const on = ids.has(row.dataset.id ?? "");
+        row.hidden = !on;
+        if (on) n++;
+      }
+      const count = document.getElementById("table-count");
+      if (count) count.textContent = String(n);
+      const exportBtn = document.getElementById("export-selection");
+      if (exportBtn) exportBtn.hidden = n === all.length || all.length === 0;
     }
 
     function applyToggles(): void {
@@ -228,6 +262,76 @@ const last = points[points.length - 1]?.date.slice(0, 10);
       // Keyboard and no-pointer users get the whole range; the map is the fallback.
       if (dates.length === 0) figure.remove();
     }
+
+    // Clicking a row finds it on the map; sorting reorders in place.
+    const table = document.querySelector<HTMLTableElement>("table.sightings");
+    if (table) {
+      const tbody = table.tBodies[0];
+      table.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        const sortBtn = target.closest<HTMLButtonElement>("th button[data-sort]");
+        if (sortBtn) {
+          const key = sortBtn.dataset.sort!;
+          // First click on a count sorts biggest-first, on text A-Z; after that it toggles.
+          const first = key === "outlets" ? "desc" : "asc";
+          const dir = !sortBtn.dataset.dir ? first : sortBtn.dataset.dir === "asc" ? "desc" : "asc";
+          for (const b of table.querySelectorAll<HTMLElement>("th button[data-sort]")) {
+            delete b.dataset.dir;
+            b.closest("th")?.removeAttribute("aria-sort");
+            const arrow = b.querySelector("span");
+            if (arrow) arrow.remove();
+          }
+          sortBtn.dataset.dir = dir;
+          sortBtn.closest("th")?.setAttribute("aria-sort", dir === "asc" ? "ascending" : "descending");
+          sortBtn.insertAdjacentHTML("beforeend", ` <span aria-hidden="true">${dir === "asc" ? "↑" : "↓"}</span>`);
+          const rows = [...tbody.rows];
+          rows.sort((a, b) => {
+            const av = a.dataset[key] ?? "";
+            const bv = b.dataset[key] ?? "";
+            const cmp = key === "outlets" ? Number(av) - Number(bv) : av.localeCompare(bv);
+            return dir === "asc" ? cmp : -cmp;
+          });
+          for (const r of rows) tbody.appendChild(r);
+          return;
+        }
+        // A click on the story link should follow the link, not move the map.
+        if (target.closest("a")) return;
+        const row = target.closest<HTMLTableRowElement>("tbody tr");
+        if (!row?.dataset.id) return;
+        for (const r of tbody.rows) r.classList.toggle("active", r === row);
+        const marker = markers.get(row.dataset.id);
+        if (marker) {
+          map.setView(marker.getLatLng(), Math.max(map.getZoom(), 6), { animate: true });
+          marker.openPopup();
+        }
+      });
+    }
+
+    // Export whatever is currently selected, so a flap can be taken away whole.
+    document.getElementById("export-selection")?.addEventListener("click", () => {
+      // The same writer the whole-beat downloads use, so a slice of the map and
+      // the file behind the Download link have identical columns and escaping.
+      const csv = toCsv(shownNow, [
+        { key: "date", value: (p) => p.date },
+        { key: "place", value: (p) => p.place },
+        { key: "region", value: (p) => p.admin },
+        { key: "latitude", value: (p) => p.lat },
+        { key: "longitude", value: (p) => p.lon },
+        { key: "precision", value: (p) => p.precision },
+        { key: "located_by", value: (p) => p.from },
+        { key: "title", value: (p) => p.title },
+        { key: "publisher", value: (p) => p.publisher },
+        { key: "tier", value: (p) => p.tier },
+        { key: "outlets", value: (p) => p.outlets },
+        { key: "story_url", value: (p) => new URL(p.href, location.origin).href },
+      ]);
+      const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `paranews-${location.pathname.split("/").filter(Boolean).pop()}-selection.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
 
     fetch(el.dataset.src!)
       .then((r) => r.json() as Promise<Sighting[]>)

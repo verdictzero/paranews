@@ -253,3 +253,27 @@ html.reader-open { overflow: hidden; }
 .table-view summary { color: var(--link); cursor: pointer; }
 .table-view table { margin-top: 8px; max-width: 420px; }
 .table-view td { font-variant-numeric: tabular-nums; }
+
+/* The sightings table: the map's contents, readable and sortable. */
+.sightings-table { margin-top: 26px; }
+.sightings-table .section-head h3 { font-family: var(--serif); font-size: 19px; margin: 0; }
+table.sightings { font-size: 14px; }
+table.sightings th { white-space: nowrap; }
+table.sightings th button { font: inherit; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); background: none; border: 0; padding: 0; cursor: pointer; }
+table.sightings th button:hover { color: var(--fg); }
+table.sightings tbody tr { cursor: pointer; }
+table.sightings tbody tr:hover { background: var(--bg-raised); }
+table.sightings tbody tr.active { background: var(--bg-raised); box-shadow: inset 3px 0 0 var(--data); }
+table.sightings .when { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--muted); }
+table.sightings .where { white-space: nowrap; font-weight: 600; }
+table.sightings .where .admin { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+table.sightings .what a { color: var(--fg); }
+table.sightings .num { text-align: right; font-variant-numeric: tabular-nums; }
+table.sightings .from { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px dotted var(--rule); cursor: help; }
+table.sightings .from-implied { font-style: italic; }
+@media (max-width: 620px) { table.sightings .how { display: none; } }
+
+/* Downloads */
+.exports { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-top: 18px; font-size: 13px; color: var(--muted); }
+.exports a, .exports button { font-size: 13px; }
+.exports .label { text-transform: uppercase; letter-spacing: 0.07em; font-size: 11px; }

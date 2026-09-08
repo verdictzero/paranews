@@ -51,8 +51,10 @@ export function sightings(topic: Topic, data: SiteData = getSiteData()): Sightin
       date: cluster.first_published,
       place: located.place.name,
       admin: located.place.admin,
-      lat: located.place.lat,
-      lon: located.place.lon,
+      // Five decimals is about a metre; a region centroid is nowhere near that
+      // precise, and the extra digits imply an accuracy that does not exist.
+      lat: Number(located.place.lat.toFixed(5)),
+      lon: Number(located.place.lon.toFixed(5)),
       precision: located.place.kind,
       from: located.from,
       publisher: primary?.publisher ?? cluster.publishers[0] ?? "",

@@ -1,0 +1,54 @@
+---
+import type { Sighting } from "../lib/sightings";
+import { href } from "../lib/site";
+
+interface Props {
+  points: Sighting[];
+  caption: string;
+}
+const { points, caption } = Astro.props;
+
+const HOW: Record<string, string> = {
+  headline: "The headline puts the event there",
+  dateline: "The publisher's dateline",
+  implied: "Implied by the subject, not reported",
+};
+const rows = [...points].sort((a, b) => b.date.localeCompare(a.date));
+---
+
+<div class="sightings-table">
+  <div class="section-head">
+    <h3>{caption}</h3>
+    <span class="more"><span id="table-count">{rows.length}</span> shown · click a row to find it on the map</span>
+  </div>
+  <div class="table-wrap">
+    <table class="sources sightings">
+      <thead>
+        <tr>
+          <th aria-sort="descending"><button type="button" data-sort="date" data-dir="desc" aria-label="Sort by date">Date <span aria-hidden="true">↓</span></button></th>
+          <th><button type="button" data-sort="place" aria-label="Sort by place">Place</button></th>
+          <th>Story</th>
+          <th><button type="button" data-sort="outlets" aria-label="Sort by outlets">Outlets</button></th>
+          <th>Located by</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((s) => (
+            <tr data-id={s.id} data-date={s.date.slice(0, 10)} data-place={s.place} data-outlets={s.outlets} data-lat={s.lat} data-lon={s.lon}>
+              <td class="when"><time datetime={s.date}>{s.date.slice(0, 10)}</time></td>
+              <td class="where">
+                {s.place}
+                {s.admin && <span class="admin">{s.admin}</span>}
+              </td>
+              <td class="what"><a href={href(s.href)}>{s.title}</a></td>
+              <td class="num">{s.outlets}</td>
+              <td class="how"><span class={`from from-${s.from}`} title={HOW[s.from]}>{s.from}</span></td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  {rows.length === 0 && <p class="empty">No sightings could be placed on this beat yet.</p>}
+</div>
