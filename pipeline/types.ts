@@ -1,5 +1,5 @@
 /** Editorial topic verticals. Order here is the display order. */
-export const TOPICS = ["ufo", "ghosts", "cryptids", "fortean", "archaeology", "ooparts"] as const;
+export const TOPICS = ["ufo", "ghosts", "cryptids", "fortean", "archaeology", "exoarchaeology", "ooparts"] as const;
 export type Topic = (typeof TOPICS)[number];
 
 /**

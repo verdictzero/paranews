@@ -226,6 +226,25 @@ sources:
   # coverage, "el dorado" returns a California county newspaper, and bare
   # "megalith" returns tourism. Every name here is qualified for that reason.
   # topics: auto throughout — the headline decides which beat it lands on.
+  # Exoarchaeology. Probed before adding, and the probe rewrote the queries:
+  # bare "cydonia" returns Muse's Knights of Cydonia and an album by The Orb,
+  # and "structures on the moon" is dominated by people planning to build them
+  # — laser origami, spider robots, Artemis habitats. The classifier carries a
+  # guard for that second case; these queries avoid handing it the work.
+  - id: gn-exoarch-anomalies-us
+    name: Google News · Lunar and Martian anomalies
+    kind: google-news
+    edition: US
+    query: '"lunar anomalies" OR "face on Mars" OR "phobos monolith" OR "martian anomaly" OR "structures on Mars" OR "ruins on Mars"'
+    topics: auto
+    enabled: true
+  - id: gn-exoarch-artifacts-us
+    name: Google News · Off-world artifacts
+    kind: google-news
+    edition: US
+    query: '"alien megastructure" OR "dyson sphere" OR technosignature OR "artificial origin" OR "extraterrestrial technology"'
+    topics: auto
+    enabled: true
   - id: gn-ooparts-us
     name: Google News · Out-of-place artifacts
     kind: google-news

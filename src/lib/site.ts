@@ -18,6 +18,7 @@ export const TOPIC_LABEL: Record<Topic, string> = {
   cryptids: "Cryptids",
   fortean: "High Strangeness",
   archaeology: "Anomalous Archaeology",
+  exoarchaeology: "Exoarchaeology",
   ooparts: "OOPArts",
 };
 
@@ -27,6 +28,7 @@ export const TOPIC_BLURB: Record<Topic, string> = {
   cryptids: "Bigfoot, lake monsters, Mothman and every creature that keeps not being found.",
   fortean: "Mysterious lights and sounds, crop circles, psi research, time slips and Fortean classics.",
   archaeology: "Sites that do not fit the timeline: sunken cities, chambers found by radar, impossible engineering.",
+  exoarchaeology: "Archaeology somewhere else: lunar anomalies, Martian ruins, the Phobos monolith and everything that looks made rather than found.",
   ooparts: "Out-of-place artifacts. The Antikythera mechanism, the Piri Reis map, and every object found where it should not be.",
 };
 

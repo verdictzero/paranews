@@ -365,3 +365,44 @@ test("an adjective only counts when it modifies something that can be haunted", 
     "He Investigated UFO Disclosure. Then Something Demonic Followed Him Home",
   ]) assert.ok(classifyTopics(t).includes("ghosts"), t);
 });
+
+test("exoarchaeology is manufacture off Earth, not the search for life off Earth", () => {
+  const beat = classifyTopics;
+  for (const t of [
+    "'Tyre tracks' spotted on Mars as unearthed NASA photo sparks alien life theories",
+    "Astronomers captured multiple UFOs near and on the Moon, hint at possible Lunar Base",
+    "Collection Plate: Could Our Moon Be Peppered with Evidence of Extraterrestrial Technology?",
+    "Harvard's Avi Loeb Says Earth's Temporary Mini-Moon May Not Be Of Natural Origin",
+    "The \"Face On Mars\" At 50: The Face That Launched A Thousand Conspiracies",
+    "Pentagon Declassifies UFO Files Detailing Lunar Anomalies and Military Sightings",
+    "NASA's Webb Telescope Rules Out Two New Dyson Sphere Candidates",
+    "Phobos monolith re-examined in new imaging survey",
+  ]) assert.ok(beat(t).includes("exoarchaeology"), t);
+
+  // Astrobiology and stargazing are about life and rocks, not artefacts, and
+  // belong to no beat here at all.
+  for (const t of [
+    "Mars Rover Finds Ancient Carbon Clues That Could Change The Search For Alien Life",
+    "How Venus's cloud molecules are reshaping the search for alien life",
+    "Scientists Discover How Extraterrestrial Life Could Thrive In the Clouds Surrounding Venus",
+    "Brilliant Venus and Harvest Moon to light up September skies",
+    "Are we the aliens? Earth could be sending life to Venus, say scientists",
+  ]) assert.ok(!beat(t).includes("exoarchaeology"), `${t} is astrobiology`);
+});
+
+test("building a moon base is engineering; finding one is not", () => {
+  const beat = classifyTopics;
+  // Every one of these came back from probing the queries before they shipped.
+  for (const t of [
+    "Laser 'origami' could help astronauts build structures on the moon",
+    "Meet the spider-like robot that could build structures on the moon",
+    "How Artificial Moon Dust Helps Us to Build the First Long-Term Lunar Bases",
+    "Lunar Anomaly Detection: How AI is Transforming Moon Exploration",
+    // Bare "cydonia" is a Muse song and an album by The Orb.
+    "Muse: Knights of Cydonia (2006)",
+    "Classic Album Review: The Orb | Cydonia",
+  ]) assert.ok(!beat(t).includes("exoarchaeology"), t);
+
+  // An alien claim overrides the engineering guard.
+  assert.ok(beat("Tim Gallaudet Says Guy Who Claims Aliens Built Moon Towers Has Found Atlantis").includes("exoarchaeology"));
+});

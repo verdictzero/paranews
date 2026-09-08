@@ -13,6 +13,7 @@
   --topic-cryptids: #4a7a2a;
   --topic-fortean: #b0521a;
   --topic-archaeology: #8a6d24;
+  --topic-exoarchaeology: #9c3d6b;
   --topic-ooparts: #1f7a7a;
   /* Data marks sit a step richer than UI chrome. Validated for chroma,
      lightness band and contrast against the chart surface in both modes. */
@@ -37,6 +38,7 @@
     --topic-cryptids: #9ad072;
     --topic-fortean: #f3a06a;
     --topic-archaeology: #dcb75f;
+    --topic-exoarchaeology: #e492b8;
     --topic-ooparts: #6fc7c7;
     --data: #3aa886;
     --grid: #2d302b;
@@ -119,6 +121,7 @@ html:not(.js) .read { display: none; }
 .tag.cryptids { color: var(--topic-cryptids); }
 .tag.fortean { color: var(--topic-fortean); }
 .tag.archaeology { color: var(--topic-archaeology); }
+.tag.exoarchaeology { color: var(--topic-exoarchaeology); }
 .tag.ooparts { color: var(--topic-ooparts); }
 .corroborated { color: var(--accent); font-weight: 600; }
 

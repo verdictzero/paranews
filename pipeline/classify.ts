@@ -6,7 +6,7 @@ import type { Flag, Topic } from "./types.ts";
  * topics to Google News items. Tuned for precision over recall: a wrong topic
  * is worse than a missed one because the source's default topic still applies.
  */
-const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
+const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
   {
     topic: "ufo",
     re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|extraterrestrials?|alien (?:spacecraft|craft|abduction|encounter|contact|life|bod(?:y|ies)|mummies|technology)|space aliens?|roswell|area 51|close encounters\b|close encounter of the|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|the aliens|aliens (?:are|exist|among|visit\w*|contact\w*)|non-?human (?:intelligence|biologics?|craft)|nhi|interstellar (?:object|visitor)s?|3i\/atlas|oumuamua|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
@@ -33,6 +33,22 @@ const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
     re: /\b(anomalous archaeolog\w+|forbidden archaeolog\w+|g[oö]bekli tepe|gunung padang|yonaguni|nan madol|puma ?punku|bimini road|derinkuyu|karahan tepe|elongated skulls?|paracas skulls?|giant skeletons?|nephilim|underwater (?:ruins?|cit(?:y|ies)|pyramids?|structures?)|sunken (?:cit(?:y|ies)|ruins?)|submerged (?:cit(?:y|ies)|ruins?)|hidden (?:chambers?|voids?)|(?:radar|lidar|sonar|scans?)[^.]{0,24}anomal\w+|subsurface anomal\w+|lost civili[sz]ation|lost city of|el dorado|percy fawcett|ancient (?:aliens|astronauts)|ancient astronaut theor\w+|mysterious (?:inscriptions?|monoliths?|ruins?|structures?)|unexplained (?:inscriptions?|ruins?|structures?)|megalithic (?:myster|anomal)\w*|impossible (?:engineering|masonry|geometry)|atlantis)\b/i,
   },
   {
+    topic: "exoarchaeology",
+    // Evidence of manufacture off Earth — which is not the same thing as the
+    // search for life off Earth. Carbon chemistry on Mars is astrobiology and
+    // belongs to no beat here; a monolith on Phobos is this one. Measured over
+    // the archive, that line splits 22 off-world headlines 12 to 10 with
+    // nothing ambiguous left over.
+    re: /\b(exo[- ]?archaeolog\w+|xeno[- ]?archaeolog\w+|space archaeolog\w+|(?:lunar|martian) (?:anomal\w+|ruins?|artifacts?|monoliths?|structures?|towers?|obelisks?|pyramids?|domes?|bridges?|cit(?:y|ies)|bases?|walls?|roads?|machinery|spires?)|(?:anomal\w+|ruins?|artifacts?|monoliths?|structures?|towers?|obelisks?|pyramids?|domes?|bridges?|cit(?:y|ies)|bases?|walls?|roads?|machinery|spires?) on (?:the )?(?:moon|lunar surface|mars|martian surface|phobos|deimos|ceres|europa|titan|mercury|venus)|face on mars|cydonia (?:mensae|region|face|mesa)|blair cuspids|(?:phobos|mars|martian|lunar|moon) monoliths?|alien (?:megastructures?|artifacts?|probes?|machines?)|dyson (?:spheres?|swarms?)|technosignatures?|von neumann probes?|tabby'?s star|boyajian'?s star|nasa[^.]{0,16}(?:photo|image)[^.]{0,44}(?:spark\w*|theor\w*|alien|mysterious|anomal\w*|spot\w*|track\w*|footprint\w*)|(?:moon|lunar surface|mars|martian surface|phobos|deimos|ceres|europa|titan|mercury|venus)[^.]{0,16}(?:photo|image)[^.]{0,36}(?:spark\w*|theor\w*|mysterious|anomal\w*|spot\w*)|(?:moon|lunar surface|mars|martian surface|phobos|deimos|ceres|europa|titan|mercury|venus)[^.]{0,34}(?:alien|extraterrestrial|non-?human) technolog\w+|(?:alien|extraterrestrial|non-?human) technolog\w+[^.]{0,34}(?:moon|lunar surface|mars|martian surface|phobos|deimos|ceres|europa|titan|mercury|venus)|(?:not|may not) be of natural origin|artificial(?:ly)? origin|not natural in origin|martian sky|moon towers?|(?:moon|lunar surface|mars|martian surface|phobos)[^.]{0,26}(?:built by|artificially built|alien-built))\b/i,
+    // Probed before it was built, and the probe killed two obvious terms.
+    // "Structures on the moon" is mostly people planning to build them — laser
+    // origami, spider robots, Artemis habitats — and "lunar anomaly detection"
+    // is a machine-learning paper about craters. Neither is an artefact
+    // somebody else left. An alien claim in the same headline overrides the
+    // guard, so "Aliens Built Moon Towers" still counts.
+    unless: /^(?!.*\b(?:aliens?|extraterrestrial|non-?human|ufos?|artificial origin)\b).*\b(?:astronauts?|artemis|regolith|3d[- ]print\w+|habitats?|colonis\w+|coloniz\w+|anomaly detection|machine learning|neural network|could help|could build|to build|will build|plans to build)\b/i,
+  },
+  {
     topic: "ooparts",
     // Out-of-place artifacts: an object in a context it should not be in.
     // Every name is qualified. Bare "oopart" is a Korean mobile game, bare
@@ -45,7 +61,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
 
 export function classifyTopics(title: string): Topic[] {
   const out: Topic[] = [];
-  for (const r of TOPIC_RULES) if (r.re.test(title)) out.push(r.topic);
+  for (const r of TOPIC_RULES) if (r.re.test(title) && !r.unless?.test(title)) out.push(r.topic);
   return out;
 }
 
