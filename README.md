@@ -1,6 +1,6 @@
 # Paranews
 
-A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids and high strangeness. It reads ~69 sources every half hour, folds the same story from different outlets into one entry, grades every entry by *who* published it, ranks the result and publishes a static site to GitHub Pages. It writes nothing of its own: no generated summaries, no language model anywhere in the pipeline. Each story keeps a reader-mode copy of one outlet's article, opened in place with the original linked.
+A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids and high strangeness. It reads ~79 sources every half hour, folds the same story from different outlets into one entry, grades every entry by *who* published it, ranks the result and publishes a static site to GitHub Pages. It writes nothing of its own: no generated summaries, no language model anywhere in the pipeline. Each story keeps a reader-mode copy of one outlet's article, opened in place with the original linked.
 
 **Live site:** https://news.asr.institute/
 

@@ -158,6 +158,66 @@ sources:
     topics: [fortean]
     enabled: true
 
+  # ── Second wave, probed 2026-09-08. Counts are on-beat headlines the archive
+  # had never seen, measured with the site's own classifier. ──
+  - id: gn-paranormal-us
+    name: Google News · Paranormal
+    kind: google-news
+    edition: US
+    # The largest single gap in the registry: every other query used
+    # "paranormal" only inside a longer phrase, so the bare word was never
+    # searched. 69 new on-beat headlines in one probe.
+    query: paranormal
+    topics: auto
+    enabled: true
+  - id: gn-paranormal-gb
+    name: Google News · Paranormal (UK edition)
+    kind: google-news
+    edition: GB
+    query: paranormal
+    topics: auto
+    enabled: true
+  - id: gn-ufo-figures-us
+    name: Google News · UFO figures
+    kind: google-news
+    edition: US
+    # Headlines that name the researcher but never the beat: "Harvard Professor
+    # Avi Loeb Says Aliens Are Here". 57 new, none of it entertainment.
+    query: grusch OR coulthart OR "avi loeb" OR "lue elizondo"
+    topics: [ufo]
+    enabled: true
+  - id: gn-astrobiology-us
+    name: Google News · Alien life & technosignatures
+    kind: google-news
+    edition: US
+    query: '"alien life" OR "extraterrestrial life" OR technosignature OR technosignatures OR "alien civilization" OR "search for aliens"'
+    topics: auto
+    enabled: true
+  - id: gn-contact-us
+    name: Google News · Encounters & craft
+    kind: google-news
+    edition: US
+    query: '"alien encounter" OR "alien contact" OR "alien technology" OR "space aliens" OR "cigar-shaped object" OR "disc-shaped object"'
+    topics: [ufo]
+    enabled: true
+  - id: gn-ghostcam-us
+    name: Google News · Ghost footage
+    kind: google-news
+    edition: US
+    # Lowest volume and highest precision of anything probed: the viral
+    # doorbell and CCTV footage stories.
+    query: '"ghost caught on" OR "ghostly figure" OR "ghostly apparition" OR "ghostly presence" OR "spirit caught on" OR "ghost photo" OR "ghost footage"'
+    topics: [ghosts]
+    enabled: true
+  - id: gn-warren-cases-us
+    name: Google News · Named hauntings
+    kind: google-news
+    edition: US
+    # Every phrase quoted: bare "annabelle" and "amityville" are film franchises.
+    query: '"warren collection" OR "conjuring house" OR "enfield poltergeist" OR "bell witch" OR "annabelle doll" OR "amityville horror"'
+    topics: [ghosts]
+    enabled: true
+
   # ── Other English-language editions. Measured 2026-09-08 against the US and GB
   # results for the same query: each of these returns stories the two original
   # editions never carry (UFO: AU 14, CA 21, IE 33 in one week). IN and ZA were
@@ -586,6 +646,34 @@ sources:
     topics: auto
     enabled: true
 
+  - id: metabunk
+    name: Metabunk
+    kind: rss
+    url: https://www.metabunk.org/forums/-/index.rss
+    tier: unverified
+    topics: auto
+    enabled: true
+    note: >-
+      The one forum whose posts are work rather than anecdote: geolocating
+      sighting footage, checking photo provenance, identifying lens artefacts.
+      Unverified because it is a forum, whoever is posting. No default_topic —
+      about a third of the board is on beat.
+  - id: paranormal-chronicles
+    name: The Paranormal Chronicles
+    kind: rss
+    url: https://theparanormalchronicles.com/feed/
+    tier: unverified
+    topics: auto
+    enabled: true
+  - id: ancient-pages
+    name: Ancient Pages
+    kind: rss
+    url: https://www.ancientpages.com/feed/
+    tier: genre
+    topics: auto
+    enabled: true
+    note: The one archaeology feed of eight probed that scored above zero on beat.
+
   # ── Tabloid tag feeds. These carry a rolling seven-day window and are
   # legitimately empty in a quiet week, which is why health.ts tolerates empty
   # polls for a day before treating a feed as broken. ──
@@ -659,14 +747,16 @@ sources:
     enabled: false
     note: HTTP 403.
   - id: phantoms-and-monsters
-    name: Phantoms & Monsters
+    name: Phantoms and Monsters
     kind: rss
-    url: https://www.phantomsandmonsters.com/feeds/posts/default?alt=rss
+    url: https://phantomsandmonsters.com/rss.xml
     tier: unverified
     topics: auto
-    default_topic: fortean
-    enabled: false
-    note: Feed URL serves the HTML homepage (ad-network consent script).
+    enabled: true
+    note: >-
+      Previously retired at its old Blogspot path. The site moved to its own
+      domain and publishes at /rss.xml. No default_topic: about two thirds of
+      its output names no beat.
   - id: express-weird
     name: Daily Express
     kind: rss
@@ -801,6 +891,19 @@ publishers:
     - stlpr.org
     - KSL.com
   genre:
+    # Press-release distributors carry no editorial gate: the claim is the
+    # issuer's, not a newsroom's. Listed explicitly because the broad "news"
+    # name pattern below would otherwise read them as press.
+    - EIN News
+    - EIN Presswire
+    - PR Newswire
+    - Business Wire
+    - GlobeNewswire
+    - ACCESSWIRE
+    - openPR.com
+    - PRWeb
+    - Issuewire.com
+    - Newswire.com
     - New York Post
     - nypost.com
     - Daily Mail
