@@ -19,8 +19,9 @@ export type Tier = (typeof TIERS)[number];
  *   entertainment - fiction and its promotion: films, shows, games, books, stage, music, merch (hidden from the site)
  *   attraction    - Halloween attractions, ghost tours
  *   weak-match    - found by a beat search but the headline names no beat keyword
+ *   roundup       - perennial service copy: ranked listicles and travel guides
  */
-export type Flag = "entertainment" | "attraction" | "weak-match" | "offbeat";
+export type Flag = "entertainment" | "attraction" | "weak-match" | "offbeat" | "roundup";
 
 export interface SourceConfig {
   id: string;

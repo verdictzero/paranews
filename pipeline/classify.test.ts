@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { classifyFlags, classifyTopics, isOffTopic } from "./classify.ts";
+import { classifyFlags, classifyTopics, isOffTopic, isRoundup } from "./classify.ts";
 
 test("topics from real headlines", () => {
   assert.deepEqual(classifyTopics("Pentagon seeks access to vast private UFO records collection"), ["ufo"]);
@@ -53,7 +53,8 @@ test("entertainment: fiction and its promotion is flagged", () => {
     "Viewers of streaming documentary The Rendlesham UFO: The British Roswell visited by alien orbs",
     "Wakiso Dance Kids revive Kakalabanda tale in new dance theatre show",
   ];
-  for (const t of yes) assert.deepEqual(classifyFlags(t), ["entertainment"], t);
+  // Every one of these is entertainment; a few are also roundups, which is fine.
+  for (const t of yes) assert.ok(classifyFlags(t).includes("entertainment"), t);
 });
 
 test("entertainment: real stories with media-sounding words are not flagged", () => {
@@ -126,10 +127,36 @@ test("offbeat: tickers, products and teams that borrow a beat word", () => {
 
 test("flags demote entertainment and attractions", () => {
   assert.deepEqual(classifyFlags("Wildman: Bigfoot will go John Wick in bloody revenge thriller"), ["entertainment"]);
-  assert.deepEqual(classifyFlags("The 20 best exorcist-themed movies, ranked"), ["entertainment"]);
+  // Both: a ranked listicle that is also fiction promotion.
+  assert.deepEqual(classifyFlags("The 20 best exorcist-themed movies, ranked"), ["entertainment", "roundup"]);
   assert.deepEqual(classifyFlags("Madworld Haunted Attraction opens in Piedmont"), ["attraction"]);
   assert.deepEqual(classifyFlags("How live scares convinced Jason Blum to invest in Paranormal Activity on Broadway"), ["entertainment"]);
   assert.deepEqual(classifyFlags("Rebecca Ferguson and Greta Lee to star in lesbian romantic comedy Honeymoon/Funeral"), ["entertainment"]);
   assert.deepEqual(classifyFlags("Pentagon seeks access to vast private UFO records collection"), []);
   assert.deepEqual(classifyFlags("Bigfoot sighting was just a man in a costume, police say"), []);
+});
+
+test("perennial listicles are flagged, real events with superlative names are not", () => {
+  for (const t of [
+    "The 10 most haunted hotels in America, ranked",
+    "9 of Chicago's most haunted places",
+    "Caithness: 5 Haunted Places to Visit",
+    "Check in if you dare: 12 haunted hotels in the U.S. for spooky stays",
+    "Explore Tennessee's Most Haunted Places on the Ultimate Halloween Road Trip",
+    "Stay at America's Most Haunted Hotel in Eureka Springs",
+    "Top 10 most haunted places in Britain",
+  ]) assert.equal(isRoundup(t), true, t);
+
+  for (const t of [
+    // A contest is an event even when its name is a superlative.
+    "Historic Hotel Alex Johnson nominated for 'Best Haunted Hotel' in national contest",
+    "Pub crowned most haunted in Britain by paranormal investigators",
+    // A large number is a count, not a list of items.
+    "Warren Collection Opens in Salem With Annabelle Doll and 1,000 Haunted Objects",
+    "Police in Maine launch bizarre 'Bigfoot' hunt after mysterious creature spotted",
+    "3 witnesses report mysterious lights over Phoenix",
+    "Niece of couple who claimed to have encountered UFO in 1960s speaks at Exeter UFO Festival",
+  ]) assert.equal(isRoundup(t), false, t);
+
+  assert.deepEqual(classifyFlags("The 10 most haunted hotels in America, ranked"), ["roundup"]);
 });

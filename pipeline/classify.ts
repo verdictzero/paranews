@@ -164,6 +164,31 @@ const ATTRACTION =
   /\b(haunted (?:house|houses|attraction|attractions|trail|trails|hayride|maze|mansion tickets)|halloween (?:event|events|attraction|attractions)|ghost tours?|escape rooms?|theme parks?|scare (?:zone|zones|actors?)|fright fest|spirit halloween|halloween horror nights)\b/i;
 
 /**
+ * Perennial service copy: "The 10 most haunted hotels in America, ranked",
+ * "5 Haunted Places to Visit". Genuinely about the beat, and genuinely not
+ * news — the same listicles are rewritten every autumn and, being fresh and
+ * widely syndicated, they crowd out actual events.
+ *
+ * A contest, award or nomination is an event even when its name is a
+ * superlative, so EVENT_TITLE clears them first: a hotel *nominated* for "Best
+ * Haunted Hotel" is a story. The digit guard keeps "1,000 Haunted Objects"
+ * from reading as a listicle of 1,000 items.
+ */
+const EVENT_TITLE = /\b(?:nominat\w*|contest|awards?|wins|won|voted|shortlist\w*|finalists?|crowned|named)\b/i;
+
+const ROUNDUP: RegExp[] = [
+  /(?<![\d,])\d{1,2}(?![\d,])\s+(?:of\s+the\s+)?(?:most|best|worst|scariest|creepiest|spookiest|weirdest|strangest|eeriest|haunted|creepy|spooky|terrifying|chilling|bizarre|unexplained|mysterious)\b/i,
+  /\b(?:top|best)\s+(?<![\d,])\d{1,2}(?![\d,])\b/i,
+  /\b(?:the\s+)?(?:most|best|scariest|creepiest|spookiest)\s+haunted\s+(?:places?|spots?|hotels?|towns?|cities|roads?|destinations?|pubs?|castles?|buildings?|houses?)\b/i,
+  /\b(?:places?|spots?|destinations?|towns?|hotels?)\s+(?:to\s+(?:visit|stay|explore|see)|you\s+(?:can|should|must))\b/i,
+  /,\s*ranked\b/i,
+];
+
+export function isRoundup(title: string): boolean {
+  return !EVENT_TITLE.test(title) && ROUNDUP.some((r) => r.test(title));
+}
+
+/**
  * Not paranormal news under any reading: serialized fiction and its fandom.
  * "reincarnation" and "possession" alone pull in whole anime seasons. Dropped
  * at ingest so they never reach the archive.
@@ -184,5 +209,6 @@ export function classifyFlags(title: string): Flag[] {
   if (isEntertainmentTitle(title) || isOffTopic(title)) out.push("entertainment");
   if (isOffbeat(title)) out.push("offbeat");
   if (ATTRACTION.test(title)) out.push("attraction");
+  if (isRoundup(title)) out.push("roundup");
   return out;
 }

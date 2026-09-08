@@ -2,7 +2,7 @@ import type { Cluster, Flag, Item } from "./types.ts";
 import { looksLikeDomain, publisherKey, tokens as tokenize } from "./text.ts";
 import { bestTier, tierRank } from "./config.ts";
 import { sortTopics } from "./normalize.ts";
-import { bestTierOf, headlineGroups, scoreCluster } from "./rank.ts";
+import { bestTierOf, scoreCluster, writeUps } from "./rank.ts";
 
 export interface ClusterOptions {
   now?: Date;
@@ -170,7 +170,7 @@ function makeCluster(members: Item[], now: Date): Cluster {
   const seed = [...members].sort((a, b) => a.published_at.localeCompare(b.published_at) || a.id.localeCompare(b.id))[0];
   const publishers = distinctPublishers(members);
   let corroboration = 0;
-  for (const g of headlineGroups(members).values()) {
+  for (const g of writeUps(members)) {
     const t = bestTierOf(g);
     if (t === "official" || t === "press") corroboration++;
   }
