@@ -23,7 +23,7 @@ export const TOPIC_BLURB: Record<Topic, string> = {
   ufo: "Sightings, disclosure politics, AARO and the Pentagon, the people who claim to know.",
   ghosts: "Investigations, poltergeists, exorcisms and the places that will not stay quiet.",
   cryptids: "Bigfoot, lake monsters, Mothman and every creature that keeps not being found.",
-  fortean: "Mysterious lights, crop circles, disappearances and the weird edges of science.",
+  fortean: "Mysterious lights and sounds, crop circles, psi research, time slips and Fortean classics.",
 };
 
 export const TIER_LABEL: Record<Tier, string> = {

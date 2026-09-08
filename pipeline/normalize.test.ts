@@ -62,13 +62,16 @@ test("fixed-topic sources gain secondary topics from the headline", () => {
   assert.deepEqual(item.topics, ["ufo", "ghosts"]);
 });
 
-test("beat searches whose headline names no beat keyword get the weak-match flag", () => {
+test("a headline that names no beat gets the weak-match flag, whatever the source", () => {
   const weak = normalizeEntry({ title: "Ashby Library hosts Antique Appraisal Fundraiser Sept. 13 - Sentinel", link: "https://news.google.com/rss/articles/z", source: { name: "Sentinel" } }, gn, now)!;
   assert.deepEqual(weak.flags, ["weak-match"]);
   const strong = normalizeEntry({ title: "Pilots report mysterious lights over Oregon - KGW", link: "https://news.google.com/rss/articles/z", source: { name: "KGW" } }, gn, now)!;
   assert.deepEqual(strong.flags, []);
   const reddit: SourceConfig = { id: "reddit-paranormal", name: "r/Paranormal", kind: "rss", url: "https://www.reddit.com/r/Paranormal/top/.rss", tier: "unverified", topics: ["ghosts"], enabled: true };
-  assert.deepEqual(normalizeEntry({ title: "Can't get this out of my head", link: "https://www.reddit.com/r/Paranormal/comments/x/" }, reddit, now)!.flags, [], "direct feeds are on-beat by construction");
+  // A feed declaring topics: [ghosts] asserts something about the feed, not
+  // about this headline, so it is verified like any search result.
+  assert.deepEqual(normalizeEntry({ title: "Can't get this out of my head", link: "https://www.reddit.com/r/Paranormal/comments/x/" }, reddit, now)!.flags, ["weak-match"]);
+  assert.deepEqual(normalizeEntry({ title: "Poltergeist activity reported at the old mill", link: "https://www.reddit.com/r/Paranormal/comments/y/" }, reddit, now)!.flags, [], "a headline that names the beat passes");
   assert.equal(normalizeEntry({ title: "Mushoku Tensei: Jobless Reincarnation III ‒ Episode 10 - ANN", link: "https://news.google.com/rss/articles/z", source: { name: "ANN" } }, gn, now), undefined);
 });
 

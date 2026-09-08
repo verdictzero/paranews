@@ -23,7 +23,7 @@ test("refreshItems recomputes from the current classifier and publisher lists", 
   assert.deepEqual(e.flags, [], "invisible characters in stored titles are ignored");
   assert.deepEqual(a.flags, ["entertainment"], "headline and outlet both say film");
   assert.deepEqual(b.flags, [], "old false positive cleared");
-  assert.deepEqual(c.flags, [], "direct feeds never get weak-match");
+  assert.deepEqual(c.flags, ["weak-match"], "a direct feed's declared beat is not evidence about this headline");
   assert.deepEqual(d.flags, ["weak-match"], "retired gn- feeds are still treated as searches");
   assert.equal(refreshItems([a])[0], a, "unchanged items are returned as-is");
 });

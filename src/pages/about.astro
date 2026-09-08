@@ -18,7 +18,7 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
 
     <h2>Reader copies</h2>
     <p>For each story the site keeps a reader-mode copy of one outlet's article: the text a browser's reader view would show, its lead image reduced to a thumbnail, and nothing else from the page. "Read here" opens it over the front page; the original is linked at the top and bottom of every copy. Pages that ask not to be crawled, pages behind a bot wall and pages with fewer than 150 words of text are skipped, and the story's next outlet is tried instead.</p>
-    <p>It carries no entertainment: films, television, games, books, stage and music are filtered out by headline keywords and by a list of entertainment outlets. Two filters catch the rest of the noise — a beat word used as a ticker, product or team name ("NASDAQ: UFO"), and a search hit whose headline names nothing from any beat. Together they removed {data.hiddenCount} {data.hiddenCount === 1 ? "story" : "stories"} from the current window. A story is hidden only when more than half the outlets covering it trip a filter.</p>
+    <p>It carries no entertainment: films, television, games, books, stage and music are filtered out by headline keywords and by a list of entertainment outlets. Two filters catch the rest of the noise — a beat word used as a ticker, product or team name ("NASDAQ: UFO"), and a headline that names nothing from any beat. Together they removed {data.hiddenCount} {data.hiddenCount === 1 ? "story" : "stories"} from the current window. A story is hidden only when more than half the outlets covering it trip a filter.</p>
     <p>Three more signals demote rather than hide: Halloween attractions and ghost tours; perennial service copy ("The 10 most haunted hotels in America, ranked"), which is on the beat but is rewritten every autumn; and an organisation's own housekeeping, like a researcher's podcast appearance or a call for papers.</p>
 
     <h2>Sources</h2>
@@ -33,7 +33,8 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
         </li>
       ))}
     </ul>
-    <p>A story can sit on more than one beat. Beats come from the search that found it plus a keyword pass over the headline.</p>
+    <p>A story can sit on more than one beat. A beat is only ever claimed by the headline: a feed that declares a subject is asserting something about the feed, not about the story, so a headline naming nothing from any beat is set aside whatever brought it in. High Strangeness is held to that hardest, because it is the beat everything drifts into — an archaeological dig, a suspicious death or an atmospheric adjective is not high strangeness.</p>
+    <p>Beats are re-derived on every build, so a tightened rule applies to the whole archive rather than only to new stories.</p>
 
     <h2>Tiers</h2>
     <p>Each publisher is assigned a tier by lookup table, never by reading the story. It tells you what kind of outlet said it, not whether it is true.</p>

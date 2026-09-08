@@ -184,3 +184,38 @@ test("'close encounter' is the UFO idiom only in its idiomatic forms", () => {
   assert.ok(!classifyTopics("Doorbell camera captures Montana woman's close encounter with mama moose").includes("ufo"));
   assert.ok(!classifyTopics("Hiker describes close encounter with a bear on the trail").includes("ufo"));
 });
+
+test("high strangeness is a phenomenon claim, not an atmosphere word", () => {
+  const fortean = (t: string) => classifyTopics(t).includes("fortean");
+  for (const t of [
+    "UNEXPLAINED HOWLS, TREE KNOCKS, & THROWN ROCKS Near Vernon, Vermont",
+    "The public joins a paranormal investigation and witnesses some unexplained activity",
+    "Lost city of Atlantis clues revealed in new scans of secret ocean site",
+    "Percy Fawcett: Did He Find the Lost City He Was Searching For?",
+    "'Proof' time travel is 'real' with unusual detail spotted in 1937 painting",
+    "Border Patrol agents report a time slip on West Texas I-10",
+    "Dr. Pehlivanova discusses shared death experiences in Popular Mechanics",
+    "Study of past lives finds children recall verifiable details",
+    "Mysterious lights over Phoenix baffle residents",
+    "Residents report loud booms with no known source",
+  ]) assert.equal(fortean(t), true, t);
+
+  for (const t of [
+    // "eerie" is atmosphere, not a claim about the world.
+    "Listen to the sound of the Jurassic: Scientists recreate the eerie calls of the forest",
+    "Inside the eerie American ghost town where stolen souvenirs are blamed for illness",
+    // Bare "unexplained" and "anomaly" are ordinary English and ordinary science jargon.
+    "Dan Farah's UFO docufilm revealed insider report on unexplained military base activities",
+    "Radar Detects Anomalies And Unknown Burial Mounds At Viking-Age Birka",
+    // A suspicious death is a crime story.
+    "Autopsy reveals chilling new details in mysterious death of missing scientist",
+    // Archaeology is not high strangeness just because a city was lost.
+    "Lost Ancient Egyptian City Found? Archaeologists Unveil Mysterious Inscription",
+    // Celebrity puff that happens to use the words.
+    "Ha Ji-won's Past Life: Handsome Man, Present Beauty",
+    // "Past Lives" is a film title as often as it is a research subject.
+    "Greta Lee Was Hollywood's Background. Past Lives Changed the Frame",
+    "NASA has successfully launched its next-generation space telescope",
+    "Underground detector finds possible evidence of dark matter",
+  ]) assert.equal(fortean(t), false, t);
+});

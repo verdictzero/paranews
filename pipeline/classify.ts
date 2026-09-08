@@ -22,7 +22,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
   },
   {
     topic: "fortean",
-    re: /\b(unexplained|high strangeness|fortean|anomal(?:y|ies|ous)|crop circles?|mysterious(?:ly)? (?:death|light|sound|boom|object|signal|creature|figure|craft)\w*|unsolved myster(?:y|ies)|near[- ]death experiences?|out[- ]of[- ]body|reincarnation|premonitions?|psychic|telepath(?:y|ic)|remote viewing|time slips?|simulation theory|mandela effect|spontaneous human combustion|cursed|the curse of|ancient (?:aliens|astronauts|mystery)|lost civili[sz]ation|atlantis|bermuda triangle|missing 411|dyatlov|skinwalker ranch|men in black|rains? of (?:fish|frogs)|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?|unexplained (?:noises?|sounds?|lights?)|virgin mary|weeping (?:statue|madonna)|marian apparitions?|consciousness (?:exists )?beyond|life after death|the other side|fermi paradox|simulation hypothesis|eerie|time loops?|time travel(?:l?ers?)?|lost cit(?:y|ies)|el dorado|percy fawcett|approved miracles|miracle (?:healing|cure)s?|lourdes|mysterious (?:find|discovery|remains|bones?|skull)s?|mystery (?:find|discovery|remains|bones?|skull)s?|past life|previous life)\b/i,
+    re: /\b(high strangeness|fortean|crop circles?|unsolved myster(?:y|ies)|near[- ]death experiences?|shared death experiences?|terminal lucidity|out[- ]of[- ]body|reincarnation|past[- ]life (?:memor\w+|regression|recall)|past lives (?:research|memor\w+|stud\w+|regression|recall)|(?:recall\w*|remember\w*|stud(?:y|ies) of|research into) past lives|premonitions?|psychic|telepath(?:y|ic)|remote viewing|parapsycholog\w+|survival of consciousness|time slips?|time loops?|time anomal\w+|time travel(?:l?ers?)?|simulation theory|simulation hypothesis|mandela effect|spontaneous human combustion|ancient (?:aliens|astronauts|mystery)|lost civili[sz]ation|atlantis|el dorado|percy fawcett|bermuda triangle|missing 411|dyatlov|skinwalker ranch|men in black|rains? of (?:fish|frogs)|anomalous (?:phenomen\w+|experiences?|objects?|craft|signals?|readings?)|unexplained (?:phenomen\w+|activity|noises?|sounds?|lights?|objects?|howls?|footage|video|events?|deaths?|disappearances?|marks?)|mysterious(?:ly)? (?:light|sound|boom|object|signal|creature|figure|craft)\w*|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?|virgin mary|weeping (?:statue|madonna)|marian apparitions?|approved miracles|miracle (?:healing|cure)s?|lourdes|consciousness (?:exists )?beyond|life after death|the other side|fermi paradox|mysterious (?:find|discovery|remains|bones?|skull)s?|mystery (?:find|discovery|remains|bones?|skull)s?)\b/i,
   },
 ];
 
@@ -220,6 +220,15 @@ export function isEntertainmentTitle(title: string): boolean {
 }
 
 /** Headline-only flags. Publisher-based signals are added in normalize.ts. */
+/**
+ * A headline that names nothing from any beat. The story reached the site
+ * because a search matched its body, or because its source declares a beat for
+ * everything it publishes — neither of which is evidence about this headline.
+ */
+export function namesNoBeat(title: string): boolean {
+  return classifyTopics(title).length === 0;
+}
+
 export function classifyFlags(title: string): Flag[] {
   const out: Flag[] = [];
   if (isEntertainmentTitle(title) || isOffTopic(title)) out.push("entertainment");

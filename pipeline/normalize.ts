@@ -1,7 +1,7 @@
 import type { RawEntry } from "./feeds.ts";
 import { TOPICS, type Flag, type Item, type SourceConfig, type Topic } from "./types.ts";
 import { isEntertainmentPublisher, publisherTier } from "./config.ts";
-import { classifyFlags, classifyTopics, isOffTopic } from "./classify.ts";
+import { classifyFlags, classifyTopics, isOffTopic, namesNoBeat } from "./classify.ts";
 import { cleanTitle, collapseWhitespace, itemId, normalizeTitle, stripHtml, stripPublisherSuffix, truncate } from "./text.ts";
 
 const OPAQUE_LINK = /^https?:\/\/news\.google\.com\/rss\/articles\//i;
@@ -32,15 +32,16 @@ export function normalizeEntry(entry: RawEntry, source: SourceConfig, now: Date)
   const url = entry.link.trim();
   if (!/^https?:\/\//i.test(url)) return undefined;
 
+  // The headline decides the beats. A source's declared topics are a fallback
+  // for headlines that name nothing, never an addition to what the headline
+  // does name: otherwise a Loch Ness sighting found by the "mysterious
+  // creature" search lands on High Strangeness as well as Cryptids, and every
+  // beat slowly leaks into the catch-all one.
   const classified = classifyTopics(title);
-  let topics: Topic[];
-  if (source.topics === "auto") {
-    topics = classified.length ? classified : source.default_topic ? [source.default_topic] : [];
-    if (!topics.length) return undefined;
-  } else {
-    topics = sortTopics([...source.topics, ...classified]);
-  }
-  const flags = computeFlags(title, publisher, isGoogle);
+  const declared = source.topics === "auto" ? (source.default_topic ? [source.default_topic] : []) : sortTopics(source.topics);
+  const topics = classified.length ? classified : declared;
+  if (!topics.length) return undefined;
+  const flags = computeFlags(title, publisher);
 
   const title_norm = normalizeTitle(title);
   return {
@@ -66,12 +67,18 @@ export function normalizeEntry(entry: RawEntry, source: SourceConfig, now: Date)
  * Every editorial flag for a headline. Shared by ingest (recorded on the item)
  * and by the build (recomputed, so classifier fixes apply to the whole archive).
  */
-export function computeFlags(title: string, publisher: string, isGoogle: boolean): Flag[] {
+/**
+ * Beat verification applies to every source now, not just search results.
+ * "Direct feeds are on-beat by construction" was the old reasoning, and it was
+ * wrong: a feed declaring `topics: [fortean]` asserts something about the feed,
+ * not about this headline. A university research unit's podcast announcements
+ * and a tabloid's disaster coverage both reached the High Strangeness beat that
+ * way, unflagged, because only Google News items were ever checked.
+ */
+export function computeFlags(title: string, publisher: string): Flag[] {
   const flags = new Set<Flag>(classifyFlags(title));
   if (isEntertainmentPublisher(publisher)) flags.add("entertainment");
-  // A beat search matched the article body, but the headline names nothing from any
-  // beat. Direct feeds are on-beat by construction, so only searches get the flag.
-  if (isGoogle && !classifyTopics(title).length) flags.add("weak-match");
+  if (namesNoBeat(title)) flags.add("weak-match");
   return [...flags].sort();
 }
 
