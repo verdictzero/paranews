@@ -11,7 +11,7 @@ import type { Cluster, Flag, Item } from "./types.ts";
  * article body but the headline names nothing from any beat — in practice
  * explosions, crashes, obituaries and game guides). Attractions stay visible.
  */
-export const HIDDEN_FLAGS: ReadonlySet<Flag> = new Set<Flag>(["entertainment", "offbeat", "weak-match"]);
+export const HIDDEN_FLAGS: ReadonlySet<Flag> = new Set<Flag>(["entertainment", "offbeat", "weak-match", "gathering"]);
 
 export function isVisible(cluster: Cluster): boolean {
   return !cluster.flags.some((f) => HIDDEN_FLAGS.has(f));

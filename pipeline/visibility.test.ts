@@ -28,8 +28,8 @@ test("refreshItems recomputes from the current classifier and publisher lists", 
   assert.equal(refreshItems([a])[0], a, "unchanged items are returned as-is");
 });
 
-test("weak matches and offbeat items are hidden; attractions are not", () => {
-  assert.deepEqual([...HIDDEN_FLAGS].sort(), ["entertainment", "offbeat", "weak-match"]);
+test("weak matches, offbeat items and gatherings are hidden; attractions are not", () => {
+  assert.deepEqual([...HIDDEN_FLAGS].sort(), ["entertainment", "gathering", "offbeat", "weak-match"]);
   const junk = mk("Neighbor reacts to Granville explosion killing two", "WSYX", "press", "gn-fortean-b-us");
   const ticker = mk("Procure Space ETF (NASDAQ: UFO) Share Price & Updates", "MarketBeat", "genre", "gn-ufo-us");
   const fair = mk("Madworld Haunted Attraction opens in Piedmont", "KJCT", "press", "gn-ghosts-b-us");

@@ -321,3 +321,47 @@ test("the new company, product and criticism rules leave real stories alone", ()
     assert.ok(!flags.includes("offbeat") && !flags.includes("entertainment"), `${t} -> ${flags}`);
   }
 });
+
+test("the event is not a report from the event", () => {
+  const yes = [
+    "Mothman Festival announces vendor, safety, entertainment updates ahead of September return",
+    "Exeter UFO Festival 2026: Your complete guide to out-of-this-world speakers and events",
+    "Southern Illinois Bigfoot Conference comes to Mt. Vernon",
+    "Carter Bigfoot Fest returns to Olive Hill",
+    "Bigfoot or the neighbors? Glenburn hosts second Sasquatch calling contest",
+    "Paranormal Cirque: Inferno will make its spooky way into Davenport",
+    "Bell Witch Fall Festival tickets now on sale",
+    // A claim word cannot rescue what is really a book launch.
+    "Owensboro nurse turns Bigfoot sighting into books, Squatch Fest",
+  ];
+  for (const t of yes) assert.ok(classifyFlags(t).includes("gathering"), t);
+});
+
+test("a claim made at a gathering is still a claim", () => {
+  const no = [
+    // The Hill abduction witness's niece is worth more than the vendor list.
+    "Niece of couple who claimed to have encountered UFO in 1960s speaks at Exeter UFO Festival",
+    "Researcher reveals new footage at UFO conference",
+    // A congressional hearing has a line-up too, and it is news.
+    "Congressional UFO hearing lineup announced for September",
+    // Bare "circus" caught escaped circus monkeys, a mundane cryptid explanation.
+    "Runaway circus monkeys once roamed these parts - really!",
+  ];
+  for (const t of no) assert.ok(!classifyFlags(t).includes("gathering"), t);
+});
+
+test("an adjective only counts when it modifies something that can be haunted", () => {
+  // Geology and a sea-lion disease outbreak are not the ghosts beat.
+  assert.ok(!classifyTopics("Ghostly green lakes merge in Australian outback after heavy rain").includes("ghosts"));
+  assert.ok(!classifyTopics("'Demonic' sea lions on West Coast spark alarm over spreading disease").includes("ghosts"));
+  // The Enfield poltergeist stays; Royal Enfield motorbikes never belonged.
+  assert.ok(!classifyTopics("Jawa All Stars 42 Bobber vs Royal Enfield Thunderbird 500").includes("ghosts"));
+  assert.ok(classifyTopics("The Enfield poltergeist case reopened").includes("ghosts"));
+  // The real ones survive.
+  for (const t of [
+    "A Ghostly Presence Gives Gift of Creativity",
+    "Ghostly Footprint Leads To Paranormal Investigation On Cork's Southside",
+    "Ghostly Happenings in Utah",
+    "He Investigated UFO Disclosure. Then Something Demonic Followed Him Home",
+  ]) assert.ok(classifyTopics(t).includes("ghosts"), t);
+});

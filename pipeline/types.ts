@@ -25,13 +25,15 @@ export type Tier = (typeof TIERS)[number];
 /**
  * Editorial flags that demote (never hide) a story in ranking.
  *   entertainment - fiction and its promotion: films, shows, games, books, stage, music, merch (hidden from the site)
- *   attraction    - Halloween attractions, ghost tours
+ *   attraction    - Halloween attractions, ghost tours, touring shows
+ *   gathering     - a convention, festival, expo or contest about the beat:
+ *                   the event, not a report from it (hidden from the site)
  *   weak-match    - found by a beat search but the headline names no beat keyword
  *   roundup       - perennial service copy: ranked listicles and travel guides
  *   notice        - an organisation's own housekeeping: podcast appearances,
  *                   webinars, calls for papers, tickets
  */
-export type Flag = "entertainment" | "attraction" | "weak-match" | "offbeat" | "roundup" | "notice";
+export type Flag = "entertainment" | "attraction" | "gathering" | "weak-match" | "offbeat" | "roundup" | "notice";
 
 export interface SourceConfig {
   id: string;

@@ -13,7 +13,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
   },
   {
     topic: "ghosts",
-    re: /\b(ghosts?|ghostly|haunted|hauntings\b|haunting\b(?=\s+(?:at|in|of|on|near|inside|that|which|was|is|began|continues|reported|claims?)\b|[.,;:!?"'\)]|$)|poltergeists?|paranormal|apparitions?|spirits? (?:of|in|at)|s[eé]ances?|exorcis(?:m|t|ts)|demonic|possession|ouija|medium(?:s|ship)?|afterlife|phantoms?|spectres?|specters?|shadow (?:people|figures?)|conjuring house|annabelle|warren collection|amityville|enfield|most haunted|ghost hunters?|ghost hunting|ghostly|(?:inhuman|evil|malevolent) spirits?|haunted dolls?|possessed dolls?|spirit box|met the devil|the devil at|satan(?:ic)?|demons?|overnight investigation|paranormal (?:investigat\w+|research\w+|group|team|society|activity))\b/i,
+    re: /\b(ghosts?|ghostly(?=\s+(?:figures?|presences?|apparitions?|shapes?|forms?|entit(?:y|ies)|voices?|footsteps?|footprints?|woman|women|man|men|child|children|monk|nun|face|faces|image|images|encounters?|activity|possessions?|rituals?|attacks?|forces?|beings?|happenings?|goings?|tales?|stor(?:y|ies)|legends?|hauntings?|spirits?)\b)|haunted|hauntings\b|haunting\b(?=\s+(?:at|in|of|on|near|inside|that|which|was|is|began|continues|reported|claims?)\b|[.,;:!?"'\)]|$)|poltergeists?|paranormal|apparitions?|spirits? (?:of|in|at)|s[eé]ances?|exorcis(?:m|t|ts)|(?:something|someone|anything)\s+(?:demonic|ghostly|unholy)|demonic(?=\s+(?:figures?|presences?|apparitions?|shapes?|forms?|entit(?:y|ies)|voices?|footsteps?|footprints?|woman|women|man|men|child|children|monk|nun|face|faces|image|images|encounters?|activity|possessions?|rituals?|attacks?|forces?|beings?|happenings?|goings?|tales?|stor(?:y|ies)|legends?|hauntings?|spirits?)\b)|possession|ouija|medium(?:s|ship)?|afterlife|phantoms?|spectres?|specters?|shadow (?:people|figures?)|conjuring house|annabelle|warren collection|amityville|enfield (?:poltergeist|haunting)|most haunted|ghost hunters?|ghost hunting|(?:inhuman|evil|malevolent) spirits?|haunted dolls?|possessed dolls?|spirit box|met the devil|the devil at|satan(?:ic)?|demons?|overnight investigation|paranormal (?:investigat\w+|research\w+|group|team|society|activity))\b/i,
   },
   {
     topic: "cryptids",
@@ -66,6 +66,11 @@ const ENTERTAINMENT: RegExp[] = [
   // "A film about Bigfoot" names no genre, so the adjective rule above misses it.
   // "films about" is never a verb phrase, so this cannot catch "witness films three orbs".
   /\bfilms? about\b/i,
+  // Promotion told through a performer: casting, roles, and what an actor "did
+  // for" a production. A performer describing their own sighting is not this,
+  // and does not match — that is a real claim and stays.
+  /\b(?:next role|role will be|cast as|reprises?|portrayals?|studied\b[^.]{0,40}\bfor ['"‘’“”]|for (?:the )?(?:upcoming )?(?:film|movie|series))\b/i,
+  /\b(?:frightfest|fantastic fest|sitges|sundance|cannes|tiff)\b/i,
   /*
    * Criticism. The geocoder has refused these since the beginning — a review
    * names places it is not reporting from — but the entertainment classifier
@@ -78,7 +83,7 @@ const ENTERTAINMENT: RegExp[] = [
   /\b(?:19|20)\d{2}\s+review\s*$/i,
   /\bsendup\b/i,
   // Games. A cryptid is a mascot in half of them.
-  /\b(?:apple arcade|steam page|xbox|playstation|nintendo|dlc|battle pass|gacha|azur lane|castlevania|5e supplements?|ttrpg)\b/i,
+  /\b(?:apple arcade|steam page|xbox|playstation|nintendo|dlc|battle pass|gacha|azur lane|castlevania|5e supplements?|ttrpg|board game|tabletop|cooperative [\w-]+ game|detective game)\b/i,
   // Music and club nights: Ben UFO is a DJ, Poltergeist 9000 a band.
   /\b(?:ben ufo|making music|open-air showcase|dj sets?|club night|residency|percussion)\b/i,
   /\b(?:tv|television|netflix|hulu|hbo|apple tv|streaming|animated|anthology|limited|drama|comedy|horror|reality|sci-?fi|hit|popular|paranormal tv) (?:shows?|series|specials?)\b/i,
@@ -217,6 +222,33 @@ const ATTRACTION =
   /\b(haunted (?:house|houses|attraction|attractions|trail|trails|hayride|maze|mansion tickets)|halloween (?:event|events|attraction|attractions)|ghost tours?|escape rooms?|theme parks?|scare (?:zone|zones|actors?)|fright fest|spirit halloween|halloween horror nights)\b/i;
 
 /**
+ * A convention, festival, expo or contest about the beat.
+ *
+ * These are the single most repetitive thing on the wire: one Exeter UFO
+ * Festival generated eight separate stories about its own schedule. The event
+ * is not a report from the event.
+ *
+ * The exception is a headline that carries an actual claim rather than
+ * logistics — a witness account given at a festival is still a witness
+ * account, and the niece of the Hill abduction couple speaking about 1961 is
+ * worth more than the vendor list that surrounds it.
+ */
+const GATHERING =
+  /\b(?:festival|fest|convention|expo|symposium|conclave|jamboree|comic[- ]?con|parade|gala|county fair|state fair|meet-?up|camp-?out|calling contest|conference|vendors?|tickets?|line-?up|registration|attendees?|keynote|speaks at|guest speakers?|cirque|horror-themed circus|las vegas show|touring show|immersive (?:event|experience))\b/i;
+
+/** A claim reported from the event, rather than the event's own housekeeping. */
+const GATHERING_NEWSWORTHY =
+  /\b(?:sighting|encounter(?:ed|s)?|spotted|saw\b|witness(?:ed|es)?|footage|new evidence|testimon\w+|reveals?|claim(?:s|ed)|hearings?|congress|senate|subcommittee|committee|pentagon)\b/i;
+
+export function isGathering(title: string): boolean {
+  if (!GATHERING.test(title)) return false;
+  // A book launched at the event is the event's merchandise. "Turns her Bigfoot
+  // sighting into books" names a sighting but is reporting a book.
+  if (/\binto (?:a )?books?\b|\bbook (?:launch|signing)\b/i.test(title)) return true;
+  return !GATHERING_NEWSWORTHY.test(title);
+}
+
+/**
  * Perennial service copy: "The 10 most haunted hotels in America, ranked",
  * "5 Haunted Places to Visit". Genuinely about the beat, and genuinely not
  * news — the same listicles are rewritten every autumn and, being fresh and
@@ -287,6 +319,7 @@ export function classifyFlags(title: string): Flag[] {
   if (isEntertainmentTitle(title) || isOffTopic(title)) out.push("entertainment");
   if (isOffbeat(title)) out.push("offbeat");
   if (ATTRACTION.test(title)) out.push("attraction");
+  if (isGathering(title)) out.push("gathering");
   if (isRoundup(title)) out.push("roundup");
   if (isNotice(title)) out.push("notice");
   return out;

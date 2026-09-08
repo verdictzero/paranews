@@ -98,7 +98,7 @@ const STAGED =
   /\b(?:brings?\b[^.]{0,60}\b(?:to|into)\b|on display|new home|goes on show|unveiled at|commonwealth games|olympics)\b/i;
 
 /** Flags the classifier already sets that mean this was never a sighting. */
-const NOT_SIGHTING_FLAGS: ReadonlySet<Flag> = new Set<Flag>(["attraction", "roundup", "notice"]);
+const NOT_SIGHTING_FLAGS: ReadonlySet<Flag> = new Set<Flag>(["attraction", "gathering", "roundup", "notice"]);
 
 /**
  * Whether a headline reports something witnessed, as opposed to something
