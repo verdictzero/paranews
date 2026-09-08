@@ -46,6 +46,11 @@ jobs:
           npm run typecheck
 
       - name: Ingest feeds
+        # Reddit is skipped when these are unset, so the site builds without them.
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
         run: npm run ingest
 
       # Reader copies and lead images for new stories. Budgeted so the run

@@ -5,7 +5,7 @@ import { publisherKey } from "./text.ts";
 export const TIER_WEIGHT: Record<Tier, number> = { official: 6, press: 4, genre: 2, unverified: 0.5 };
 
 /** Multiplicative demotions. Flagged stories stay visible but sink. */
-export const FLAG_PENALTY: Record<Flag, number> = { entertainment: 0.25, attraction: 0.5, "weak-match": 0.4, offbeat: 0.25, roundup: 0.3 };
+export const FLAG_PENALTY: Record<Flag, number> = { entertainment: 0.25, attraction: 0.5, "weak-match": 0.4, offbeat: 0.25, roundup: 0.3, notice: 0.3 };
 
 /** Hours added to a story's age so brand-new items don't divide by ~zero. */
 const AGE_OFFSET_HOURS = 6;

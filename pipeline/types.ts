@@ -11,6 +11,14 @@ export type Topic = (typeof TOPICS)[number];
  *   genre       - genre press, tabloids, enthusiast sites
  *   unverified  - social media, single-witness blogs
  */
+/**
+ * English-language Google News editions. Measured 2026-09-08 against the US and
+ * GB editions on the same query: AU, CA and IE each return 14-33 stories a week
+ * that neither carries. IN and ZA were probed and mostly echo US coverage.
+ */
+export const EDITIONS = ["US", "GB", "AU", "CA", "IE", "NZ", "IN", "ZA"] as const;
+export type Edition = (typeof EDITIONS)[number];
+
 export const TIERS = ["official", "press", "genre", "unverified"] as const;
 export type Tier = (typeof TIERS)[number];
 
@@ -20,8 +28,10 @@ export type Tier = (typeof TIERS)[number];
  *   attraction    - Halloween attractions, ghost tours
  *   weak-match    - found by a beat search but the headline names no beat keyword
  *   roundup       - perennial service copy: ranked listicles and travel guides
+ *   notice        - an organisation's own housekeeping: podcast appearances,
+ *                   webinars, calls for papers, tickets
  */
-export type Flag = "entertainment" | "attraction" | "weak-match" | "offbeat" | "roundup";
+export type Flag = "entertainment" | "attraction" | "weak-match" | "offbeat" | "roundup" | "notice";
 
 export interface SourceConfig {
   id: string;
@@ -40,7 +50,7 @@ export interface SourceConfig {
   /** Keep only reddit posts whose flair contains one of these. */
   flairs?: string[];
   /** Google News edition for google-news sources. */
-  edition?: "US" | "GB";
+  edition?: Edition;
   /** Tier applied to items from this feed. Google News items use the publisher lookup instead. */
   tier?: Tier;
   /** Fixed topic(s) for every item, or "auto" to classify by keywords. */

@@ -26,6 +26,21 @@ const SECTION_COUNT = 8;
       )
     }
   </section>
+  {
+    data.scholarly.length > 0 && (
+      <section class="section">
+        <div class="section-head">
+          <h2>Research &amp; records</h2>
+          <span class="more">Journals, universities and government</span>
+        </div>
+        <ul class="stories">
+          {data.scholarly.map((c) => (
+            <StoryRow cluster={c} variant="compact" />
+          ))}
+        </ul>
+      </section>
+    )
+  }
   <div class="grid">
     {
       TOPICS.map((t) => {

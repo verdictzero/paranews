@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { classifyFlags, classifyTopics, isOffTopic, isRoundup } from "./classify.ts";
+import { classifyFlags, classifyTopics, isNotice, isOffTopic, isRoundup } from "./classify.ts";
 
 test("topics from real headlines", () => {
   assert.deepEqual(classifyTopics("Pentagon seeks access to vast private UFO records collection"), ["ufo"]);
@@ -159,4 +159,28 @@ test("perennial listicles are flagged, real events with superlative names are no
   ]) assert.equal(isRoundup(t), false, t);
 
   assert.deepEqual(classifyFlags("The 10 most haunted hotels in America, ranked"), ["roundup"]);
+});
+
+test("an organisation's own housekeeping is flagged; a person speaking is still news", () => {
+  for (const t of [
+    "Dr. Marieta Pehlivanova Featured on the CMAJ Podcast",
+    "New Podcast Feature: Dr. Edward Kelly on A Wonderjunkie with Ryan Anderson",
+    "Dr. J. Kim Penberthy Presents on Psychedelics in Practice at APA 2026",
+    "Séance - Artist talk",
+    "Florida Frights: Join us on a haunted history tour of St. Augustine",
+  ]) assert.equal(isNotice(t), true, t);
+
+  for (const t of [
+    "Niece of N.H. couple famous for alien abduction story to speak at Exeter UFO Festival",
+    "Pentagon seeks access to vast private UFO records collection",
+    "New Research: Shorter Intervals Between Death and Birth Follow Unexpected Deaths",
+  ]) assert.equal(isNotice(t), false, t);
+});
+
+test("'close encounter' is the UFO idiom only in its idiomatic forms", () => {
+  assert.ok(classifyTopics("Why 250 British officers finally spoke about 'close encounters'").includes("ufo"));
+  assert.ok(classifyTopics("Close Encounters of the Third Kind returns to cinemas").includes("ufo"));
+  // Ordinary English: a close encounter with an animal is not a UFO report.
+  assert.ok(!classifyTopics("Doorbell camera captures Montana woman's close encounter with mama moose").includes("ufo"));
+  assert.ok(!classifyTopics("Hiker describes close encounter with a bear on the trail").includes("ufo"));
 });

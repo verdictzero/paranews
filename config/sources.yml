@@ -114,6 +114,118 @@ sources:
     topics: [fortean]
     enabled: true
 
+  # ── Beat gaps found by probing candidate queries against the archive on
+  # 2026-09-08 and counting on-beat headlines the site had never seen. Rejected
+  # after probing, for the record: "mystery drones" (returns airport closures,
+  # which are aviation news); "ghost ship" and bare "telepathy" (a beer brand
+  # and an album title); "haunted asylum/prison/lighthouse" and "ball lightning"
+  # (one item between them). ──
+  - id: gn-abduction-us
+    name: Google News · Abduction & close encounters
+    kind: google-news
+    edition: US
+    query: '"alien abduction" OR "alien abductions" OR "abducted by aliens" OR "missing time" OR "close encounter" OR "close encounters"'
+    topics: [ufo]
+    enabled: true
+  - id: gn-abduction-gb
+    name: Google News · Abduction & close encounters (UK edition)
+    kind: google-news
+    edition: GB
+    query: '"alien abduction" OR "alien abductions" OR "abducted by aliens" OR "missing time" OR "close encounter" OR "close encounters"'
+    topics: [ufo]
+    enabled: true
+  - id: gn-cryptids-c-us
+    name: Google News · Cryptids (regional names)
+    kind: google-news
+    edition: US
+    # Names the main cryptid query leaves out. Bare "champ" and "goat man" are
+    # ambiguous, so both are quoted into phrases.
+    query: dogman OR thunderbird OR wendigo OR yowie OR "black eyed children" OR "lizard man" OR "goat man" OR ogopogo OR "champ sighting"
+    topics: [cryptids]
+    enabled: true
+  - id: gn-cryptids-c-gb
+    name: Google News · Cryptids (regional names, UK edition)
+    kind: google-news
+    edition: GB
+    query: dogman OR thunderbird OR wendigo OR yowie OR "black eyed children" OR "lizard man" OR "goat man" OR ogopogo OR "champ sighting"
+    topics: [cryptids]
+    enabled: true
+  - id: gn-fortean-c-us
+    name: Google News · Psi & mutilations
+    kind: google-news
+    edition: US
+    query: '"cattle mutilation" OR "animal mutilation" OR clairvoyance OR precognition OR "psychic ability" OR "extrasensory perception"'
+    topics: [fortean]
+    enabled: true
+
+  # ── Other English-language editions. Measured 2026-09-08 against the US and GB
+  # results for the same query: each of these returns stories the two original
+  # editions never carry (UFO: AU 14, CA 21, IE 33 in one week). IN and ZA were
+  # probed too and mostly echo US coverage, so they are not worth a slot. ──
+  - id: gn-ufo-au
+    name: Google News · UFO/UAP (Australian edition)
+    kind: google-news
+    edition: AU
+    query: 'ufo OR uap OR "unidentified anomalous" OR "unidentified aerial" OR AARO OR "flying saucer"'
+    topics: [ufo]
+    enabled: true
+  - id: gn-cryptids-au
+    name: Google News · Cryptids (Australian edition)
+    kind: google-news
+    edition: AU
+    query: 'bigfoot OR sasquatch OR cryptid OR cryptids OR cryptozoology OR "loch ness monster" OR nessie OR mothman OR chupacabra OR "lake monster" OR "skunk ape" -brewing'
+    topics: [cryptids]
+    enabled: true
+  - id: gn-ghosts-au
+    name: Google News · Hauntings (Australian edition)
+    kind: google-news
+    edition: AU
+    query: 'poltergeist OR "paranormal investigators" OR "paranormal investigation" OR "ghost sighting" OR "ghost sightings" OR "ghost hunters" OR "ghost hunting" OR exorcism'
+    topics: [ghosts]
+    enabled: true
+  - id: gn-ufo-ca
+    name: Google News · UFO/UAP (Canadian edition)
+    kind: google-news
+    edition: CA
+    query: 'ufo OR uap OR "unidentified anomalous" OR "unidentified aerial" OR AARO OR "flying saucer"'
+    topics: [ufo]
+    enabled: true
+  - id: gn-cryptids-ca
+    name: Google News · Cryptids (Canadian edition)
+    kind: google-news
+    edition: CA
+    query: 'bigfoot OR sasquatch OR cryptid OR cryptids OR cryptozoology OR "loch ness monster" OR nessie OR mothman OR chupacabra OR "lake monster" OR "skunk ape" -brewing'
+    topics: [cryptids]
+    enabled: true
+  - id: gn-ghosts-ca
+    name: Google News · Hauntings (Canadian edition)
+    kind: google-news
+    edition: CA
+    query: 'poltergeist OR "paranormal investigators" OR "paranormal investigation" OR "ghost sighting" OR "ghost sightings" OR "ghost hunters" OR "ghost hunting" OR exorcism'
+    topics: [ghosts]
+    enabled: true
+  - id: gn-ufo-ie
+    name: Google News · UFO/UAP (Irish edition)
+    kind: google-news
+    edition: IE
+    query: 'ufo OR uap OR "unidentified anomalous" OR "unidentified aerial" OR AARO OR "flying saucer"'
+    topics: [ufo]
+    enabled: true
+  - id: gn-cryptids-ie
+    name: Google News · Cryptids (Irish edition)
+    kind: google-news
+    edition: IE
+    query: 'bigfoot OR sasquatch OR cryptid OR cryptids OR cryptozoology OR "loch ness monster" OR nessie OR mothman OR chupacabra OR "lake monster" OR "skunk ape" -brewing'
+    topics: [cryptids]
+    enabled: true
+  - id: gn-ghosts-ie
+    name: Google News · Hauntings (Irish edition)
+    kind: google-news
+    edition: IE
+    query: 'poltergeist OR "paranormal investigators" OR "paranormal investigation" OR "ghost sighting" OR "ghost sightings" OR "ghost hunters" OR "ghost hunting" OR exorcism'
+    topics: [ghosts]
+    enabled: true
+
   # ── Direct feeds: real URLs, snippets and images (verified live 2026-09-06) ──
   - id: the-debrief
     name: The Debrief

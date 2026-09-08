@@ -19,9 +19,11 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
     <h2>Reader copies</h2>
     <p>For each story the site keeps a reader-mode copy of one outlet's article: the text a browser's reader view would show, its lead image reduced to a thumbnail, and nothing else from the page. "Read here" opens it over the front page; the original is linked at the top and bottom of every copy. Pages that ask not to be crawled, pages behind a bot wall and pages with fewer than 150 words of text are skipped, and the story's next outlet is tried instead.</p>
     <p>It carries no entertainment: films, television, games, books, stage and music are filtered out by headline keywords and by a list of entertainment outlets. Two filters catch the rest of the noise — a beat word used as a ticker, product or team name ("NASDAQ: UFO"), and a search hit whose headline names nothing from any beat. Together they removed {data.hiddenCount} {data.hiddenCount === 1 ? "story" : "stories"} from the current window. A story is hidden only when more than half the outlets covering it trip a filter.</p>
+    <p>Three more signals demote rather than hide: Halloween attractions and ghost tours; perennial service copy ("The 10 most haunted hotels in America, ranked"), which is on the beat but is rewritten every autumn; and an organisation's own housekeeping, like a researcher's podcast appearance or a call for papers.</p>
 
     <h2>Sources</h2>
-    <p>{enabled} feeds are polled: Google News topic searches for each beat, plus direct feeds from genre outlets and science desks. Three consecutive failures quarantine a source, a daily probe lets it heal, and a GitHub issue is opened. The <a href={href("sources/")}>sources page</a> shows the live state.</p>
+    <p>{enabled} sources are polled: Google News searches for each beat across the US, UK, Australian, Canadian and Irish editions, plus direct feeds from genre outlets, science desks, sceptics, university research units and journals. Three consecutive failures quarantine a source, a daily probe lets it heal, and a GitHub issue is opened. The <a href={href("sources/")}>sources page</a> shows the live state.</p>
+    <p>Reddit is polled only through the application-only OAuth route Reddit sanctions, and only when credentials are configured. Its robots.txt disallows everything, including the RSS feeds, and its API rules forbid the browser user agent this site sends to ordinary feeds. A Reddit post that links to a publisher is filed under that publisher and graded by its tier; a post that is someone's own account of an experience stays unverified and has to clear a much higher bar to appear at all.</p>
 
     <h2>Beats</h2>
     <ul>
@@ -49,6 +51,8 @@ const enabled = data.sources.sources.filter((s) => s.enabled).length;
 
     <h2>Ranking</h2>
     <p>Score = publisher weight × corroboration ÷ age. Weight sums the best tier of each independent write-up, corroboration grows logarithmically with the number of write-ups, and age is measured from the latest coverage, so a developing story stays up. The front page never shows more than two consecutive stories from one beat.</p>
+    <p>An independent write-up is not simply a distinct headline. Two reports count as one when they share a headline <i>or</i> share a publisher: twenty affiliates running one syndicated story are a single write-up, and so are three rewrites of one sighting by the same tabloid.</p>
+    <p>Scholarly sources are rare and are covered once, so they score far below stories that many outlets picked up. Rather than weight the ranking in their favour, they get their own column on the front page.</p>
 
     <h2>Archive</h2>
     <p>Every item ever seen is committed to the repository as JSON, one file per publication day, so the state of the site on any date can be reconstructed from git history. Reader copies and their images are committed too and never removed. The front page and beats show the last 30 days; the <a href={href("archive/")}>archive</a> lists every story with a reader copy, by month.</p>

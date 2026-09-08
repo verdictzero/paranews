@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
-import { TIERS, TOPICS, type SourceConfig, type SourcesFile, type Tier, type Topic } from "./types.ts";
+import { EDITIONS, TIERS, TOPICS, type Edition, type SourceConfig, type SourcesFile, type Tier, type Topic } from "./types.ts";
 import { publisherKey } from "./text.ts";
 import { listingUrl } from "./reddit.ts";
 
@@ -23,6 +23,7 @@ export const MAX_GN_QUERY_LENGTH = 190;
 export const WINDOW_DAYS = 30;
 
 const TIER_SET = new Set<string>(TIERS);
+const EDITION_SET = new Set<string>(EDITIONS);
 const TOPIC_SET = new Set<string>(TOPICS);
 
 let cached: SourcesFile | undefined;
@@ -49,8 +50,8 @@ function validate(file: SourcesFile): void {
     if (s.kind === "google-news" && !s.query) throw new Error(`sources.yml: ${s.id}: google-news sources need a query`);
     if (s.kind === "google-news" && s.query!.length > MAX_GN_QUERY_LENGTH)
       throw new Error(`sources.yml: ${s.id}: query is ${s.query!.length} chars; Google News drops the when: filter past ~${MAX_GN_QUERY_LENGTH}. Split it.`);
-    if (s.kind === "google-news" && s.edition && s.edition !== "US" && s.edition !== "GB")
-      throw new Error(`sources.yml: ${s.id}: edition must be US or GB`);
+    if (s.kind === "google-news" && s.edition && !EDITION_SET.has(s.edition))
+      throw new Error(`sources.yml: ${s.id}: edition must be one of ${EDITIONS.join(", ")}`);
     if (s.tier && !TIER_SET.has(s.tier)) throw new Error(`sources.yml: ${s.id}: bad tier "${s.tier}"`);
     if (s.kind === "rss" && !s.tier) throw new Error(`sources.yml: ${s.id}: rss sources need a tier`);
     if (s.kind === "reddit" && !s.tier) throw new Error(`sources.yml: ${s.id}: reddit sources need a tier for their self posts`);
@@ -69,13 +70,10 @@ function validate(file: SourcesFile): void {
   for (const p of file.publishers.entertainment_patterns) new RegExp(p, "i");
 }
 
-const GN_EDITIONS = { US: { hl: "en-US", gl: "US", ceid: "US:en" }, GB: { hl: "en-GB", gl: "GB", ceid: "GB:en" } };
-
 /** Google News RSS search URL for a query. `when:7d` keeps each poll to recent coverage. */
-export function googleNewsUrl(query: string, edition: "US" | "GB" = "US"): string {
-  const e = GN_EDITIONS[edition];
+export function googleNewsUrl(query: string, edition: Edition = "US"): string {
   const q = encodeURIComponent(`${query} when:7d`);
-  return `https://news.google.com/rss/search?q=${q}&hl=${e.hl}&gl=${e.gl}&ceid=${e.ceid}`;
+  return `https://news.google.com/rss/search?q=${q}&hl=en-${edition}&gl=${edition}&ceid=${edition}:en`;
 }
 
 export function sourceUrl(s: SourceConfig): string {

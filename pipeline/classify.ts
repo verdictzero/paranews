@@ -9,7 +9,7 @@ import type { Flag, Topic } from "./types.ts";
 const TOPIC_RULES: { topic: Topic; re: RegExp }[] = [
   {
     topic: "ufo",
-    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|extraterrestrials?|alien (?:spacecraft|craft|abduction|encounter|contact|life|bod(?:y|ies)|mummies|technology)|space aliens?|roswell|area 51|close encounters?|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|the aliens|aliens (?:are|exist|among|visit\w*|contact\w*)|non-?human (?:intelligence|biologics?|craft)|nhi|interstellar (?:object|visitor)s?|3i\/atlas|oumuamua|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
+    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|extraterrestrials?|alien (?:spacecraft|craft|abduction|encounter|contact|life|bod(?:y|ies)|mummies|technology)|space aliens?|roswell|area 51|close encounters\b|close encounter of the|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|the aliens|aliens (?:are|exist|among|visit\w*|contact\w*)|non-?human (?:intelligence|biologics?|craft)|nhi|interstellar (?:object|visitor)s?|3i\/atlas|oumuamua|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
   },
   {
     topic: "ghosts",
@@ -189,6 +189,22 @@ export function isRoundup(title: string): boolean {
 }
 
 /**
+ * An organisation talking about itself: a researcher's podcast appearance, a
+ * webinar, a call for papers, an artist talk. Scholarly feeds carry a lot of
+ * this, and it was three of the seven official-tier stories on the site.
+ *
+ * Deliberately narrow. "to speak at" is NOT here: "Niece of N.H. couple famous
+ * for alien abduction story to speak at Exeter UFO Festival" is a real story,
+ * and it was a front-page one.
+ */
+const NOTICE =
+  /\b(?:featured on|appears? on|presents? (?:on|at)\b|podcast feature|artist talk|webinar|call for papers|registration (?:is )?open|save the date|annual (?:meeting|conference)|newsletter|now accepting|join us|tickets? (?:are )?(?:on sale|available)|in memoriam)\b/i;
+
+export function isNotice(title: string): boolean {
+  return NOTICE.test(title);
+}
+
+/**
  * Not paranormal news under any reading: serialized fiction and its fandom.
  * "reincarnation" and "possession" alone pull in whole anime seasons. Dropped
  * at ingest so they never reach the archive.
@@ -210,5 +226,6 @@ export function classifyFlags(title: string): Flag[] {
   if (isOffbeat(title)) out.push("offbeat");
   if (ATTRACTION.test(title)) out.push("attraction");
   if (isRoundup(title)) out.push("roundup");
+  if (isNotice(title)) out.push("notice");
   return out;
 }

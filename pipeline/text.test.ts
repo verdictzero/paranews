@@ -58,3 +58,16 @@ test("truncate cuts on a word boundary with an ellipsis", () => {
   const t = truncate("one two three four five six seven eight nine ten", 24);
   assert.equal(t, "one two three four five…");
 });
+
+test("a publisher whose own name contains ' - ' is still stripped", () => {
+  assert.equal(
+    stripPublisherSuffix(
+      "Ask the Experts: What Is a Near-Death Experience? - ABC News - Breaking News, Latest News and Videos",
+      "ABC News - Breaking News, Latest News and Videos",
+    ),
+    "Ask the Experts: What Is a Near-Death Experience?",
+  );
+  assert.equal(stripPublisherSuffix("Bigfoot spotted in Maine - Fox News", "Fox News"), "Bigfoot spotted in Maine");
+  // A dash that is part of the headline is left alone.
+  assert.equal(stripPublisherSuffix("Roswell - the untold story", "Fox News"), "Roswell - the untold story");
+});

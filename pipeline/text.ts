@@ -45,12 +45,17 @@ export function cleanTitle(raw: string): string {
   );
 }
 
-/** Google News appends " - Publisher" to every headline. Strip it only when it really is the publisher. */
+/**
+ * Google News appends " - Publisher" to every headline. Strip it only when it
+ * really is the publisher — and try every " - " from the right, because some
+ * outlets carry one in their own name ("ABC News - Breaking News, Latest News
+ * and Videos"), which leaves the last separator in the middle of it.
+ */
 export function stripPublisherSuffix(title: string, publisher: string): string {
-  const idx = title.lastIndexOf(" - ");
-  if (idx <= 0) return title;
-  const suffix = title.slice(idx + 3);
-  if (foldPublisher(suffix) === foldPublisher(publisher)) return title.slice(0, idx).trim();
+  const target = foldPublisher(publisher);
+  for (let idx = title.lastIndexOf(" - "); idx > 0; idx = title.lastIndexOf(" - ", idx - 1)) {
+    if (foldPublisher(title.slice(idx + 3)) === target) return title.slice(0, idx).trim();
+  }
   return title;
 }
 

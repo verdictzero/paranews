@@ -12,7 +12,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { CACHE_DIR, WINDOW_DAYS } from "../pipeline/config.ts";
 import { ShardStore } from "../pipeline/store.ts";
 import { buildClusters, dedupeMembers } from "../pipeline/cluster.ts";
-import { isVisible, refreshFlags } from "../pipeline/visibility.ts";
+import { isVisible, refreshItems } from "../pipeline/visibility.ts";
 import { googleNewsArticleId, resolveGoogleNewsUrl } from "../pipeline/gnews.ts";
 import { fetchPage } from "../pipeline/fetch.ts";
 import { RobotsCache } from "../pipeline/robots.ts";
@@ -50,7 +50,7 @@ const now = new Date();
 const store = new ShardStore();
 store.loadWindow(now);
 const cutoff = new Date(now.getTime() - WINDOW_DAYS * 86_400_000).toISOString();
-const items = refreshFlags(store.all().filter((i) => i.published_at >= cutoff));
+const items = refreshItems(store.all().filter((i) => i.published_at >= cutoff));
 const byId = new Map(items.map((i) => [i.id, i]));
 const clusters = buildClusters(items, { now })
   .filter(isVisible)

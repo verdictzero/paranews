@@ -4,7 +4,7 @@ import { ShardStore } from "../../pipeline/store.ts";
 import { buildClusters } from "../../pipeline/cluster.ts";
 import { byScore, interleave } from "../../pipeline/rank.ts";
 import { loadHealth } from "../../pipeline/health.ts";
-import { isVisible, refreshFlags } from "../../pipeline/visibility.ts";
+import { isVisible, refreshItems } from "../../pipeline/visibility.ts";
 import { loadAllArticles, type ArticleRecord } from "../../pipeline/articles.ts";
 import { truncate } from "../../pipeline/text.ts";
 import { TOPICS, type Cluster, type HealthFile, type Item, type MetaFile, type SourceConfig, type SourcesFile, type Tier, type Topic } from "../../pipeline/types.ts";
@@ -43,6 +43,7 @@ export const TIER_BLURB: Record<Tier, string> = {
 /** Stories older than this never make the front page, however well they score. */
 const FRONT_PAGE_DAYS = 7;
 const FRONT_PAGE_COUNT = 12;
+const SCHOLARLY_COUNT = 6;
 
 export interface ArchiveMonth {
   /** YYYY-MM */
@@ -63,6 +64,14 @@ export interface SiteData {
   /** Clusters in the window that the entertainment filter removed. */
   hiddenCount: number;
   top: Cluster[];
+  /**
+   * Official-tier stories, newest first. They are rare and score far below the
+   * front page — 0.009 to 0.027 against a 0.476 lead story — because scoring
+   * rewards how widely a story is covered, and a preprint or a university
+   * research note is covered once. Ranking them up would be dishonest; giving
+   * them their own column is what a newspaper does.
+   */
+  scholarly: Cluster[];
   byTopic: Record<Topic, Cluster[]>;
   /** Stories with a reader copy, by month, newest month first. Kept for good. */
   archive: ArchiveMonth[];
@@ -81,7 +90,7 @@ export function getSiteData(): SiteData {
   const now = new Date();
   const store = new ShardStore();
   for (const date of store.availableDates()) store.load(date);
-  const all = refreshFlags(store.all());
+  const all = refreshItems(store.all());
   const items = new Map(all.map((i) => [i.id, i]));
   const articles = new Map(loadAllArticles().map((a) => [a.id, a]));
 
@@ -94,6 +103,10 @@ export function getSiteData(): SiteData {
   const fresh = new Date(now.getTime() - FRONT_PAGE_DAYS * 86_400_000).toISOString();
   const top = interleave(clusters.filter((c) => c.latest_published >= fresh).slice(0, FRONT_PAGE_COUNT * 3)).slice(0, FRONT_PAGE_COUNT);
   const byTopic = Object.fromEntries(TOPICS.map((t) => [t, clusters.filter((c) => c.topics.includes(t))])) as Record<Topic, Cluster[]>;
+  const scholarly = clusters
+    .filter((c) => c.tier === "official" && !c.flags.includes("notice"))
+    .sort((a, b) => b.latest_published.localeCompare(a.latest_published))
+    .slice(0, SCHOLARLY_COUNT);
 
   const archived = everything.filter((c) => isVisible(c) && c.items.some((id) => articles.has(id)));
   const archive = groupByMonth(archived);
@@ -101,7 +114,7 @@ export function getSiteData(): SiteData {
   const storyPages = [...clusters, ...archived.filter((c) => !pageIds.has(c.id))];
 
   const meta = existsSync(META_FILE) ? (JSON.parse(readFileSync(META_FILE, "utf8")) as MetaFile) : undefined;
-  cache = { now, items, articles, clusters, hiddenCount, top, byTopic, archive, storyPages, meta, health: loadHealth(), sources: loadSources() };
+  cache = { now, items, articles, clusters, hiddenCount, top, scholarly, byTopic, archive, storyPages, meta, health: loadHealth(), sources: loadSources() };
   return cache;
 }
 

@@ -9,7 +9,7 @@ import { CACHE_DIR } from "../pipeline/config.ts";
 import { ShardStore } from "../pipeline/store.ts";
 import { buildClusters } from "../pipeline/cluster.ts";
 import { byScore } from "../pipeline/rank.ts";
-import { isVisible, refreshFlags } from "../pipeline/visibility.ts";
+import { isVisible, refreshItems } from "../pipeline/visibility.ts";
 
 const args = process.argv.slice(2);
 const flag = (name: string): string | undefined => {
@@ -22,7 +22,7 @@ const limit = Number(flag("limit") ?? 40);
 const now = new Date();
 const store = new ShardStore();
 store.loadWindow(now);
-const items = refreshFlags(store.all());
+const items = refreshItems(store.all());
 const byId = new Map(items.map((i) => [i.id, i]));
 const everything = buildClusters(items, { now, threshold }).sort(byScore);
 const visible = everything.filter(isVisible);
