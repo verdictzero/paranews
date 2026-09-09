@@ -406,3 +406,18 @@ test("building a moon base is engineering; finding one is not", () => {
   // An alien claim overrides the engineering guard.
   assert.ok(beat("Tim Gallaudet Says Guy Who Claims Aliens Built Moon Towers Has Found Atlantis").includes("exoarchaeology"));
 });
+
+test("Roswell is a town in Georgia as well as an incident in New Mexico", () => {
+  // The town has a fire department and a newspaper; neither is UFO news.
+  assert.deepEqual(classifyTopics("Hot Dog! Firefighters Rescue Roswell Pup"), []);
+  assert.deepEqual(classifyTopics("The End of the Roswell Daily Record?"), []);
+
+  // The incident, and the name used as a byword for it, both still count.
+  for (const t of [
+    "Canton, Ohio 'ROSWELL DEBRIS CLAIM!' The Mystery of the Timken Furnace",
+    "MEXICO'S 'ROSWELL?' The Disputed 1948 Recovery and \"Tomato Man\" Photographs",
+    "Today in History: A Local Newspaper Kicks Off Roswell's UFO Mania",
+    "The Rendlesham UFO: The British Roswell visited by alien orbs",
+    "New witnesses come forward on the Roswell incident",
+  ]) assert.ok(classifyTopics(t).includes("ufo"), t);
+});

@@ -80,7 +80,7 @@ src/                      Astro site: front page, beat pages, story pages, archi
 
 ## One-time setup
 
-The schedule runs on whichever branch is the repository's **default branch** — the workflows follow it by name, so it can be `main` or anything else. (This branch became the default when it was pushed to the empty repository; rename it to `main` under Settings → Branches if you prefer, nothing else needs to change.)
+The schedule runs on whichever branch is the repository's **default branch** — the workflows follow it by name rather than hard-coding one, so changing the default branch is the only step needed to move publishing. Ingest commits land on that branch, and feature branches get `ci.yml` instead.
 
 1. Settings → Pages → **Source: GitHub Actions**. The workflow also tries to enable this itself (`actions/configure-pages` with `enablement: true`); if the first run's deploy job fails, flip the setting and re-run.
 2. Actions → *Update site* → **Run workflow** for an immediate first publish. After that it runs itself every 30 minutes.
