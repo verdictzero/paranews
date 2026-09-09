@@ -1,6 +1,6 @@
 # Paranews
 
-A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids, high strangeness, anomalous archaeology and out-of-place artifacts. It reads ~83 sources every half hour, folds the same story from different outlets into one entry, grades every entry by *who* published it, ranks the result and publishes a static site to GitHub Pages. It writes nothing of its own: no generated summaries, no language model anywhere in the pipeline. Each story keeps a reader-mode copy of one outlet's article, opened in place with the original linked.
+A self-updating news wire for the paranormal: UFO/UAP, hauntings, cryptids, high strangeness, anomalous archaeology and out-of-place artifacts. It reads ~83 sources several times a day, folds the same story from different outlets into one entry, grades every entry by *who* published it, ranks the result and publishes a static site to GitHub Pages. It writes nothing of its own: no generated summaries, no language model anywhere in the pipeline. Each story keeps a reader-mode copy of one outlet's article, opened in place with the original linked.
 
 **Live site:** https://news.asr.institute/
 
@@ -83,7 +83,9 @@ src/                      Astro site: front page, beat pages, story pages, archi
 The schedule runs on whichever branch is the repository's **default branch** — the workflows follow it by name rather than hard-coding one, so changing the default branch is the only step needed to move publishing. Ingest commits land on that branch, and feature branches get `ci.yml` instead.
 
 1. Settings → Pages → **Source: GitHub Actions**. The workflow also tries to enable this itself (`actions/configure-pages` with `enablement: true`); if the first run's deploy job fails, flip the setting and re-run.
-2. Actions → *Update site* → **Run workflow** for an immediate first publish. After that it runs itself every 30 minutes.
+2. Actions → *Update site* → **Run workflow** for an immediate first publish. After that it runs itself on a schedule — see below for what that actually means.
+
+**The schedule is a request, not a guarantee.** The cron asks for every 30 minutes. GitHub deprioritises `schedule` events heavily and drops them under load, and measured over a 50-hour window this repository received **12%** of the runs it asked for: 13 runs, a median gap of just under 4 hours, and a worst gap of 10. Nothing is broken when this happens — dropped runs are silent by design and the next one catches up, since ingest is incremental. Push and *Run workflow* are always delivered, so a merge publishes immediately. If the wire ever needs a dependable cadence, the fix is an external trigger hitting `repository_dispatch` rather than a tighter cron; shortening the interval does not help, because it is the delivery rate that is being throttled, not the interval.
 
 **Custom domain?** Add it under Settings → Pages. The workflow reads the origin and base path GitHub reports, so nothing in the code changes.
 
