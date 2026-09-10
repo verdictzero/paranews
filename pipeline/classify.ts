@@ -9,7 +9,11 @@ import type { Flag, Topic } from "./types.ts";
 const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
   {
     topic: "ufo",
-    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|extraterrestrials?|alien (?:spacecraft|craft|abduction|encounter|contact|life|bod(?:y|ies)|mummies|technology)|space aliens?|roswell(?:'s|’s)?\s+(?:incident|crash|ufo|uap|slides?|debris|1947|aliens?|wreckage|coverups?|cover-ups?|mania|myster\w+|saucers?|recovery|witness\w*|files?|museum|festival)|(?:[a-z]+(?:'s|’s)|the [a-z]+)\s*['"‘’“”]?\s*roswell\b|area 51|close encounters\b|close encounter of the|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|the aliens|aliens (?:are|exist|among|visit\w*|contact\w*)|non-?human (?:intelligence|biologics?|craft)|nhi|interstellar (?:object|visitor)s?|3i\/atlas|oumuamua|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
+    // "Close encounters of the X kind" is a headline formula the wire uses for
+    // anything — golf, moose, bears, the AfD. Only the numbered kinds are the
+    // Spielberg reference, so any other kind is somebody else's story; a bare
+    // "close encounters" still counts, and "up-close encounters" never does.
+    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|extraterrestrials?|alien (?:spacecraft|craft|abduction|encounter|contact|life|bod(?:y|ies)|mummies|technology)|space aliens?|roswell(?:'s|’s)?\s+(?:incident|crash|ufo|uap|slides?|debris|1947|aliens?|wreckage|coverups?|cover-ups?|mania|myster\w+|saucers?|recovery|witness\w*|files?|museum|festival)|(?:[a-z]+(?:'s|’s)|the [a-z]+)\s*['"‘’“”]?\s*roswell\b|area 51|close encounters? of the (?:first|second|third|fourth|fifth|3rd|4th|5th) kind|(?<!up[- ])close encounters(?! of the )|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|the aliens|aliens (?:are|exist|among|visit\w*|contact\w*)|non-?human (?:intelligence|biologics?|craft)|nhi|interstellar (?:object|visitor)s?|3i\/atlas|oumuamua|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
   },
   {
     topic: "ghosts",
@@ -206,7 +210,14 @@ const OFFBEAT: RegExp[] = [
   /\bfor sale\b/i,
   /\b(?:deal alert|coupon|discount code|promo code|% off|lowest price|price drop|black friday|prime day|labor day (?:sale|deals?)|best deals?)\b/i,
   /\b(?:smartphone|camera module|device design|leaked design|specs? leak|firmware|android devices?|iphone \d+|galaxy s\d+|iqoo|xiaomi|oneplus|realme|patch \d|patch notes|mmr|meta guide|codes \(|\(codes\)|redeem codes?|cards? guide|tier list)\b/i,
-  /\b(?:wrestling|folkstyle|soccer|football|basketball|hockey|baseball|volleyball|lacrosse|rugby|cricket|nfl|nba|nhl|mlb|ncaa|bullpups|varsity|junior varsity|prep (?:girls|boys)|high school (?:girls|boys)|box score|final score|touchdown|playoffs?)\b/i,
+  /*
+   * Sport. Golf borrows the beat harder than the rest of it: a Solheim Cup
+   * preview ran as "Close encounters of the golfing kind", GolfWRX files
+   * "WITB" gear posts, and the Thunderbird Collegiate is a college fixture.
+   * The tournament names are here because those headlines need not say golf.
+   * "Bogey" is not, and must not be: on this beat it is a radar contact.
+   */
+  /\b(?:wrestling|folkstyle|soccer|football|basketball|hockey|baseball|volleyball|lacrosse|rugby|cricket|golf(?:ers?|ing)?|nfl|nba|nhl|mlb|ncaa|pga|lpga|ryder cup|solheim cup|witb|tee times?|bullpups|varsity|junior varsity|prep (?:girls|boys)|high school (?:girls|boys)|box score|final score|touchdown|playoffs?)\b/i,
   /\b(?:cabin crew|flight attendants?|pilots?) union\b/i,
   /\blufthansa\b/i,
   /\b(?:coolers?|tumblers?|drinkware|water bottles?|rambler)\b/i,

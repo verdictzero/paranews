@@ -125,6 +125,32 @@ test("offbeat: tickers, products and teams that borrow a beat word", () => {
   for (const t of no) assert.ok(!classifyFlags(t).includes("offbeat"), t);
 });
 
+test("sport borrowing the beat: golf and the close-encounters formula", () => {
+  const yes = [
+    "Close encounters of the golfing kind as Europe and USA clash in the Solheim Cup",
+    "Thomas Aiken WITB",
+    "Ryder Cup 2026: Europe name their final wildcard picks",
+    "PGA Tour pro on the strange lights he saw over the fairway",
+    "LPGA tee times for round three",
+  ];
+  for (const t of yes) assert.ok(classifyFlags(t).includes("offbeat"), t);
+  // A radar bogey is a beat word, not a golf score, and never reads as sport.
+  assert.deepEqual(classifyFlags("Navy radar tracked the bogey for 20 minutes, pilot says"), []);
+});
+
+test("only the numbered kinds are the close-encounters reference", () => {
+  assert.deepEqual(classifyTopics("Close Encounters of the Third Kind at 50: the sighting that started it"), ["ufo"]);
+  assert.deepEqual(classifyTopics("Airline pilot reports a close encounter of the fourth kind over Nevada"), ["ufo"]);
+  assert.deepEqual(classifyTopics("Why 250 British officers finally spoke about 'close encounters'"), ["ufo"]);
+  assert.deepEqual(classifyTopics("Witness describes close encounters near Rendlesham Forest"), ["ufo"]);
+  // The formula, and the hyphenated near-miss, name no beat: both fall to weak-match.
+  assert.deepEqual(classifyTopics("Close encounters of the golfing kind as Europe and USA clash in the Solheim Cup"), []);
+  assert.deepEqual(classifyTopics("Close Encounters of the Kardashian Kind (2013)"), []);
+  assert.deepEqual(classifyTopics("Chase Sanctuary: Up-Close Encounters With Lemurs, Otters and More"), []);
+  // Singular "close encounter with" was never a beat match, and still is not.
+  assert.deepEqual(classifyTopics("Doorbell camera captures Montana woman's close encounter with mama moose"), []);
+});
+
 test("flags demote entertainment and attractions", () => {
   assert.deepEqual(classifyFlags("Wildman: Bigfoot will go John Wick in bloody revenge thriller"), ["entertainment"]);
   // Both: a ranked listicle that is also fiction promotion.
