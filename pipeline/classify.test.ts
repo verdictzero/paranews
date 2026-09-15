@@ -299,6 +299,30 @@ test("temporal anomalies: time is the claim, not the figure of speech", () => {
   ]) assert.equal(temporal(t), false, t);
 });
 
+test("a vendor's quantum roadmap is commerce, not physics", () => {
+  // The first live ingest put 45 quantum headlines on the science beat and
+  // about half were a product launch, a funding round or a security webinar.
+  const hidden = (t: string) => classifyFlags(t).includes("offbeat");
+  for (const t of [
+    "IonQ Launches Superion Product Line: Industry-Leading, Upgradeable Platform Designed to Scale",
+    "D-Wave Quantum Finalizes Definitive Agreement with U.S. Department of Commerce",
+    "For banks, quantum computing is both a threat to security and a chance to build resilience",
+    "The Coming Q-Day: US states largely unprepared as quantum computing threats loom",
+    "Can IBM's Latest Innovation Hub Advance Quantum Computing Ecosystem?",
+    "BigBear.ai vs. IonQ: Weighing Whether to Invest in the AI Company or the Quantum One",
+    "Maiora Supernova 50 Yacht Makes More of Less Than 500 GT",
+  ]) assert.equal(hidden(t), true, t);
+
+  // No vendor is named in the rule, because they publish real results too.
+  for (const t of [
+    "Inside IBM's New Quantum Computing Fridges, 180 Times Colder Than Deep Space",
+    "Superfluid qubit could help scale up quantum computers",
+    "Helium-3 lifts new quantum computing concept with faster tunneling rates",
+    "Lost quantum traces could reveal dark matter at the Large Hadron Collider",
+    "Three quantum phases in chromium-based material hint at a spin-triplet superconductor",
+  ]) assert.equal(hidden(t), false, t);
+});
+
 test("science is the beat where a fireball turns out to be a fireball", () => {
   const science = (t: string) => classifyTopics(t).includes("science");
   for (const t of [

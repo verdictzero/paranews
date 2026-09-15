@@ -285,6 +285,19 @@ const OFFBEAT: RegExp[] = [
   // temporal query the first time it ran. "blockchain" and "nft" are not
   // here: they are policy words too, and cost a real US disclosure story.
   /\b(?:crypto|bitcoin|ethereum|xrp|solana|dogecoin|altcoins?|memecoins?|token presale|airdrops?)\b/i,
+  /*
+   * Enterprise technology PR. The science beat's quantum query is 45 of its
+   * first 235 headlines and about half were commerce rather than physics:
+   * IonQ's Superion product line, D-Wave's definitive agreement with the
+   * Commerce Department, an IBM innovation hub, "for banks, quantum computing
+   * is both a threat to security and a chance to build resilience". The
+   * physics keeps its own vocabulary — qubit, superconductor, tunneling,
+   * dilution fridge — so this only has to name the commerce, and no vendor is
+   * listed by name: IonQ publishes real results too.
+   */
+  /\b(?:product lines?|definitive agreements?|go[- ]to[- ]market|enterprise customers?|innovation hubs?|business value|expensive guesswork|whether to invest|q-day|data breach|cybersecurity|smart buildings?|tech boom|patenting|threat to security|data cent(?:er|re)s?|defen[cs]e deals?)\b/i,
+  // A supernova is also a yacht, a trainer and an energy drink.
+  /\b(?:yachts?|superyachts?|trainers? \(|energy drinks?)\b/i,
   /\b(?:cabin crew|flight attendants?|pilots?) union\b/i,
   /\blufthansa\b/i,
   /\b(?:coolers?|tumblers?|drinkware|water bottles?|rambler)\b/i,
