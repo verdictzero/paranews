@@ -299,6 +299,28 @@ test("temporal anomalies: time is the claim, not the figure of speech", () => {
   ]) assert.equal(temporal(t), false, t);
 });
 
+test("a supernova needs the sky; the word belongs to half a dozen other things", () => {
+  const science = (t: string) => classifyTopics(t).includes("science") && !classifyFlags(t).includes("offbeat");
+  for (const t of [
+    "Astronomers Unmask a Supernova Impostor",
+    "Scientists study 3,000 supernovas and discover that dark energy may be evolving",
+    "Hubble Spotted a Supernova in NGC 5806",
+    "Astronomers spot brightest supernova ever recorded",
+    "Supernova remnant Cassiopeia A imaged by JWST",
+  ]) assert.equal(science(t), true, t);
+
+  // All seven arrived on the first live ingest, on the science beat.
+  for (const t of [
+    "Supernova class at the Loch Lomond Dinghy Weekend 2026",
+    "Maiora Supernova 50 Yacht Makes More of Less Than 500 GT",
+    "Keyonte George: Sun among the stars or a radiant supernova?",
+    "Jakob Manz - Supernova - Live at Alte Oper Frankfurt",
+    "Supernova Competition for Young Chamber Music Ensembles - Belgium",
+    "Bremont's Supernova Collection Marks Its Leap into Space Exploration",
+    "Liberty Science Center starts $40M Project Supernova expansion",
+  ]) assert.equal(science(t), false, t);
+});
+
 test("a vendor's quantum roadmap is commerce, not physics", () => {
   // The first live ingest put 45 quantum headlines on the science beat and
   // about half were a product launch, a funding round or a security webinar.
