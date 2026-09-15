@@ -17,23 +17,27 @@ export const TOPIC_LABEL: Record<Topic, string> = {
   ghosts: "Hauntings",
   cryptids: "Cryptids",
   fortean: "High Strangeness",
+  temporal: "Temporal Anomalies",
   archaeology: "Anomalous Archaeology",
   exoarchaeology: "Exoarchaeology",
   ooparts: "OOPArts",
+  science: "Science",
 };
 
 export const TOPIC_BLURB: Record<Topic, string> = {
   ufo: "Sightings, disclosure politics, AARO and the Pentagon, the people who claim to know.",
   ghosts: "Investigations, poltergeists, exorcisms and the places that will not stay quiet.",
   cryptids: "Bigfoot, lake monsters, Mothman and every creature that keeps not being found.",
-  fortean: "Mysterious lights and sounds, crop circles, psi research, time slips and Fortean classics.",
+  fortean: "Keel's beat: men in black, window areas and flaps, mutilations, falls of fish, and the psi and survival research that reads the same terrain.",
+  temporal: "Time as the thing that went wrong. Slips and loops, the paradoxes physics argues about, and the Mandela effect.",
   archaeology: "Sites that do not fit the timeline: sunken cities, chambers found by radar, impossible engineering.",
   exoarchaeology: "Archaeology somewhere else: lunar anomalies, Martian ruins, the Phobos monolith and everything that looks made rather than found.",
   ooparts: "Out-of-place artifacts. The Antikythera mechanism, the Piri Reis map, and every object found where it should not be.",
+  science: "The real thing, at its strangest: dark matter, what the sky drops, and the physics that sounds invented. A fireball that turns out to be a fireball still earns the page.",
 };
 
-/** Nav labels only. "Anomalous Archaeology" set in uppercase wraps the bar. */
-export const TOPIC_NAV_LABEL: Record<Topic, string> = { ...TOPIC_LABEL, archaeology: "Archaeology" };
+/** Nav labels only. The two-word beats set in uppercase wrap the bar. */
+export const TOPIC_NAV_LABEL: Record<Topic, string> = { ...TOPIC_LABEL, archaeology: "Archaeology", temporal: "Temporal" };
 
 export const TIER_LABEL: Record<Tier, string> = {
   official: "Official / wire",

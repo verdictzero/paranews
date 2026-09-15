@@ -267,6 +267,83 @@ sources:
     topics: auto
     enabled: true
 
+  # ── Science, temporal anomalies, and the Keelian end of High Strangeness.
+  # Three beats that the classifier could name before anything fed them: the
+  # archive held 13 science headlines and 19 temporal ones, every one of them
+  # arriving by accident on a search for something else, and Keel's own
+  # vocabulary — men in black, window areas, mutilations — appeared twice in
+  # 1,878 headlines because nothing had ever asked for it. ──
+  - id: gn-science-a-us
+    name: Google News · Dark matter & deep physics
+    kind: google-news
+    edition: US
+    query: '"dark matter" OR "dark energy" OR "gravitational waves" OR neutrino OR antimatter OR "black hole" OR supernova'
+    topics: auto
+    enabled: true
+  - id: gn-science-a-gb
+    name: Google News · Dark matter & deep physics (UK edition)
+    kind: google-news
+    edition: GB
+    query: '"dark matter" OR "dark energy" OR "gravitational waves" OR neutrino OR antimatter OR "black hole" OR supernova'
+    topics: auto
+    enabled: true
+  # What the sky drops. A fireball that turns out to be a fireball is the point
+  # of the beat, so this runs alongside the UFO queries rather than instead of
+  # them: a headline that claims both lands on both.
+  - id: gn-science-b-us
+    name: Google News · Meteors, asteroids & comets
+    kind: google-news
+    edition: US
+    query: '"meteor shower" OR meteorite OR bolide OR "fireball over" OR "fireball spotted" OR asteroid OR comet OR "northern lights"'
+    topics: auto
+    enabled: true
+  - id: gn-science-b-gb
+    name: Google News · Meteors, asteroids & comets (UK edition)
+    kind: google-news
+    edition: GB
+    query: '"meteor shower" OR meteorite OR bolide OR "fireball over" OR "fireball spotted" OR asteroid OR comet OR "northern lights"'
+    topics: auto
+    enabled: true
+  - id: gn-science-c-us
+    name: Google News · Instruments & the very small
+    kind: google-news
+    edition: US
+    query: '"quantum computing" OR "particle accelerator" OR "large hadron collider" OR "higgs boson" OR "nuclear fusion" OR "james webb"'
+    topics: auto
+    enabled: true
+  - id: gn-temporal-us
+    name: Google News · Temporal anomalies
+    kind: google-news
+    edition: US
+    query: '"time slip" OR "time travel" OR "time traveler" OR "time traveller" OR "mandela effect" OR retrocausality OR "time loop"'
+    topics: auto
+    enabled: true
+  - id: gn-temporal-gb
+    name: Google News · Temporal anomalies (UK edition)
+    kind: google-news
+    edition: GB
+    query: '"time slip" OR "time travel" OR "time traveler" OR "time traveller" OR "mandela effect" OR retrocausality OR "time loop"'
+    topics: auto
+    enabled: true
+  # Keel's own vocabulary. The existing High Strangeness queries ask for
+  # adjectives ("mysterious lights", "strange noise"); this one asks for the
+  # phenomenon by name, which is what the tightened beat is now about.
+  - id: gn-fortean-d-us
+    name: Google News · Men in black & window areas
+    kind: google-news
+    edition: US
+    query: 'ultraterrestrial OR "black-eyed children" OR "high strangeness" OR "phantom hitchhiker" OR skyquake OR "raining fish" OR "cattle mutilation"'
+    topics: auto
+    enabled: true
+    note: >-
+      Low yield on purpose: two items in a seven-day window when it was probed
+      on 2026-09-15, against 101 for each science query. Keel's vocabulary is
+      simply rare in the wire, and that is the argument for its own slot rather
+      than a place in the high-volume High Strangeness queries — "men in black"
+      was in this query first and swamped it with a Fijian football club, the
+      film, the Will Smith single and an anti-migrant march, 21 items, none of
+      them the beat. It stays a sentinel: when a real one breaks, this catches
+      it and nothing else here would.
   # ── Other English-language editions. Measured 2026-09-08 against the US and GB
   # results for the same query: each of these returns stories the two original
   # editions never carry (UFO: AU 14, CA 21, IE 33 in one week). IN and ZA were
@@ -425,6 +502,30 @@ sources:
     name: ScienceAlert
     kind: rss
     url: https://www.sciencealert.com/feed
+    tier: press
+    topics: auto
+    enabled: true
+  # Science feeds run topics: auto with no default_topic, so only headlines the
+  # science rule actually names are kept and the rest of the science desk —
+  # rice paddies, funding rounds, climate targets — is dropped at ingest.
+  - id: phys-space
+    name: Phys.org
+    kind: rss
+    url: https://phys.org/rss-feed/space-news/
+    tier: press
+    topics: auto
+    enabled: true
+  - id: phys-physics
+    name: Phys.org
+    kind: rss
+    url: https://phys.org/rss-feed/physics-news/
+    tier: press
+    topics: auto
+    enabled: true
+  - id: quanta
+    name: Quanta Magazine
+    kind: rss
+    url: https://www.quantamagazine.org/feed/
     tier: press
     topics: auto
     enabled: true

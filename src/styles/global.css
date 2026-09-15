@@ -12,9 +12,11 @@
   --topic-ghosts: #6f42a8;
   --topic-cryptids: #4a7a2a;
   --topic-fortean: #b0521a;
+  --topic-temporal: #ab2b38;
   --topic-archaeology: #8a6d24;
   --topic-exoarchaeology: #9c3d6b;
   --topic-ooparts: #1f7a7a;
+  --topic-science: #1b6a9c;
   /* Data marks sit a step richer than UI chrome. Validated for chroma,
      lightness band and contrast against the chart surface in both modes. */
   --data: #0f7d59;
@@ -37,9 +39,11 @@
     --topic-ghosts: #c09bff;
     --topic-cryptids: #9ad072;
     --topic-fortean: #f3a06a;
+    --topic-temporal: #f2909a;
     --topic-archaeology: #dcb75f;
     --topic-exoarchaeology: #e492b8;
     --topic-ooparts: #6fc7c7;
+    --topic-science: #74bde0;
     --data: #3aa886;
     --grid: #2d302b;
   }
@@ -120,9 +124,11 @@ html:not(.js) .read { display: none; }
 .tag.ghosts { color: var(--topic-ghosts); }
 .tag.cryptids { color: var(--topic-cryptids); }
 .tag.fortean { color: var(--topic-fortean); }
+.tag.temporal { color: var(--topic-temporal); }
 .tag.archaeology { color: var(--topic-archaeology); }
 .tag.exoarchaeology { color: var(--topic-exoarchaeology); }
 .tag.ooparts { color: var(--topic-ooparts); }
+.tag.science { color: var(--topic-science); }
 .corroborated { color: var(--accent); font-weight: 600; }
 
 .prose { max-width: 70ch; font-size: 17px; }

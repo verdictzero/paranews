@@ -95,7 +95,7 @@ test("expanded beat keywords catch real stories that used to be weak matches", (
   assert.deepEqual(classifyTopics("Tourist spots 'dark, mound-like shape' in Loch Ness"), ["cryptids"]);
   assert.deepEqual(classifyTopics("CT doll said to be inhabited by an 'inhuman spirit' brought to new site"), ["ghosts"]);
   assert.deepEqual(classifyTopics("Victor Marx says he 'met' the devil at a Texas prison"), ["ghosts"]);
-  assert.deepEqual(classifyTopics("CIA Recording From 1972 Reveals 50-Year Time Loop!"), ["fortean"]);
+  assert.deepEqual(classifyTopics("CIA Recording From 1972 Reveals 50-Year Time Loop!"), ["temporal"], "time has its own beat now");
   assert.deepEqual(classifyTopics("Loch Ness cruise firm achieves Gold Green tourism award"), [], "tourism is not a sighting");
 });
 
@@ -217,8 +217,6 @@ test("high strangeness is a phenomenon claim, not an atmosphere word", () => {
   for (const t of [
     "UNEXPLAINED HOWLS, TREE KNOCKS, & THROWN ROCKS Near Vernon, Vermont",
     "The public joins a paranormal investigation and witnesses some unexplained activity",
-    "'Proof' time travel is 'real' with unusual detail spotted in 1937 painting",
-    "Border Patrol agents report a time slip on West Texas I-10",
     "Dr. Pehlivanova discusses shared death experiences in Popular Mechanics",
     "Study of past lives finds children recall verifiable details",
     "Mysterious lights over Phoenix baffle residents",
@@ -242,7 +240,86 @@ test("high strangeness is a phenomenon claim, not an atmosphere word", () => {
     "Greta Lee Was Hollywood's Background. Past Lives Changed the Frame",
     "NASA has successfully launched its next-generation space telescope",
     "Underground detector finds possible evidence of dark matter",
+    // Time and the cosmos have their own beats now.
+    "'Proof' time travel is 'real' with unusual detail spotted in 1937 painting",
+    "Firm wants to tackle the Fermi paradox by sending a probe to Alpha Centauri",
+    // "the other side of the world" is a direction.
+    "Record-breaking rain in California was caused by high temperatures on the other side of the world",
+    // A boom with a named cause is an accident report.
+    "'Loud boom': birthday horror as explosion kills mum and son",
+    // Loose "unsolved mystery" copy was the beat's biggest drift.
+    "Unsolved mysteries of the Bayeux Tapestry - hidden ending and a dwarf",
   ]) assert.equal(fortean(t), false, t);
+});
+
+test("Keel's own vocabulary needs the phenomenon named beside it", () => {
+  const fortean = (t: string) => classifyTopics(t).includes("fortean");
+  for (const t of [
+    "Witness says men in black visited days after UFO sighting",
+    "Mothman researcher on the men in black who followed him",
+    "A window area: why this valley keeps producing sightings",
+    "Rancher reports third cattle mutilation this month",
+    "Family reports black-eyed children at the door",
+    "Residents report a skyquake with no known source",
+  ]) assert.equal(fortean(t), true, t);
+
+  // One live pull of the Keelian query returned 21 "men in black" headlines and
+  // no MIB: a Fijian football club, the film, the single, an anti-migrant march.
+  for (const t of [
+    "Men in Black - IGN Benelux",
+    "The men in black - British fascism's new outfit?",
+    "Masked men in black clothing block roads in southern England",
+    "Ba are giants | Men In Black beat Rewa 2-1 to lift BOG Title",
+    "New blinds for the window area of your lounge",
+  ]) assert.equal(fortean(t), false, t);
+});
+
+test("temporal anomalies: time is the claim, not the figure of speech", () => {
+  const temporal = (t: string) => classifyTopics(t).includes("temporal");
+  for (const t of [
+    "Border Patrol agents report a time slip on West Texas I-10",
+    "Arecibo 'TIME ANOMALY': 30-minute drive completed in 5 minutes",
+    "CIA recording from 1972 reveals 50-year time loop",
+    "'Time traveller' from 2198 makes horrifying claim about year 2044 discovery",
+    "'Proof' time travel is 'real' with unusual detail spotted in 1937 painting",
+    "Every scientific theory for how time travel could work",
+    "What's behind the Mandela effect",
+    "Physicists revisit closed timelike curves and the grandfather paradox",
+  ]) assert.equal(temporal(t), true, t);
+
+  // Local news runs the metaphor constantly: 67 of 91 headlines on one live
+  // pull said "time travel" and most meant a heritage column or a guided walk.
+  for (const t of [
+    "Time Travel Tuesday: footage from the original groundbreaking and more",
+    "The Time Traveler's Guide to London",
+    "'Time Travel Train' provides a day of history for participants",
+    "Art and time travel on the programme at Campbeltown Library",
+    "Time Traveler Expands Aircraft Parts Manufacturing Capabilities in Hartford",
+    "Traxo and Everbridge integrate real-time travel data",
+  ]) assert.equal(temporal(t), false, t);
+});
+
+test("science is the beat where a fireball turns out to be a fireball", () => {
+  const science = (t: string) => classifyTopics(t).includes("science");
+  for (const t of [
+    "Underground detector finds possible evidence of dark matter",
+    "Meteor fireball spotted over Maryland, Virginia, DC skies",
+    "Interstellar comet 3I/ATLAS is bursting with methanol",
+    "A new mission could rendezvous with Halley's Comet in 2061",
+    "Northern Lights could be visible from these nine states tonight",
+    "ATLAS finds evidence for one of the Higgs boson's rarest decays",
+    "A milestone of modern physics: the neutrino turns 70",
+    "Firm wants to tackle the Fermi paradox by sending a probe to Alpha Centauri",
+  ]) assert.equal(science(t), true, t);
+
+  // A brand, a team, a contract and a plane crash all borrow the vocabulary.
+  for (const t of [
+    "Comet's Hold off Carlinville Comeback",
+    "Radiance Technologies wins position on $14B MSIC COMET contract",
+    "Peder Elias - Northern Lights EP",
+    "How To Plan A Northern Lights Trip To Norway",
+    "Devastating new video shows deadly fireball plane crash in San Diego",
+  ]) assert.equal(science(t), false, t);
 });
 
 test("anomalous archaeology and OOPArts are their own beats, not High Strangeness", () => {

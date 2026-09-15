@@ -25,8 +25,70 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
     re: /\b(bigfoot|sasquatch|cryptids?|cryptozoolog(?:y|ist|ists)|yeti (?:footprints?|sightings?|legend|myth|hunt|expedition|dna|scalp|creature)|abominable snowman|loch ness (?:monster|witness|sighting|creature|hunter|footage)s?|(?:in|on|at|over|from) loch ness|nessie|lake monsters?|sea (?:monsters?|serpents?)|dogman sightings?|mothman|chupacabras?|skinwalkers?|wendigo|yowie|thunderbird sightings?|jersey devil sightings?|goatman|ogopogo|mokele|thylacine|living dinosaurs?)\b/i,
   },
   {
+    /*
+     * High Strangeness, held to Keel. Not "anything odd": the beat is the
+     * phenomenon Keel described — place-bound, deceptive, and indifferent to
+     * which category it is supposed to belong to. Men in black, window areas
+     * and flaps, phantom vehicles and callers, mutilations, falls of fish,
+     * synchronicity, the ambient skyquakes and earth lights, and the psi and
+     * survival research that reads the same terrain from the other end.
+     *
+     * Three things that used to live here have their own beats now: time
+     * (temporal), the cosmos and the physics (science), and the loose
+     * "unsolved mystery / mysterious remains" copy, which was archaeology's
+     * or nobody's. That drift is why this beat needed tightening — an
+     * atmospheric adjective is not high strangeness.
+     *
+     * Two of Keel's own terms cannot stand alone. One live pull of the new
+     * query returned 21 headlines carrying "men in black" — a Fijian football
+     * club, the film, the Will Smith single, an anti-migrant march — and not
+     * one of them was MIB. "Window area" is glazing. Both need the phenomenon
+     * named within a clause of them.
+     */
     topic: "fortean",
-    re: /\b(high strangeness|fortean|crop circles?|unsolved myster(?:y|ies)|near[- ]death experiences?|shared death experiences?|terminal lucidity|out[- ]of[- ]body|reincarnation|past[- ]life (?:memor\w+|regression|recall)|past lives (?:research|memor\w+|stud\w+|regression|recall)|(?:recall\w*|remember\w*|stud(?:y|ies) of|research into) past lives|premonitions?|psychic|telepath(?:y|ic)|remote viewing|parapsycholog\w+|survival of consciousness|time slips?|time loops?|time anomal\w+|time travel(?:l?ers?)?|simulation theory|simulation hypothesis|mandela effect|spontaneous human combustion|bermuda triangle|missing 411|dyatlov|skinwalker ranch|men in black|rains? of (?:fish|frogs)|anomalous (?:phenomen\w+|experiences?|objects?|craft|signals?|readings?)|unexplained (?:phenomen\w+|activity|noises?|sounds?|lights?|objects?|howls?|footage|video|events?|deaths?|disappearances?|marks?)|mysterious(?:ly)? (?:light|sound|boom|object|signal|creature|figure|craft)\w*|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?|virgin mary|weeping (?:statue|madonna)|marian apparitions?|approved miracles|miracle (?:healing|cure)s?|lourdes|consciousness (?:exists )?beyond|life after death|the other side|fermi paradox|mysterious (?:find|discovery|remains|bones?|skull)s?|mystery (?:find|discovery|remains|bones?|skull)s?)\b/i,
+    re: /\b(high strangeness|high weirdness|fortean|ultraterrestrials?|superspectrum|men in black\b(?=[^.]{0,40}\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b)|(?<=\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b[^.]{0,40})men in black|window areas?\b(?=[^.]{0,40}\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b)|(?<=\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b[^.]{0,40})window areas?|contactees?|indrid cold|crop circles?|cattle mutilations?|animal mutilations?|livestock mutilations?|black[- ]eyed (?:children|kids)|phantom (?:hitchhikers?|callers?|clowns?|vehicles?|aircraft|helicopters?|cars?|trains?)|black helicopters?|skyquakes?|earth ?lights|ley lines?|tree knocks?|wood knocks?|synchronicit(?:y|ies)|(?:ufo|sighting) flaps?|rains? of (?:fish|frogs)|rain(?:ed|ing) (?:fish|frogs)|(?:fish|frogs) (?:fell|falling|rained) from the sky|near[- ]death experiences?|shared death experiences?|terminal lucidity|out[- ]of[- ]body|reincarnation|past[- ]life (?:memor\w+|regression|recall)|past lives (?:research|memor\w+|stud\w+|regression|recall)|(?:recall\w*|remember\w*|stud(?:y|ies) of|research into) past lives|premonitions?|psychic|telepath(?:y|ic)|clairvoyan\w+|precognition|extrasensory perception|remote viewing|parapsycholog\w+|survival of consciousness|spontaneous human combustion|bermuda triangle|missing 411|dyatlov|skinwalker ranch|anomalous (?:phenomen\w+|experiences?|objects?|craft|signals?|readings?)|unexplained (?:phenomen\w+|activity|noises?|sounds?|lights?|objects?|howls?|footage|video|events?|deaths?|disappearances?|marks?)|mysterious(?:ly)? (?:light|sound|boom|object|signal|creature|figure|craft)\w*|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?|virgin mary|weeping (?:statue|madonna)|marian apparitions?|approved miracles|miracle (?:healing|cure)s?|lourdes|consciousness (?:exists )?beyond|life after death|the other side\b(?! of ))\b/i,
+    // A boom with a named cause is an accident report. "Loud boom: birthday
+    // horror as explosion kills mum and son" ran on this beat for a week.
+    unless: /\b(?:gas explosions?|explosions? (?:kill|injur|destroy|level)\w*|blasts? (?:kill|injur)\w*|plane crash|air ?strikes?|missiles?|shelling|car bombs?|pipeline blasts?|controlled (?:detonation|explosion)|sonic booms? from|quarry blast)\b/i,
+  },
+  {
+    /*
+     * Temporal anomalies. Time as the thing that has gone wrong, not time as
+     * a figure of speech: slips and loops, the people who claim to have been
+     * to 2198, the paradoxes physics argues about, and the Mandela effect,
+     * where the past is what changed. Split out of High Strangeness, where
+     * fifteen archived headlines were sitting under an unrelated label.
+     *
+     * "Timeline" is not here on purpose — every news explainer has one, and
+     * neither is a bare "time travel": measured against one live pull of the
+     * new queries, 67 of 91 headlines said it and most meant a heritage column
+     * ("Time Travel Tuesday"), a guided walk, an aircraft parts firm called
+     * Time Traveler, or "real-time travel data". So the two promiscuous terms
+     * need a claim, a physicist or a year next to them; the distinctive ones —
+     * slip, loop, Mandela — stand on their own.
+     */
+    topic: "temporal",
+    re: /\b(time slips?|time loops?|time anomal\w+|temporal anomal\w+|chrononauts?|retrocausal\w+|closed timelike curves?|chronology protection|grandfather paradox|bootstrap paradox|causal loops?|mandela effect|glitch in the matrix|arrow of time|(?<!real[- ])time[- ]travell?(?:ers?|ing)?\b(?=[^.]{0,45}\b(?:real|really|proof|proves?|proven|evidence|claims?|claiming|hoax|debunk\w*|physics|scientific|science|theor(?:y|ies)|paradox|possible|impossible|machines?|experiments?|relativity|wormholes?|conspirac\w+|warns?|predicts?|reveals?|insists?|visited|year \d{3,4}|from \d{3,4}|from the year)\b)|(?<=\b(?:real|really|proof|proves?|proven|evidence|claims?|claiming|hoax|debunk\w*|physics|scientific|science|theor(?:y|ies)|paradox|possible|impossible|machines?|experiments?|relativity|wormholes?|conspirac\w+|warns?|predicts?|reveals?|insists?|visited|year \d{3,4}|from \d{3,4}|from the year)\b[^.]{0,45})(?<!real[- ])time[- ]travell?(?:ers?|ing)?)\b/i,
+  },
+  {
+    /*
+     * Science: the real thing, at the end of it that a Fortean reader turns
+     * to first. Dark matter, what the sky drops, the physics that sounds
+     * invented. The point of the beat is that a fireball which turns out to
+     * be a fireball is still worth the front page — and that saying so is
+     * the site's job as much as carrying the sighting was.
+     *
+     * Astronomy, physics and cosmology, plus the handful of earth and life
+     * sciences with the same strangeness. Deliberately not everything a
+     * science desk files: "study finds" is not a beat.
+     *
+     * "Comet" and "northern lights" are brands as often as they are objects.
+     * One live pull returned a defence contract called COMET, a band called
+     * Comet, a school team called the Comets, a Northern Lights EP and a
+     * Northern Lights illumination display. Both terms need the sky nearby.
+     */
+    topic: "science",
+    re: /\b(dark matter|dark energy|black holes?|event horizons?|neutron stars?|magnetars?|pulsars?|quasars?|supernovae?|kilonovae?|gravitational waves?|gravitational lens\w+|neutrinos?|antimatter|cosmic rays?|fast radio bursts?|gamma[- ]ray bursts?|exoplanets?|habitable zones?|protoplanetary|accretion discs?|solar flares?|coronal mass ejections?|aurora (?:borealis|australis)|northern lights\b(?=[^.]{0,50}\b(?:visible|visibility|forecast|tonight|tomorrow|alert|seen|spotted|storms?|geomagnetic|solar|dazzl\w+|chance|states|activity)\b)|(?<=\b(?:see|seeing|watch|catch|spot|photograph\w*|chance of|forecast for)\b[^.]{0,30})northern lights|geomagnetic storms?|meteors?|meteorites?|meteor showers?|bolides?|(?:meteor|sky|green|blue|bright|massive|brilliant|giant) fireballs?|fireballs? (?:over|above|across|streak\w*|light\w* up|spotted|seen|captured|filmed)|asteroids?|comets?\b(?=[^.]{0,45}\b(?:sky|skies|orbits?|orbiting|tail|nucleus|solar system|sun|earth|telescopes?|astronomers?|observ\w+|visible|spotted|approach\w*|flyby|rendezvous|interstellar|meteors?|perihelion|coma|rising|streak\w*)\b)|comets?\s+(?:neowise|atlas|borisov|halley|encke|leonard|lovejoy|hale)|(?<=\b(?:interstellar|periodic|halley'?s|encke|neowise|hale[- ]bopp|lovejoy|leonard|borisov|3i\/atlas)\b[^.]{0,25})comets?|near[- ]earth objects?|particle accelerators?|large hadron collider|cern|higgs boson|standard model|string theory|quantum (?:computing|computers?|mechanics|entanglement|gravity|physics|tunnell?ing|states?|theory|supremacy|sensors?|materials?)|superconduct\w+|nuclear fusion|fusion reactors?|james webb|jwst|hubble (?:telescope|images?)|ligo|simulation (?:theory|hypothesis)|fermi paradox|drake equation|great filter|cosmic myster\w+|panspermia|astrobiolog\w+|hydrothermal vents?|extremophiles?|tardigrades?|bioluminescen\w+|mass extinctions?|supervolcano|geomagnetic reversals?|magnetic pole (?:reversal|flip)|deep[- ]sea (?:creatures?|discover\w+|expeditions?))\b/i,
   },
   {
     topic: "archaeology",
@@ -218,6 +280,11 @@ const OFFBEAT: RegExp[] = [
    * "Bogey" is not, and must not be: on this beat it is a radar contact.
    */
   /\b(?:wrestling|folkstyle|soccer|football|basketball|hockey|baseball|volleyball|lacrosse|rugby|cricket|golf(?:ers?|ing)?|nfl|nba|nhl|mlb|ncaa|pga|lpga|ryder cup|solheim cup|witb|tee times?|bullpups|varsity|junior varsity|prep (?:girls|boys)|high school (?:girls|boys)|box score|final score|touchdown|playoffs?)\b/i,
+  // Crypto spam rides any phrase with a future in it. "Time Traveler: If You
+  // Don't Have An XRP Wallet, You Have Less Than 72 Hours" arrived on the new
+  // temporal query the first time it ran. "blockchain" and "nft" are not
+  // here: they are policy words too, and cost a real US disclosure story.
+  /\b(?:crypto|bitcoin|ethereum|xrp|solana|dogecoin|altcoins?|memecoins?|token presale|airdrops?)\b/i,
   /\b(?:cabin crew|flight attendants?|pilots?) union\b/i,
   /\blufthansa\b/i,
   /\b(?:coolers?|tumblers?|drinkware|water bottles?|rambler)\b/i,
