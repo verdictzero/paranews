@@ -649,3 +649,28 @@ test("a ski patrol is not a lake monster", () => {
   assert.equal(isOffbeat("Big White, Ogopogo ski patrol receive top division honours"), true);
   assert.equal(isOffbeat("Family's mysterious beach find defies identification, is it Ogopogo's tooth?"), false);
 });
+
+test("a headline that reaches the front page has to be on the beat", () => {
+  // Each of these was live in the top forty-five, on the beat, at full weight.
+  const off = [
+    "Flipkart Big Billion Days 2026 ad brings stars into a time loop",
+    "AARO Canada and industry partners raise $14,500",
+  ];
+  for (const t of off) assert.equal(isOffbeat(t), true, t);
+
+  const promo = [
+    "Choose Your Own Adventure Officially Reprints Inside UFO 54-40",
+    "First Look Teaser for Revelatory 'Capturing Bigfoot' Documentary Film",
+    "First Looks and Trailer Release for Netflix's 'Haunted Hotel' Season 2",
+  ];
+  for (const t of promo) assert.ok(classifyFlags(t).includes("entertainment"), t);
+
+  assert.deepEqual(classifyTopics("Strange Creatures Seen Riding Giant Sea Spiders in The Midnight Ocean"), ["science"]);
+
+  // And the money, the reprint and the first look must not reach real stories.
+  for (const t of [
+    "Beverage Brand Puts $1 Million Bounty on Bigfoot",
+    "Bigfoot researcher raises questions about the Patterson film",
+    "Pentagon Announces 'Legal Waiver' for UFO Info",
+  ]) assert.ok(!isOffbeat(t) && !classifyFlags(t).includes("entertainment"), t);
+});
