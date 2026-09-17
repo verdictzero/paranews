@@ -662,6 +662,12 @@ test("a headline that reaches the front page has to be on the beat", () => {
     "Choose Your Own Adventure Officially Reprints Inside UFO 54-40",
     "First Look Teaser for Revelatory 'Capturing Bigfoot' Documentary Film",
     "First Looks and Trailer Release for Netflix's 'Haunted Hotel' Season 2",
+    // The qualified rule wanted the word "trailer", so six of the eight members
+    // of one cluster went unflagged and it stayed under the half-entertainment
+    // threshold. Every "teaser" in the archive is promotion.
+    "Capturing Bigfoot | Teaser #1 | XYZ Films",
+    "Capturing Bigfoot: Teaser",
+    "Ghost Adventures Season 31: Teaser, Premiere Date & Episode Details",
   ];
   for (const t of promo) assert.ok(classifyFlags(t).includes("entertainment"), t);
 

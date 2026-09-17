@@ -269,6 +269,11 @@ const ENTERTAINMENT: RegExp[] = [
   /\btrailer (?:drops|dropped|released|reveals|for|debuts|teases|breakdown)\b/i,
   /\(trailer\)/i,
   /\bfirst look\b/i,
+  // A bare "Teaser" is promotion in every one of the twelve headlines the
+  // archive holds. The qualified rule above wanted the word "trailer", so six
+  // members of one "Capturing Bigfoot" cluster went unflagged and the cluster
+  // stayed under the half-entertainment threshold.
+  /\bteasers?\b/i,
   /\bbox office\b/i,
   /\bopening weekend\b/i,
   /\brotten tomatoes\b/i,
