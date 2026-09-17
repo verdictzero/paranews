@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildClusters } from "./cluster.ts";
-import { HIDDEN_FLAGS, isVisible, refreshItems } from "./visibility.ts";
+import { HIDDEN_FLAGS, isParanormal, isVisible, refreshItems } from "./visibility.ts";
 import { itemId, normalizeTitle } from "./text.ts";
 import type { Cluster, Item, Tier } from "./types.ts";
 
@@ -59,4 +59,17 @@ test("a cluster is hidden when at least half its members are entertainment, othe
   assert.equal(isVisible(byTitle("Wildman")), false);
   assert.equal(isVisible(byTitle("Sandra Bullock")), true, "one entertainment outlet among three does not hide a real claim");
   assert.equal(isVisible(byTitle("Pasulka")), true, "one entertainment outlet among two is not a majority");
+});
+
+test("the featured surfaces ask for a beat other than science", () => {
+  const sci = mk("Scientists Detect a Mysterious Signal That Could Be Dark Matter", "SciTechDaily", "press", "gn-science-a-us");
+  const both = mk("Alien technology could be hiding as microscopic dust on the Moon", "Space.com", "press", "gn-exo-a-us");
+  const beat = mk("Nurse performed exorcism on nursing home resident: grand jury", "AP", "press", "gn-ghosts-a-us");
+  const [a, b, c] = buildClusters(refreshItems([sci, both, beat]), { now });
+  const byTitle = (s: string): Cluster => [a, b, c].find((x) => x.title.includes(s))!;
+  assert.equal(isParanormal(byTitle("Dark Matter")), false, "science alone is not the masthead's story");
+  assert.equal(isParanormal(byTitle("microscopic dust")), true, "a story that is genuinely both can still lead");
+  assert.equal(isParanormal(byTitle("exorcism")), true);
+  // Relegated, not hidden: the science section, its feed and its card still have it.
+  assert.equal(isVisible(byTitle("Dark Matter")), true);
 });

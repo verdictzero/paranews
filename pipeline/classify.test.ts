@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { classifyFlags, classifyTopics, isNotice, isOffTopic, isRoundup } from "./classify.ts";
+import { classifyFlags, classifyTopics, isNotice, isOffTopic, isOffbeat, isRoundup } from "./classify.ts";
 
 test("topics from real headlines", () => {
   assert.deepEqual(classifyTopics("Pentagon seeks access to vast private UFO records collection"), ["ufo"]);
@@ -528,8 +528,8 @@ test("exoarchaeology is manufacture off Earth, not the search for life off Earth
     "Phobos monolith re-examined in new imaging survey",
   ]) assert.ok(beat(t).includes("exoarchaeology"), t);
 
-  // Astrobiology and stargazing are about life and rocks, not artefacts, and
-  // belong to no beat here at all.
+  // Astrobiology and stargazing are about life and rocks, not artefacts. They
+  // are the science beat's, not this one's.
   for (const t of [
     "Mars Rover Finds Ancient Carbon Clues That Could Change The Search For Alien Life",
     "How Venus's cloud molecules are reshaping the search for alien life",
@@ -569,4 +569,83 @@ test("Roswell is a town in Georgia as well as an incident in New Mexico", () => 
     "The Rendlesham UFO: The British Roswell visited by alien orbs",
     "New witnesses come forward on the Roswell incident",
   ]) assert.ok(classifyTopics(t).includes("ufo"), t);
+});
+
+test("a science subject stays science however evocatively it is written", () => {
+  // Every one of these was live on a paranormal beat. Read as wording they are
+  // high strangeness; read as subjects they are astronomy, geophysics and
+  // marine biology, and the subject wins.
+  for (const t of [
+    "Astronomers Detect 84 Mysterious Objects in Nearby Galaxies Unlike Anything They've Seen Before",
+    "A Strange Signal Keeps Turning Up in Earth's Magnetic Field – And No One Knows What It Is Yet",
+    "Scientists Detect a Mysterious Signal That Could Be Dark Matter",
+    "Space scientists discover 'mysterious objects' that could solve two cosmic mysteries",
+    "Physicists Just Turned The Entire Planet Into a Dark Matter Detector – And Strange Signals Kept Turning Up",
+    "Nearly 50 'ghost galaxies' emerge around three hosts, challenging dwarf galaxy counts",
+  ]) assert.deepEqual(classifyTopics(t), ["science"], t);
+
+  // And the named phenomena do not defer to anything. Mothman does not stop
+  // being Mothman in a headline that mentions a telescope.
+  for (const t of [
+    "Mothman seen again near the Point Pleasant observatory",
+    "Mysterious lights reported around region",
+    "Mystery Creature Found Lurking in Supermarket Bread Aisle",
+    "UNEXPLAINED HOWLS, TREE KNOCKS, & THROWN ROCKS Near Vernon, Vermont",
+    "Experiment Tested Out-of-Body Experiences. Two Reported Seeing Things Scientists Can't Explain.",
+  ]) assert.ok(!classifyTopics(t).includes("science"), `${t} is not a science story`);
+});
+
+test("the search for life is science; the claim that it is here is the UFO beat", () => {
+  for (const t of [
+    "NASA Rover Discovers Preserved Organic Carbon in Rocks from an Ancient Martian River, Renewing Search for Extraterrestrial Life",
+    "Why the search for alien life might start in lunar soil",
+    "Korea Kicks Off Full-Scale Participation in the World's Largest Radio Telescope SKA... Probing the Origins of the Universe and the Search for Extraterrestrial Life",
+    "'Where Are All the Aliens?': Astrobiologist Explores the Astonishing Science Behind Finding Life",
+  ]) assert.ok(!classifyTopics(t).includes("ufo"), `${t} is astrobiology`);
+
+  for (const t of [
+    "Harvard Professor Avi Loeb Says Aliens Are 'Here' After US Government Admits It Sees More Unexplained Objects",
+    "Trump will order the Pentagon to disclose data on UFOs and extraterrestrial life",
+    "NASA photo of Mars sparks theories of alien life",
+  ]) assert.ok(classifyTopics(t).includes("ufo"), `${t} is a claim, not a search`);
+});
+
+test("the interstellar visitors are astronomy until the headline argues they were made", () => {
+  // 3I/ATLAS became a UFO story because Avi Loeb said the word. Nine
+  // composition papers followed it onto the beat; they never stopped being
+  // astronomy.
+  for (const t of [
+    "Interstellar comet 3I/ATLAS is bursting with methanol",
+    "Nitrogen in 3I/ATLAS reveals an extremely cold birthplace beyond the solar system",
+    "UK astronomers find: Interstellar comet 3I/ATLAS formed in extreme cold",
+    "Interstellar visitor 3I/ATLAS carries clues from the frozen outskirts of another star system",
+  ]) assert.deepEqual(classifyTopics(t), ["science"], t);
+
+  for (const t of [
+    "Avi Loeb says interstellar object 3I/ATLAS may be alien technology",
+    "Is 'Oumuamua an alien probe? The argument will not go away",
+  ]) assert.ok(classifyTopics(t).includes("ufo"), `${t} makes the claim`);
+});
+
+test("a vendor's roadmap, an energy MOU and UFO politics are not the science beat", () => {
+  for (const t of [
+    "Mitsubishi Electric Invests In Optical Quantum Computer Hardware Developer OptQC",
+    "Tennessee, United Kingdom announce nuclear fusion partnership",
+    "TVA, Tennessee join forces with UK to develop nuclear fusion",
+    "Nuclear Fusion Company gets $1 Billion Hyundai Investment",
+    "Trump will order the Pentagon to disclose data on UFOs and extraterrestrial life",
+    "Mysterious object spotted in NASA moon photo sparks theories of extraterrestrial life: '100% proof'",
+  ]) assert.ok(!classifyTopics(t).includes("science"), t);
+
+  // The physics keeps its own vocabulary, and the guard must not reach it.
+  for (const t of [
+    "CERN Physicists Find Evidence of One of Higgs Boson's Rarest Decays",
+    "Telescopes Unite in Unprecedented Observations of Famous Black Hole",
+    "Potential dark matter detection sparks hope in search for elusive substance",
+  ]) assert.ok(classifyTopics(t).includes("science"), t);
+});
+
+test("a ski patrol is not a lake monster", () => {
+  assert.equal(isOffbeat("Big White, Ogopogo ski patrol receive top division honours"), true);
+  assert.equal(isOffbeat("Family's mysterious beach find defies identification, is it Ogopogo's tooth?"), false);
 });

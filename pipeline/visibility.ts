@@ -18,6 +18,28 @@ export function isVisible(cluster: Cluster): boolean {
 }
 
 /**
+ * A story the masthead can stand behind: one carrying a beat other than
+ * science.
+ *
+ * Science is a real beat here and it earns its section — but it is the
+ * context, not the subject, and on score alone it was taking the front page.
+ * Mainstream science is covered by twenty newsrooms at once and a haunting is
+ * covered by one local paper, so scoring, which rewards exactly that, put a
+ * feather in dinosaur poop above every sighting on the site: six of the top
+ * twelve carried the beat and five were nothing else. Nothing was wrong with
+ * the ranking; it was being asked the wrong question.
+ *
+ * So the featured surfaces — the front page, the research column, the main
+ * feed — ask for a beat other than science, and everything else about the
+ * science beat is unchanged: its own section, its own feed, its card on the
+ * front page, and a place alongside the paranormal beat on any story that is
+ * genuinely both.
+ */
+export function isParanormal(cluster: Cluster): boolean {
+  return cluster.topics.some((t) => t !== "science");
+}
+
+/**
  * Re-derive every item's title, beats and flags with the current code. What is
  * stored is what ingest saw at the time; the site always shows freshly derived
  * values, so a classifier or title fix applies to the whole archive at the next

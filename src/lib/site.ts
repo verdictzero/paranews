@@ -4,7 +4,7 @@ import { ShardStore } from "../../pipeline/store.ts";
 import { buildClusters } from "../../pipeline/cluster.ts";
 import { byScore, interleave } from "../../pipeline/rank.ts";
 import { loadHealth } from "../../pipeline/health.ts";
-import { isVisible, refreshItems } from "../../pipeline/visibility.ts";
+import { isParanormal, isVisible, refreshItems } from "../../pipeline/visibility.ts";
 import { loadAllArticles, type ArticleRecord } from "../../pipeline/articles.ts";
 import { truncate } from "../../pipeline/text.ts";
 import { TOPICS, type Cluster, type HealthFile, type Item, type MetaFile, type SourceConfig, type SourcesFile, type Tier, type Topic } from "../../pipeline/types.ts";
@@ -76,13 +76,16 @@ export interface SiteData {
   clusters: Cluster[];
   /** Clusters in the window that the entertainment filter removed. */
   hiddenCount: number;
+  /** Visible clusters carrying a beat other than science: what may be featured. */
+  featured: Cluster[];
   top: Cluster[];
   /**
    * Official-tier stories, newest first. They are rare and score far below the
    * front page — 0.009 to 0.027 against a 0.476 lead story — because scoring
    * rewards how widely a story is covered, and a preprint or a university
    * research note is covered once. Ranking them up would be dishonest; giving
-   * them their own column is what a newspaper does.
+   * them their own column is what a newspaper does. Drawn from `featured`, so
+   * the column is research on the beats rather than an astronomy picture desk.
    */
   scholarly: Cluster[];
   byTopic: Record<Topic, Cluster[]>;
@@ -116,9 +119,10 @@ export function getSiteData(): SiteData {
   const hiddenCount = inWindow.length - clusters.length;
 
   const fresh = new Date(now.getTime() - FRONT_PAGE_DAYS * 86_400_000).toISOString();
-  const top = interleave(clusters.filter((c) => c.latest_published >= fresh).slice(0, FRONT_PAGE_COUNT * 3)).slice(0, FRONT_PAGE_COUNT);
+  const featured = clusters.filter(isParanormal);
+  const top = interleave(featured.filter((c) => c.latest_published >= fresh).slice(0, FRONT_PAGE_COUNT * 3)).slice(0, FRONT_PAGE_COUNT);
   const byTopic = Object.fromEntries(TOPICS.map((t) => [t, clusters.filter((c) => c.topics.includes(t))])) as Record<Topic, Cluster[]>;
-  const scholarly = clusters
+  const scholarly = featured
     .filter((c) => c.tier === "official" && !c.flags.includes("notice"))
     .sort((a, b) => b.latest_published.localeCompare(a.latest_published))
     .slice(0, SCHOLARLY_COUNT);
@@ -130,7 +134,7 @@ export function getSiteData(): SiteData {
 
   const meta = existsSync(META_FILE) ? (JSON.parse(readFileSync(META_FILE, "utf8")) as MetaFile) : undefined;
   const allClusters = everything.filter(isVisible);
-  cache = { now, items, articles, clusters, allClusters, hiddenCount, top, scholarly, byTopic, archive, storyPages, meta, health: loadHealth(), sources: loadSources() };
+  cache = { now, items, articles, clusters, allClusters, hiddenCount, featured, top, scholarly, byTopic, archive, storyPages, meta, health: loadHealth(), sources: loadSources() };
   return cache;
 }
 

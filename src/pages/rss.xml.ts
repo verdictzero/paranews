@@ -6,7 +6,7 @@ const FEED_SIZE = 50;
 
 export function GET(context: APIContext): Promise<Response> {
   const data = getSiteData();
-  const items = data.clusters.slice(0, FEED_SIZE).map((c) => {
+  const items = data.featured.slice(0, FEED_SIZE).map((c) => {
     const primary = primaryOf(c, data);
     const outlets = c.publishers.join(", ");
     const lead = c.snippet ? `${c.snippet} — ` : "";
