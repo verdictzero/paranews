@@ -332,6 +332,10 @@ const ENTERTAINMENT: RegExp[] = [
   /\balbum (?:reviews?|releases?)\b/i,
   /\b(?:rock|metal|punk|indie|hardcore|folk|jazz|pop|country|dark folk) bands?\b/i,
   /\bband spotlight\b/i,
+  // A record release. UFO is a band as well as the beat, and "UFO 'Mechanix'
+  // Expanded, Remastered & Reissued On Double CD & Triple Vinyl" reached the
+  // front page. None of these words has a second life off the sleeve.
+  /\b(?:remaster(?:s|ed|ing)?|reissue(?:s|d)?|expanded edition|double cd|vinyl|box sets?)\b/i,
   /\btour dates\b/i,
   /\bsetlists?\b/i,
   /\bsoundtracks?\b/i,
@@ -353,9 +357,10 @@ const ENTERTAINMENT: RegExp[] = [
 ];
 
 /**
- * Off-beat: a beat word used as a ticker, brand, product or team name.
- * "Procure Space ETF (NASDAQ: UFO)", "Norco Bigfoot 2 for sale", "Raleigh
- * Aaro girls soccer". Hidden from the site.
+ * Off-beat: the beat word belongs to something else, or the beat is being
+ * sold rather than reported. "Procure Space ETF (NASDAQ: UFO)", "Norco
+ * Bigfoot 2 for sale", "Raleigh Aaro girls soccer" — and a drinks brand's
+ * million-dollar bounty, a tourism board's trail. Hidden from the site.
  */
 const OFFBEAT: RegExp[] = [
   /\b(?:stock|share) prices?\b/i,
@@ -415,6 +420,31 @@ const OFFBEAT: RegExp[] = [
   /\b(?:squier|telecaster|stratocaster|signature guitar|fender launches)\b/i,
   /\b(?:royal enfield|harley davidson|bobber|thunderbird \d{3}|\d{3,4}\s?cc)\b/i,
   /\b(?:launch system|launch vehicle|portable launch)\b/i,
+  /*
+   * A cash offer to the public. Hard Mountain Dew's $1M for proof of Bigfoot
+   * ran on 33 outlets in two days and outscored every sighting on the site —
+   * and only three of the 33 headlines said "bounty", so the rule has to
+   * catch the offer rather than the word. The amount and what it is for are
+   * the only things every version of it shares. Matched against the whole
+   * archive it finds that campaign and nothing else.
+   */
+  /(?:(?:\$|£|€|us\$|a\$)\s?[\d.,]+\s*(?:million|billion|m\b|bn\b|k\b)?|\b[\d.,]+\s*(?:million|billion)\s*dollars?)[^.]{0,60}\b(?:proofs?|proves?|proving|prove|bount(?:y|ies)|rewards?|evidence|find|finding|catch|capture)\b/i,
+  /\b(?:proofs?|proves?|proving|prove|bount(?:y|ies)|rewards?|evidence|find|finding|catch|capture)\b[^.]{0,60}(?:(?:\$|£|€|us\$|a\$)\s?[\d.,]+\s*(?:million|billion|m\b|bn\b|k\b)?|\b[\d.,]+\s*(?:million|billion)\s*dollars?)/i,
+  /\b(?:sweepstakes?|giveaways?|prize draws?|enter to win|(?:new|cash|free|more) prizes|fun and prizes)\b/i,
+  /*
+   * A tourism trail is an itinerary a visitors bureau is marketing, not a
+   * place something happened. One West Virginia Paranormal Trail produced
+   * seventeen stories about its own new stop, and Connecticut's Haunted
+   * History Trail a dozen more about its launch. A haunted hayride stays an
+   * `attraction` and stays visible; this is the campaign around one.
+   */
+  /\b(?:paranormal|haunted history|ghost|ghost[- ]hunting|cryptid|folklore) trails?\b/i,
+  /\b(?:ghost|cryptid|paranormal|dark|spooky) tourism\b/i,
+  /\bdigital passports?\b/i,
+  // A beat word that is a building. Fort Worth's convention centre arena has
+  // been the "Flying Saucer" for 58 years, and its demolition surfaced as a
+  // UFO story the moment the promotions above stopped outranking it.
+  /\b(?:arena|coliseum|amphitheat(?:er|re)|convention cent(?:er|re)|civic cent(?:er|re))\b/i,
   // Ogopogo is a ski patrol zone at Big White as well as a lake monster, and
   // the zone wins its division awards every year. A patrol is not a sighting.
   /\bski patrol(?:s|lers?)?\b/i,

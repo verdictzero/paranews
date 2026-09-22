@@ -1139,6 +1139,13 @@ publishers:
   # the story (a cluster is hidden when at least half its members carry it).
   entertainment:
     - Player Elimination
+    # Music press. UFO, Poltergeist and Bigfoot are all band names, so these
+    # outlets' beat coverage is a record release by definition.
+    - Sonic Perspectives
+    - sonicperspectives.com
+    - The Music Universe
+    - MetalTalk
+    - metaltalk.net
     - IMDb
     - IGN
     - Giant Freakin Robot

@@ -674,9 +674,65 @@ test("a headline that reaches the front page has to be on the beat", () => {
   assert.deepEqual(classifyTopics("Strange Creatures Seen Riding Giant Sea Spiders in The Midnight Ocean"), ["science"]);
 
   // And the money, the reprint and the first look must not reach real stories.
+  // The beverage brand's bounty used to be a control here; it is a marketing
+  // campaign, and the rule below now takes it.
   for (const t of [
-    "Beverage Brand Puts $1 Million Bounty on Bigfoot",
     "Bigfoot researcher raises questions about the Patterson film",
     "Pentagon Announces 'Legal Waiver' for UFO Info",
   ]) assert.ok(!isOffbeat(t) && !classifyFlags(t).includes("entertainment"), t);
+});
+
+test("a promotion is not a report", () => {
+  /*
+   * A cash offer to the public. Only three of the thirty-three headlines about
+   * Hard Mountain Dew's Bigfoot campaign said "bounty", so the rule has to
+   * catch the offer rather than the word — half a cluster's members must be
+   * flagged before the cluster is hidden.
+   */
+  for (const t of [
+    "Hard Mountain Dew Puts $1M Bounty on Bigfoot This Fall",
+    "Beverage Brand Puts $1 Million Bounty on Bigfoot",
+    "Malt Liquor Company Is Offering $1 Million to Anyone Who Can Prove Bigfoot Is Real",
+    "Is Bigfoot Real? Drink Company Offers $1 Million For Definitive Proof",
+    "Think you've spotted Bigfoot? Hard Mountain Dew will pay you $1 million to prove it",
+    "Hard Mountain Dew Wants You To Find Bigfoot For $1M",
+    "Hard Mountain Dew Offers 1 Million Dollar Bigfoot Bounty Campaign",
+    "Hard Mountain Dew Stakes $1 Million on Proof That Bigfoot Exists",
+    "Yakima County bigfoot hunt offers families free fun and prizes",
+  ]) assert.equal(isOffbeat(t), true, t);
+
+  // A tourism trail is an itinerary a visitors bureau is marketing. One West
+  // Virginia Paranormal Trail produced seventeen stories about its own stops.
+  for (const t of [
+    "West Virginia Paranormal Trail returns with 1 new stop & new prizes",
+    "3 Ohio Valley spooky sites featured as haunted locations on West Virginia Paranormal Trail",
+    "Connecticut launches Haunted History Trail with more than 130 spooky stops",
+    "Ghosts in the Gardens: York's ghost-hunting trail is back this September. Watch the video",
+    "Ghost hunters wanted: Independence launches free digital passport for 13 'haunted' historic sites",
+    "Cryptid Tourism: The Best Museums, Destinations & Festivals Across America",
+  ]) assert.equal(isOffbeat(t), true, t);
+
+  // UFO is a band. So are Poltergeist and Mothman; the words on the sleeve
+  // are what tell them apart.
+  for (const t of [
+    "UFO \"Mechanix\" Expanded, Remastered & Reissued On Double CD & Triple Vinyl",
+    "UFO remasters 'Mechanix' for expanded edition",
+    "UFO's Mechanix To Receive Expanded Reissue In December",
+  ]) assert.ok(classifyFlags(t).includes("entertainment"), t);
+
+  // None of it may reach a walk in the woods, a feature, or a real attraction.
+  for (const t of [
+    "On the Trail of the Mothman",
+    "MASSIVE BIGFOOT Reported Near McAfee Knob, Virginia: Hiker Recalls a Terrifying Night on the Appalachian Trail",
+    "1991 Rock Album Was Recorded in an Allegedly Haunted Mansion-and Made Its Band Superstars",
+    "Randsburg turns to ghost tours as OHV closures hammer tourism economy",
+  ]) assert.ok(!isOffbeat(t) && !classifyFlags(t).includes("entertainment"), t);
+  // A beat word that is a building.
+  for (const t of [
+    "Fort Worth Says Goodbye To Iconic Flying Saucer Arena After 58 Years",
+    "Fort Worth's 'Flying Saucer' convention center arena to host final farewell party Sunday",
+  ]) assert.equal(isOffbeat(t), true, t);
+
+  // A haunted hayride is still an attraction: demoted, not hidden.
+  assert.deepEqual(classifyFlags("Michigan Haunted Trail Brings Cryptids and Creatures Into the Woods"), ["attraction"]);
 });
