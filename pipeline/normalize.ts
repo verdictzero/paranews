@@ -2,7 +2,7 @@ import type { RawEntry } from "./feeds.ts";
 import { TOPICS, type Flag, type Item, type SourceConfig, type Topic } from "./types.ts";
 import { isEntertainmentPublisher, publisherTier } from "./config.ts";
 import { classifyFlags, classifyTopics, isOffTopic, namesNoBeat } from "./classify.ts";
-import { cleanTitle, collapseWhitespace, itemId, normalizeTitle, stripHtml, stripPublisherSuffix, truncate } from "./text.ts";
+import { cleanTitle, collapseWhitespace, itemId, normalizeTitle, stripHtml, stripPublisherSuffix, stripSectionSuffix, truncate } from "./text.ts";
 
 const OPAQUE_LINK = /^https?:\/\/news\.google\.com\/rss\/articles\//i;
 /** Video-mirror spam pages title themselves "<anything> (YouTubeId)". */
@@ -25,6 +25,7 @@ export function normalizeEntry(entry: RawEntry, source: SourceConfig, now: Date)
 
   let title = cleanTitle(entry.title);
   if (isGoogle) title = stripPublisherSuffix(title, publisher);
+  title = stripSectionSuffix(title);
   if (title.length < 8 || JUNK_TITLE.test(title) || isOffTopic(title)) return undefined;
   // One- and two-word "headlines" are photo captions and section labels, not stories.
   if (title.split(/\s+/).length < 3 && title.length < 20) return undefined;

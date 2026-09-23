@@ -164,9 +164,66 @@ export function dedupeMembers(members: Item[]): Item[] {
   });
 }
 
+/**
+ * The cluster's aggregate headline: the one the coverage most agrees on.
+ *
+ * It used to be the best-tier member's headline, which is whoever happened to
+ * rank highest. For the Tehran lights that was "On Cam: Mystery Lights Over
+ * Tehran Skies Sparks UFO Buzz; Drone, Aircraft Or Aliens?" — one outlet's
+ * kicker standing in for thirty-two write-ups. Scoring each candidate by how
+ * much of its vocabulary the other write-ups also used picks the plain version
+ * instead, because a kicker, a station name or a local angle is by definition
+ * the part nobody else wrote.
+ *
+ * Consensus decides between equals, it does not outrank them: candidates are
+ * the write-ups at the cluster's best tier, so a wire story is never spoken
+ * for by a blog that happened to phrase it plainly. Nor is a headline that is
+ * not really a headline — a "RAW:" or all-caps shout, a " - video" tag, a
+ * roundup or an organisation's own notice. One candidate per write-up, so
+ * twenty affiliates carrying one syndicated headline do not vote twenty
+ * times. Below three write-ups there is no consensus to find and the best
+ * member keeps the headline.
+ */
+const CONSENSUS_MIN_WRITEUPS = 3;
+const CONSENSUS_MIN_TOKENS = 4;
+
+export function consensusTitle(members: Item[]): Item {
+  const ranked = [...members].sort(memberOrder);
+  const groups = writeUps(members).map((g) => [...g].sort(memberOrder)[0]);
+  if (groups.length < CONSENSUS_MIN_WRITEUPS) return ranked[0];
+
+  const toks = groups.map((m) => tokenize(m.title_norm));
+  const df = new Map<string, number>();
+  for (const t of toks) for (const w of t) df.set(w, (df.get(w) ?? 0) + 1);
+
+  const top = bestTierOf(groups);
+  const scored = groups.map((m, i) => ({ m, i, score: agreement(toks[i], df, groups.length) }));
+  // A headline whose link cannot be resolved would leave the heading quoting
+  // one outlet and linking to another, so an opaque Google News redirect is
+  // not eligible while anything else is.
+  const usable = scored.filter((s) => s.m.tier === top && !s.m.url_opaque && toks[s.i].length >= CONSENSUS_MIN_TOKENS && speaksForTheGroup(s.m));
+  const pool = usable.length ? usable : scored;
+  pool.sort((a, b) => b.score - a.score || memberOrder(a.m, b.m));
+  return pool[0].m;
+}
+
+/** A headline that can stand as the group's, rather than one outlet's packaging of it. */
+function speaksForTheGroup(m: Item): boolean {
+  return !uglyTitle(m.title) && !/\s[-–—]\s(?:video|watch|photos?|listen|podcast|opinion|analysis)$/i.test(m.title) && !m.flags.some((f) => f === "roundup" || f === "notice");
+}
+
+/** Share of the other write-ups using this headline's words, averaged over them. */
+function agreement(t: string[], df: Map<string, number>, groups: number): number {
+  if (!t.length || groups < 2) return 0;
+  let sum = 0;
+  for (const w of t) sum += ((df.get(w) ?? 1) - 1) / (groups - 1);
+  return sum / t.length;
+}
+
 function makeCluster(members: Item[], now: Date): Cluster {
   members.sort(memberOrder);
   const best = members[0];
+  const headline = consensusTitle(members);
   const seed = [...members].sort((a, b) => a.published_at.localeCompare(b.published_at) || a.id.localeCompare(b.id))[0];
   const publishers = distinctPublishers(members);
   let corroboration = 0;
@@ -179,8 +236,11 @@ function makeCluster(members: Item[], now: Date): Cluster {
   const latest = published[published.length - 1];
   return {
     id: seed.id,
-    title: best.title,
-    primary: (members.find((m) => !m.url_opaque) ?? best).id,
+    title: headline.title,
+    // The headline's own article, so the heading, the link and the outlet
+    // credited under it are all the same piece of writing. A Google News
+    // redirect cannot be resolved server-side, so one of those falls back.
+    primary: (headline.url_opaque ? (members.find((m) => !m.url_opaque) ?? best) : headline).id,
     items: members.map((m) => m.id),
     publishers,
     tier: bestTier(members.map((m) => m.tier)),

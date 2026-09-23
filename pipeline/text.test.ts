@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cleanTitle, decodeEntities, itemId, normalizeTitle, publisherKey, stem, stripHtml, stripPublisherSuffix, tokens, truncate } from "./text.ts";
+import { cleanTitle, decodeEntities, itemId, normalizeTitle, publisherKey, stem, stripHtml, stripPublisherSuffix, stripSectionSuffix, tokens, truncate } from "./text.ts";
 
 test("decodeEntities handles named, decimal and hex entities and leaves unknowns alone", () => {
   assert.equal(decodeEntities("Tom &amp; Jerry &#8217;s &#x27;quote&#x27; &nbsp;x &bogus;"), "Tom & Jerry ’s 'quote'  x &bogus;");
@@ -70,4 +70,37 @@ test("a publisher whose own name contains ' - ' is still stripped", () => {
   assert.equal(stripPublisherSuffix("Bigfoot spotted in Maine - Fox News", "Fox News"), "Bigfoot spotted in Maine");
   // A dash that is part of the headline is left alone.
   assert.equal(stripPublisherSuffix("Roswell - the untold story", "Fox News"), "Roswell - the untold story");
+});
+
+test("the branding tail comes off, the headline does not", () => {
+  // Ninety-one archived headlines carry the Coast to Coast tail. Shared
+  // vocabulary is how clusters are built, so that tail alone bound a Bigfoot
+  // bounty, a Yowie photograph and the Pentagon's sixth UFO release into one
+  // 112-member story.
+  assert.equal(
+    stripSectionSuffix("Pentagon Announces 'Legal Waiver' for UFO Info | KFBK News Radio | Coast to Coast AM with George Noory"),
+    "Pentagon Announces 'Legal Waiver' for UFO Info",
+  );
+  assert.equal(stripSectionSuffix("Physicist, former NASA researcher takes UAP seriously | Reality Check"), "Physicist, former NASA researcher takes UAP seriously");
+  assert.equal(stripSectionSuffix("Watch: Pentagon releases sixth batch of UFO files | CNN Politics"), "Watch: Pentagon releases sixth batch of UFO files");
+
+  // A short head means the pipe is a kicker and the headline is on the right.
+  for (const t of [
+    "WATCH | Mysterious lights over Tehran caught on video. Drone, aircraft or something else?",
+    "Opinion | America Is Blundering Toward War With China",
+    "LETTER | Dear President Ramaphosa, please get into an electric vehicle",
+  ]) assert.equal(stripSectionSuffix(t), t, t);
+
+  // A long trailing clause is somebody's headline running past a pipe.
+  const long = "Keker | Thunderbird Innovation Topped 2026 H1 Rankings: Thunderbird iO's Debut Sales Sensation Unlocks New Growth Curve";
+  assert.equal(stripSectionSuffix(long), long);
+  // A sentence is not branding either.
+  const sentence = "Scottish Pine Forest | Trail Camera | Red & Grey Squirrel Close Encounter | Who else came to visit?";
+  assert.equal(stripSectionSuffix(sentence), sentence);
+});
+
+test("a leading emoji is the publisher decorating its own feed", () => {
+  assert.equal(cleanTitle("🎥Pentagon releases 6th batch of UFO files"), "Pentagon releases 6th batch of UFO files");
+  assert.equal(cleanTitle("▶️ Capturing Bigfoot - Teaser"), "Capturing Bigfoot - Teaser");
+  assert.equal(cleanTitle("3 Ohio Valley spooky sites"), "3 Ohio Valley spooky sites", "a digit is not decoration");
 });

@@ -104,6 +104,16 @@ main { padding: 28px 0 48px; }
 .story .meta .pub { color: var(--fg); }
 .story .meta .more { color: var(--link); }
 .story .meta .flag { font-style: italic; }
+/* The rest of the coverage, indented under the aggregate headline: one row per
+   independent write-up, outlet then the words that outlet used. The rule on the
+   left is the indent — it reads as a bracket around the group. */
+.story .also { list-style: none; margin: 8px 0 0; padding: 0 0 0 13px; border-left: 2px solid var(--rule); }
+.story .also li { margin-top: 3px; font-size: 13.5px; line-height: 1.35; }
+.story .also a { color: var(--muted); display: block; }
+.story .also a:hover { color: var(--fg); }
+.story .also .who { color: var(--fg); }
+.story .also .who::after { content: " — "; color: var(--muted); }
+.story .also .rest a { color: var(--link); }
 .story.compact { padding: 9px 0; }
 .story.compact .head { font-size: 16.5px; }
 .story .num { font-family: var(--serif); color: var(--muted); font-size: 13px; margin-right: 6px; }
@@ -154,6 +164,8 @@ html:not(.js) .read { display: none; }
 .coverage .who { font-weight: 600; }
 .coverage .what { grid-column: 2; color: var(--muted); font-size: 14px; }
 .coverage .when { color: var(--muted); font-size: 13px; }
+/* Syndication sits under the write-up it belongs to, across both columns. */
+.coverage .syndicated { grid-column: 1 / -1; font-size: 12.5px; color: var(--muted); font-style: italic; }
 
 table.sources { width: 100%; border-collapse: collapse; font-size: 14px; }
 table.sources th, table.sources td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }

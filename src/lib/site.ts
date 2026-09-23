@@ -2,7 +2,10 @@ import { existsSync, readFileSync } from "node:fs";
 import { META_FILE, WINDOW_DAYS, googleNewsUrl, loadSources } from "../../pipeline/config.ts";
 import { ShardStore } from "../../pipeline/store.ts";
 import { buildClusters } from "../../pipeline/cluster.ts";
-import { byScore, interleave } from "../../pipeline/rank.ts";
+import { byScore, interleave, writeUps } from "../../pipeline/rank.ts";
+import { distinctPublishers, memberOrder } from "../../pipeline/cluster.ts";
+
+export { distinctPublishers };
 import { loadHealth } from "../../pipeline/health.ts";
 import { isParanormal, isVisible, refreshItems } from "../../pipeline/visibility.ts";
 import { loadAllArticles, type ArticleRecord } from "../../pipeline/articles.ts";
@@ -159,6 +162,31 @@ export function itemsOf(cluster: Cluster, data: SiteData): Item[] {
 
 export function primaryOf(cluster: Cluster, data: SiteData): Item {
   return data.items.get(cluster.primary) ?? itemsOf(cluster, data)[0];
+}
+
+/**
+ * The other articles in the story, one per independent write-up, best first.
+ *
+ * A cluster is not a headline with a number beside it — it is a story that
+ * several newsrooms wrote up, and the interesting part is often how differently
+ * they wrote it. The unit is the write-up rather than the outlet, the same
+ * grouping scoring uses: twenty Gray Media affiliates running one syndicated
+ * Sasquatch headline are one article, not twenty, and one tabloid filing the
+ * same Loch Ness sighting three times is one too.
+ *
+ * The headline's own article is left out, because it is the heading.
+ */
+export function writeUpsOf(cluster: Cluster, data: SiteData): Item[][] {
+  return writeUps(itemsOf(cluster, data))
+    .map((g) => [...g].sort(memberOrder))
+    .sort((a, b) => memberOrder(a[0], b[0]));
+}
+
+export function coverageOf(cluster: Cluster, data: SiteData): Item[] {
+  const primary = primaryOf(cluster, data);
+  return writeUpsOf(cluster, data)
+    .filter((g) => !g.some((m) => m.id === primary?.id) && g[0].title !== cluster.title)
+    .map((g) => g[0]);
 }
 
 export interface ReaderCopy {

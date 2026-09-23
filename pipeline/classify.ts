@@ -418,6 +418,9 @@ const OFFBEAT: RegExp[] = [
    */
   /\b(?:pedals?|handlebars?|drivetrain|groupset|derailleur|seatpost|frameset|crankset|hardtail)\b/i,
   /\b(?:squier|telecaster|stratocaster|signature guitar|fender launches)\b/i,
+  // A colourway. New Balance's 990v4 "Navy/Meteorite" reached the science beat
+  // four times; the shoe is the only thing in the archive made of nubuck.
+  /\b(?:new balance|sneakers?|colou?rways?|nubuck)\b/i,
   /\b(?:royal enfield|harley davidson|bobber|thunderbird \d{3}|\d{3,4}\s?cc)\b/i,
   /\b(?:launch system|launch vehicle|portable launch)\b/i,
   /*

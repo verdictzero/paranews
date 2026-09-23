@@ -2,8 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import TierBadge from "../../components/TierBadge.astro";
 import type { Cluster } from "../../../pipeline/types";
-import { dedupeMembers } from "../../../pipeline/cluster";
-import { TOPIC_LABEL, formatDate, getSiteData, hostOf, href, itemsOf, primaryOf, readerFor, readerImagePath, snippetOf, topicPath } from "../../lib/site";
+import { TOPIC_LABEL, distinctPublishers, formatDate, getSiteData, hostOf, href, primaryOf, readerFor, readerImagePath, snippetOf, topicPath, writeUpsOf } from "../../lib/site";
 
 export function getStaticPaths() {
   return getSiteData().storyPages.map((cluster) => ({ params: { id: cluster.id }, props: { cluster } }));
@@ -14,11 +13,13 @@ interface Props {
 }
 const { cluster } = Astro.props;
 const data = getSiteData();
-const members = dedupeMembers(itemsOf(cluster, data));
+const groups = writeUpsOf(cluster, data);
 const primary = primaryOf(cluster, data);
 const outlets = cluster.publishers.length;
 const reader = readerFor(cluster, data);
 const snippet = snippetOf(cluster, data);
+// A wire story runs on dozens of affiliates; naming six of them makes the point.
+const SYNDICATION_SHOWN = 6;
 ---
 
 <Base title={cluster.title} description={snippet ?? `${outlets} ${outlets === 1 ? "outlet" : "outlets"} on: ${cluster.title}`}>
@@ -54,25 +55,39 @@ const snippet = snippetOf(cluster, data);
       )
     }
     {snippet && <p class="snippet">{snippet}</p>}
-    <h2>Coverage · {outlets} {outlets === 1 ? "outlet" : "outlets"}</h2>
+    <h2>Coverage · {groups.length} {groups.length === 1 ? "write-up" : "write-ups"} · {outlets} {outlets === 1 ? "outlet" : "outlets"}</h2>
     <ul class="coverage">
       {
-        members.map((m) => (
-          <li>
-            <span class="who">
-              <a href={m.url}>{m.publisher}</a> <TierBadge tier={m.tier} />
-              {data.articles.has(m.id) && (
-                <button type="button" class="read" data-reader={m.id} data-reader-url={m.url}>
-                  Read here
-                </button>
+        groups.map((group) => {
+          const m = group[0];
+          // Everyone else running this same write-up: syndication, not a
+          // second account of the event.
+          const carried = distinctPublishers(group).slice(1);
+          const syndicated = carried.slice(0, SYNDICATION_SHOWN);
+          const alsoMore = carried.length - syndicated.length;
+          return (
+            <li>
+              <span class="who">
+                <a href={m.url}>{m.publisher}</a> <TierBadge tier={m.tier} />
+                {data.articles.has(m.id) && (
+                  <button type="button" class="read" data-reader={m.id} data-reader-url={m.url}>
+                    Read here
+                  </button>
+                )}
+              </span>
+              <span class="when">
+                <time datetime={m.published_at}>{formatDate(m.published_at)}</time> · {hostOf(m)}
+              </span>
+              {m.title !== cluster.title && <span class="what">{m.title}</span>}
+              {syndicated.length > 0 && (
+                <span class="syndicated">
+                  Also carried by {syndicated.join(", ")}
+                  {alsoMore > 0 && ` and ${alsoMore} more`}
+                </span>
               )}
-            </span>
-            <span class="when">
-              <time datetime={m.published_at}>{formatDate(m.published_at)}</time> · {hostOf(m)}
-            </span>
-            {m.title !== cluster.title && <span class="what">{m.title}</span>}
-          </li>
-        ))
+            </li>
+          );
+        })
       }
     </ul>
   </article>

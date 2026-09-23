@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildClusters, dedupeMembers, distinctPublishers } from "./cluster.ts";
+import { buildClusters, consensusTitle, dedupeMembers, distinctPublishers } from "./cluster.ts";
 import { itemId, normalizeTitle } from "./text.ts";
 import type { Item, Tier, Topic } from "./types.ts";
 
@@ -108,4 +108,40 @@ test("the primary link prefers the display-name alias and duplicate alias rows c
   assert.equal(c.primary, named.id);
   assert.deepEqual(c.publishers, ["The Hollywood Reporter", "IMDb"]);
   assert.deepEqual(dedupeMembers([named, domain, other]).map((m) => m.publisher), ["The Hollywood Reporter", "IMDb"]);
+});
+
+test("the aggregate headline is the one the coverage agrees on", () => {
+  // The Tehran lights, shortened. The best-tier member used to take the
+  // headline, which meant one outlet's kicker spoke for thirty-two write-ups.
+  const members = [
+    mk("On Cam: Mystery Lights Over Tehran Skies Sparks UFO Buzz; Drone, Aircraft Or Aliens?", "The Times of India", "press", 5),
+    mk("Mysterious lights over Tehran spark UFO speculation", "Marksmen Daily", "press", 6),
+    mk("Mysterious object over Tehran sparks UFO speculation", "NewsBytes", "press", 6),
+    mk("Unexplained lights over Tehran fuel UFO speculation amid war", "Yahoo", "press", 7),
+    mk("Mystery lights over Tehran revive Iran's 1976 UFO encounter", "ThePrint", "press", 7),
+  ];
+  assert.equal(consensusTitle(members).title, "Mysterious lights over Tehran spark UFO speculation");
+  // What matters is that the kicker loses: "On Cam", the semicolon and the
+  // three-way question are the part nobody else wrote.
+  assert.notEqual(consensusTitle(members).publisher, "The Times of India");
+
+  // Consensus decides between equals; it does not outrank them. A blog that
+  // happens to phrase a wire story plainly does not speak for the wire.
+  const withBlog = [...members, mk("Mysterious lights over Tehran spark UFO speculation today", "Some Blog", "unverified", 5)];
+  assert.equal(consensusTitle(withBlog).tier, "press");
+
+  // Nor does a shout, a redirect that cannot be resolved, or a roundup.
+  const noisy = [
+    mk("RAW: MYSTERY LIGHTS OVER TEHRAN", "Local 3", "press", 5),
+    mk("Mystery lights over Tehran spark UFO claims", "Opaque Wire", "press", 5, { url_opaque: true }),
+    mk("Mystery lights over Tehran spark UFO claims today", "Roundup Weekly", "press", 5, { flags: ["roundup"] }),
+    mk("Mystery lights over Tehran spark UFO claims in Iran", "The Standard", "press", 6),
+    mk("Mystery lights over Tehran spark UFO claims, say locals", "Evening News", "press", 6),
+  ];
+  const picked = consensusTitle(noisy);
+  assert.ok(["The Standard", "Evening News"].includes(picked.publisher), picked.publisher);
+
+  // Below three write-ups there is no consensus to find.
+  const pair = [mk("Nessie spotted at Urquhart Bay", "BBC", "press", 3), mk("Loch Ness monster seen again", "Daily Star", "genre", 4)];
+  assert.equal(consensusTitle(pair).publisher, "BBC");
 });

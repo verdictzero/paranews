@@ -1,6 +1,6 @@
 ---
 import type { Cluster } from "../../pipeline/types";
-import { TOPIC_LABEL, getSiteData, href, primaryOf, readerFor, readerImagePath, snippetOf, storyPath, timeAgo, topicPath } from "../lib/site";
+import { TOPIC_LABEL, coverageOf, getSiteData, href, primaryOf, readerFor, readerImagePath, snippetOf, storyPath, timeAgo, topicPath } from "../lib/site";
 import TierBadge from "./TierBadge.astro";
 
 interface Props {
@@ -15,6 +15,12 @@ const primary = primaryOf(cluster, data);
 const others = cluster.publishers.length - 1;
 const reader = readerFor(cluster, data);
 const snippet = variant !== "compact" ? snippetOf(cluster, data) : undefined;
+// The rest of the coverage, indented under the aggregate headline. Compact
+// rows in the beat grid stay one line; the front page has room to show who
+// else ran it and what they called it.
+const COVERAGE_SHOWN = 5;
+const coverage = variant === "compact" ? [] : coverageOf(cluster, data);
+const hidden = coverage.length - COVERAGE_SHOWN;
 ---
 
 <li class:list={["story", variant]}>
@@ -56,4 +62,25 @@ const snippet = variant !== "compact" ? snippetOf(cluster, data) : undefined;
     {showTopic && cluster.topics.map((t) => <a class:list={["tag", t]} href={href(topicPath(t))}>{TOPIC_LABEL[t]}</a>)}
     {cluster.flags.map((f) => <span class="flag" title="Demoted in ranking">{f}</span>)}
   </div>
+  {
+    coverage.length > 0 && (
+      <ul class="also">
+        {coverage.slice(0, COVERAGE_SHOWN).map((m) => (
+          <li>
+            <a href={m.url}>
+              <span class="who">{m.publisher}</span>
+              <span class="what">{m.title}</span>
+            </a>
+          </li>
+        ))}
+        {hidden > 0 && (
+          <li class="rest">
+            <a href={href(storyPath(cluster))}>
+              +{hidden} more {hidden === 1 ? "write-up" : "write-ups"} →
+            </a>
+          </li>
+        )}
+      </ul>
+    )
+  }
 </li>

@@ -1,7 +1,7 @@
 import { loadSources } from "./config.ts";
 import { computeFlags, sortTopics } from "./normalize.ts";
 import { classifyTopics } from "./classify.ts";
-import { cleanTitle, normalizeTitle, stripPublisherSuffix } from "./text.ts";
+import { cleanTitle, normalizeTitle, stripPublisherSuffix, stripSectionSuffix } from "./text.ts";
 import type { Cluster, Flag, Item } from "./types.ts";
 
 /**
@@ -58,6 +58,7 @@ export function refreshItems(items: Item[]): Item[] {
     // stripper of the day could not see past.
     let title = cleanTitle(item.title);
     if (fromEntry) title = stripPublisherSuffix(title, item.publisher);
+    title = stripSectionSuffix(title);
     const flags = computeFlags(title, item.publisher);
     // Beats are re-derived too. A stored topic records only what the classifier
     // said the day the item arrived, so without this a tightened rule would

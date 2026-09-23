@@ -33,17 +33,64 @@ export function collapseWhitespace(s: string): string {
   return s.replace(/\s+/g, " ").trim();
 }
 
+/**
+ * Syndication and section branding: the outlet, show or desk bolted onto a
+ * headline after a pipe. "…for UFO Info | KFI AM 640 | Coast to Coast AM with
+ * George Noory", "…takes UAP seriously | Reality Check", "…go viral | Watch".
+ *
+ * This is not cosmetic. Ninety-one archived headlines carry the Coast to Coast
+ * tail alone, and clusters are built from shared headline vocabulary, so that
+ * tail was enough to bind a Bigfoot bounty, a photograph of a Yowie's arm and
+ * the Pentagon's sixth UFO release into one 112-member story — and, because a
+ * flag sticks only with a majority of the cluster, to carry the bounty past
+ * the rule that hides it.
+ *
+ * Branding is short, is not a sentence, and is never the whole headline. So
+ * segments come off the right while each is at most eight words, carries no
+ * terminal punctuation, and leaves a headline standing. A long trailing clause
+ * is somebody's headline running past a pipe, and stays.
+ *
+ * Runs after the Google News " - Publisher" tail comes off: while that tail is
+ * still attached it is the last segment, and it is too long to strip, so every
+ * pipe behind it survives.
+ */
+const BRANDING_MAX_WORDS = 8;
+const HEADLINE_MIN_WORDS = 4;
+
+export function stripSectionSuffix(title: string): string {
+  let out = title.trim();
+  for (let bar = out.lastIndexOf("|"); bar > 0; bar = out.lastIndexOf("|")) {
+    const tail = out.slice(bar + 1).trim();
+    const head = out.slice(0, bar).trim();
+    if (!tail || /[.!?…]$/.test(tail)) break;
+    if (countWords(tail) > BRANDING_MAX_WORDS || countWords(head) < HEADLINE_MIN_WORDS) break;
+    out = head;
+  }
+  return out;
+}
+
+function countWords(s: string): number {
+  return s.split(/\s+/).filter(Boolean).length;
+}
+
 /** Clean a headline: decode entities, unify quotes/dashes, collapse whitespace. */
 export function cleanTitle(raw: string): string {
-  return collapseWhitespace(
+  const text = collapseWhitespace(
     decodeEntities(raw)
       // Soft hyphens and zero-width characters split words invisibly ("poltergeis\u00ADt").
       .replace(/[\u00AD\u200B-\u200D\uFEFF\u2060]/g, "")
       .replace(/[‘’‚′]/g, "'")
       .replace(/[“”„″]/g, '"')
       .replace(/ /g, " "),
-  );
+  )
+    // A leading emoji is the publisher decorating its own feed: "🎥Pentagon
+    // releases 6th batch of UFO files". It is never part of the headline, and it
+    // survives into the aggregate headline, where it reads as a typo.
+    .replace(/^[\p{Extended_Pictographic}\uFE0F\s]+/u, "")
+    .trim();
+  return text;
 }
+
 
 /**
  * Google News appends " - Publisher" to every headline. Strip it only when it
