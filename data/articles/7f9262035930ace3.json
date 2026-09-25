@@ -1,0 +1,17 @@
+{
+  "id": "7f9262035930ace3",
+  "url": "https://newsukraine.rbc.ua/news/how-150-lines-of-code-tricked-ai-into-discovering-1790312219.html",
+  "fetched_at": "2026-09-25T06:08:03.445Z",
+  "title": "How 150 lines of code tricked AI into discovering alien life",
+  "byline": "Kateryna Serohina",
+  "site_name": "RBC-Ukraine",
+  "excerpt": "Read more",
+  "lang": "en",
+  "words": 401,
+  "image": {
+    "width": 650,
+    "height": 410,
+    "source": "https://newsukraine.rbc.ua/static/img/_/4/_42a467a29dbf63e4fb0b365dd580d34c_1300x820_b7f7b865a3b86280c1094f273502bdd6_650x410.jpg"
+  },
+  "content": "<p>AI can confidently detect alien life where none exists - algorithms produce false positives when searching for biosignatures, according to a study published on the <a href=\"https://arxiv.org/abs/2604.11915\" rel=\"noopener nofollow\" target=\"_blank\">arXiv preprint server.</a></p>\n                \n<h2><strong>How did scientists deceive artificial intelligence?</strong></h2>\n\n<p>In the search for extraterrestrial life, astrobiologists rely on universal indicators - specifically, the ability of systems to encode information and self-replicate, like DNA.</p>\n\n<p>To test AI's ability to recognize these processes, researchers used the Avida program, which generates \"digital life\" in the form of software code capable of evolving and copying itself in a virtual environment.</p>\n\n<p>After training the neural network on tens of thousands of digital organisms, scientists achieved an impressive initial recognition accuracy of 99.97%.</p>\n\n<p>However, further testing revealed a serious problem: by changing only individual commands in the code of an organism incapable of reproduction, the researchers managed to completely confuse the AI.</p>\n\n<p>Ankit Gupta, a graduate student in the Department of Computer Science and Engineering at MSU, noted that regardless of which command sequence they started with, they had been able to fool the AI in 100% of cases.</p>\n<p>It took only about 150 minor edits to the code for the algorithm to mistakenly identify a non-living object as capable of self-replication.</p>\n\n<p>The number of such combinations in the real world is enormous, so the probability of encountering a false biosignature remains extremely high.</p>\n\n<p>Christoph Adami, a professor of microbiology, molecular genetics, physics, and astronomy, explained that artificial intelligence had an “Achilles’ heel” and could identify a pattern but classify it completely incorrectly.</p>\n\n<h2><strong>Direct threat to space missions and terrestrial technologies</strong></h2>\n\n<p>The identified vulnerability creates risks for future research by NASA and other space agencies, which plan to use AI sensors on Mars rovers and probes near the moons of Jupiter and Saturn.</p>\n\n<p>If an autonomous spacecraft on Mars makes a false conclusion about the detection of life, it will be impossible to verify this data until samples are returned to Earth.</p>\n\n<p>In addition to astrobiology, the weakness in pattern recognition poses a threat to other areas where AI is implemented without proper oversight - from medical scanners and surveillance cameras to autopilots in cars.</p>\n\n<p>Adami concluded that this did not mean that using such methods in astrobiology, medical diagnostics, or on the battlefield was pointless. He stressed that there needed to be an independent way to verify the AI’s work and that a human had to remain in the decision-making chain.</p>"
+}
