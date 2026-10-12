@@ -16,13 +16,6 @@ permissions:
   id-token: write
   issues: write
 
-# Never let two ingests race on the same branch. Per ref, because a run on any
-# other branch (its job skipped below) would otherwise take the group's one
-# pending slot and cancel a queued default-branch run.
-concurrency:
-  group: update-site-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
   ingest-and-build:
     # Pushes only count on the default branch, whatever it is called; feature
@@ -30,6 +23,20 @@ jobs:
     if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    # Never let two ingests race on the same branch. Per ref, because a run on
+    # any other branch (its job skipped above) would otherwise take the group's
+    # one pending slot and cancel a queued default-branch run.
+    #
+    # On the job and not the workflow, which cost five days of updates. A
+    # workflow-level group is held for as long as the whole run lives, and a
+    # deploy waiting on an environment approval lives forever: run 232's
+    # ingest finished on 6 October and its deploy has been `waiting` ever
+    # since, so all 23 scheduled runs after it queued behind a job that was
+    # never going to start and were cancelled by the one after them. Ingest is
+    # what must not overlap; deploy has its own group below.
+    concurrency:
+      group: update-site-${{ github.ref }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
 
@@ -132,6 +139,13 @@ jobs:
     needs: ingest-and-build
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # A newer build supersedes an older one, because only the newest is worth
+    # publishing and a waiting deploy must never accumulate. timeout-minutes
+    # cannot help here: it runs once the job starts, and a job held by an
+    # environment protection rule has not started.
+    concurrency:
+      group: pages-${{ github.ref }}
+      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
