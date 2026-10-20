@@ -1,0 +1,16 @@
+{
+  "id": "47a0f01a6fd13dd1",
+  "url": "https://www.tradingview.com/news/gurufocus:acb2ae47e094b:0-google-makes-major-quantum-computing-breakthrough-hits-99-99-accuracy/",
+  "fetched_at": "2026-10-20T06:33:11.258Z",
+  "title": "Google Makes Major Quantum Computing Breakthrough -- Hits 99.99% Accuracy",
+  "site_name": "TradingView",
+  "excerpt": "Alphabet NASDAQ:GOOGL said Google demonstrated a method for reducing errors in a key quantum-computing process on its Willow processor, advancing work toward more reliable machines.The technique, called magic-state cultivation, produced specially prepared quantum states with 99.99% logical fidelity…",
+  "lang": "en",
+  "words": 171,
+  "image": {
+    "width": 800,
+    "height": 420,
+    "source": "https://static.tradingview.com/static/images/logo-preview.png"
+  },
+  "content": "<p><p>Alphabet <a href=\"https://www.tradingview.com/symbols/NASDAQ-GOOGL/\" rel=\"noopener nofollow\" target=\"_blank\"><img src=\"https://s3-symbol-logo.tradingview.com/alphabet.svg\" alt=\"\" loading=\"lazy\" decoding=\"async\" referrerpolicy=\"no-referrer\" />GOOGL</a> said Google demonstrated a method for reducing errors in a key quantum-computing process on its Willow processor, advancing work toward more reliable machines.</p><p>The technique, called magic-state cultivation, produced specially prepared quantum states with 99.99% logical fidelity, a measure of how reliably they preserve the intended quantum information. Google researchers said the method reduced errors about 40-fold compared with states produced without cultivation.</p><p>These states enable operations needed for complex quantum calculations, but generating them can consume substantial computing resources. The process checks candidate states for errors and discards unsuccessful attempts, retaining only those that pass the checks.</p><p>The team also transferred cultivated states between two error-correction methods, known as color codes and surface codes. That result suggests the approach can work across different ways of protecting quantum information. The research was published Oct. 15 in Science.</p><p>The findings do not establish that Google has built a commercially practical quantum computer. Researchers said the technique must be demonstrated at a larger scale, and engineering challenges remain before it can support useful, fault-tolerant machines.</p></p>"
+}
