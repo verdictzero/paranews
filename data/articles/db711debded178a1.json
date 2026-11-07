@@ -1,0 +1,16 @@
+{
+  "id": "db711debded178a1",
+  "url": "https://quantumzeitgeist.com/arxiv-quantum-computing-resources-estimate-lattice/",
+  "fetched_at": "2026-11-07T20:11:05.531Z",
+  "title": "Researchers Estimate Quantum Computing Resources For Lattice Field Theories",
+  "site_name": "Quantum Zeitgeist",
+  "excerpt": "Researchers estimate the Quantum Computing resources needed to explore entanglement asymmetry and the quantum Mpemba effect in lattice field theories, utilizing a SWAP test protocol and randomized symmetry rotations.",
+  "lang": "en-GB",
+  "words": 247,
+  "image": {
+    "width": 800,
+    "height": 420,
+    "source": "https://quantumzeitgeist.com/wp-content/uploads/estimate-quantum-computing-resources-lattice-field-1200x630.png"
+  },
+  "content": "<p>Keisuke Fujii, Harunobu Fujimura, Masazumi Honda, and Duc Truyen Le have developed a quantum measurement protocol that estimates entanglement asymmetry, a key indicator of symmetry breaking in quantum systems. The researchers report the number of measurements needed for accuracy scales as O(epsilon^-2), meaning computational demands do not increase with system size, which is a significant advantage for simulating complex quantum phenomena.</p>\n<p>This protocol, applied to the lattice Schwinger model with a theta term using classical simulations, provides a roadmap for implementation on current noisy intermediate-scale quantum devices, fault-tolerant quantum computers and early-stage fault-tolerant architectures. The work offers a measurement-efficient framework for investigating anomalous symmetry-restoration dynamics in quantum many-body systems and quantum field theories.</p>\n<h2>Rényi Entanglement Asymmetry Protocol via SWAP Tests and Randomized Rotations</h2>\n<p>This tiered approach provides a roadmap for practical implementation, acknowledging the current limitations of quantum hardware and anticipating future advancements. The work constructs a protocol combining the SWAP test with a charge-resolving procedure based on randomized symmetry rotations, offering a novel method for estimating Rényi entanglement asymmetry. The authors state that the protocol’s purpose is to be a probe of the quantum Mpemba effect and a quantifier of symmetry breaking at the subsystem level.</p>\n<p><strong>👉 More information</strong><br />🗞<i> Quantum Computing for Entanglement Asymmetry and the Quantum Mpemba Effect in Field Theory</i><br />✍️<i> Keisuke Fujii, Harunobu Fujimura, Masazumi Honda and Duc Truyen Le</i><br /><strong>🧠 ArXiv: </strong><a href=\"https://arxiv.org/abs/2611.05987\" rel=\"noopener nofollow\" target=\"_blank\">https://arxiv.org/abs/2611.05987</a></p>\n<p><strong>More like this</strong></p><p><strong>Stay current</strong></p><p>See <a href=\"https://quantumzeitgeist.com/\" rel=\"noopener nofollow\" target=\"_blank\">today’s quantum computing news</a> on Quantum Zeitgeist for the latest breakthroughs in qubits, hardware, algorithms, and industry deals.</p>"
+}
