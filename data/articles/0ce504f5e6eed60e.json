@@ -1,0 +1,17 @@
+{
+  "id": "0ce504f5e6eed60e",
+  "url": "https://www.tokenpost.com/news/technology/51976",
+  "fetched_at": "2026-11-09T09:40:22.110Z",
+  "title": "Physical Superintelligence Says AI System Proved Quantum Computing Conjecture",
+  "byline": "Simon YoonPublished Nov 8, 2026, 8:12 PM ESTSaveShare",
+  "site_name": "TokenPost",
+  "excerpt": "The claimed result limits quantum speedups on random inputs to polynomial factors. The paper has not undergone journal review.",
+  "lang": "en",
+  "words": 301,
+  "image": {
+    "width": 800,
+    "height": 450,
+    "source": "https://mzwrodgsdjfdyvnraeya.supabase.co/storage/v1/object/public/article-media/articles/7af79bc6401c245c7f3d526311f1870582a3fdcfff1024a7b8c96d0ae8d0574c.webp"
+  },
+  "content": "<p>Physical Superintelligence (PSI) announced Nov. 6 that a research system it developed had proved the Aaronson–Ambainis conjecture, a longstanding question about whether quantum computers can gain an exponential advantage on random inputs. The claimed result limits that advantage to polynomial factors, with implications for which problems may benefit from quantum computing.</p><p>PSI said the system ran on its own infrastructure and used multiple instances of an Anthropic model whose name has not been disclosed. The system produced a complete proof on its third day of operation. The proof passed verification in Lean, a proof assistant that checks each step in a formal mathematical argument. The paper and Lean formalization are publicly available on GitHub.</p><p>Computer scientists Scott Aaronson and Andris Ambainis proposed the conjecture in 2008. It asks whether quantum computers can achieve exponential speedups when inputs lack special structure. PSI’s announced proof concludes that, for random inputs, quantum computers can gain at most polynomial speedups over classical computers.</p><p>The conjecture recasts the question as a mathematical statement about polynomials. If it holds, a classical computer could reproduce a quantum computer’s output on random inputs by reading the input only a polynomial number of times more. That would help define the limits of quantum advantage for problems without exploitable structure.</p><p>Many of the largest known quantum speedups depend on structure in a problem. Shor’s 1994 factoring algorithm, for example, exploits structure in the factoring problem. The announced result concerns random inputs and does not remove the relevance of structure-dependent speedups.</p><p>David Turturean led the project, developed the research system, selected the conjecture and reviewed the paper draft, taking responsibility for its correctness. Adviser Jim Halverson reviewed the proof. The paper has not undergone journal review. Stanford researchers who proved a special case in August are reading the full proof and preparing a shorter explanation for specialists.</p>"
+}
