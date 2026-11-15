@@ -1,0 +1,15 @@
+{
+  "id": "4f2c5f9fcc3f2be9",
+  "url": "https://www.quantinuum.com/webinar/introducing-quops-a-common-yardstick-for-quantum-computing",
+  "fetched_at": "2026-11-15T15:37:31.271Z",
+  "title": "Introducing QUOPS: A Common Yardstick for Quantum Computing",
+  "excerpt": "Date: November 11th, 2026",
+  "lang": "en",
+  "words": 279,
+  "image": {
+    "width": 800,
+    "height": 419,
+    "source": "https://cdn.prod.website-files.com/669960f53cd73aedb80c8f0e/6ae8ee371ae8dd545ba22327_Introducing-QUOPS-MP.png"
+  },
+  "content": "<p><strong>Date: November 11th, 2026</strong></p><p>Quantum hardware is racing toward utility scale, but with teams pursuing very different qubit architectures, comparing progress has never been harder. Qubit counts, gate fidelities, and isolated demonstrations each tell part of the story, but what’s missing is a holistic picture.‍<br />‍</p><p>Changing that is QUOPS (Quantum Universal Operation Performance System) which was developed by Sandia National Laboratories. QUOPS provides a benchmark that measures computational capability directly, so platforms can be compared on equal footing, no matter which qubits they're built with.‍<br />‍</p><p>QUOPS has already been measured on leading physical-qubit processors from Quantinuum, Google, and IBM, and on a fault-tolerant logical-qubit processor built on Quantinuum Helios. You'll be hearing much more about QUOPS as it gains traction across the industry. This webinar is your chance to get ahead of it.</p><h4><strong>What we cover:</strong></h4><p><strong>Why the industry needs QUOPS.</strong> This webinar explains why existing metrics fall short and why a direct measure of computational capability matters as the field moves toward useful quantum computing.<br />‍</p><p><strong>What is the theory behind the benchmark.</strong> Researchers explain how QUOPS works, what it measures, and why it makes fair comparisons possible across very different hardware.<br />‍</p><p><strong>How does QUOPS work on physical hardware.</strong> We walk through how QUOPS is measured in practice and what the results show for leading physical-qubit processors, including Quantinuum's own systems.<br />‍</p><p><strong>What is the logical leap and what comes next.</strong> We share QUOPS results from a fault-tolerant logical-qubit processor built on Helios, discuss what changes when computation moves to the logical layer, and look ahead to what the benchmark will reveal as systems scale.<br />‍</p><p><strong>Who should watch?</strong> Researchers, engineers, technical decision-makers, and anyone interested in evaluating quantum computing progress through a more rigorous and meaningful measure of performance.</p>"
+}
