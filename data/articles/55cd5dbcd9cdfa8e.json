@@ -1,0 +1,16 @@
+{
+  "id": "55cd5dbcd9cdfa8e",
+  "url": "https://hackaday.com/2026/11/16/new-super-magnets-turbocharge-the-large-hadron-collider/",
+  "fetched_at": "2026-11-16T17:24:58.244Z",
+  "title": "New Super Magnets Turbocharge The Large Hadron Collider",
+  "site_name": "Hackaday",
+  "excerpt": "Although the Large Hadron Collider (LHC) has been making many amazing discoveries since 2008 inauguration, it’s necessary to regularly upgrade its components to push the LHC’s performan…",
+  "lang": "en-US",
+  "words": 285,
+  "image": {
+    "width": 800,
+    "height": 207,
+    "source": "https://hackaday.com/wp-content/uploads/2026/11/nb2sn_superconducting_magnets_LHC_bermudez_et_al_2026.jpg"
+  },
+  "content": "<p><a href=\"https://hackaday.com/2026/11/16/new-super-magnets-turbocharge-the-large-hadron-collider/#content\" rel=\"noopener nofollow\" target=\"_blank\">Skip to content</a></p>\n\n    \n        \n\n        \n            \n\n    \n\n    \n        <p>Although the Large Hadron Collider (LHC) has been making many amazing discoveries since 2008 inauguration, it’s necessary to regularly upgrade its components to push the LHC’s performance to unlock new discoveries, as well as to perform general maintenance. The LHC has just completed its third run, which lasted from 2022 to July of 2026. In the ongoing third shutdown phase the most exciting upgrade is likely to be the high-luminosity (HL) upgrade, that <a href=\"https://spectrum.ieee.org/large-hadron-collider-superconducting-magnets\" rel=\"noopener nofollow\" target=\"_blank\">introduces more powerful superconducting magnets</a>.</p>\n<p>In <a href=\"https://ieeexplore.ieee.org/document/11709469\" rel=\"noopener nofollow\" target=\"_blank\">the paper</a> by [S. Izquierdo Bermudez] et al. we can find all the details about manufacturing these new niobium-tin (Nb<sub>3</sub>Sn) superconducting magnets. Although these boost the achievable field strength to nearly 12 Tesla from the 8.3 T of the previous niobium-titanium (NbTi) magnets, the latter were rather pliable whereas Nb<sub>3</sub>Sn is brittle in its superconducting phase and thus needs to be formed after winding.</p>\n<p>As can be seen in the above photos, this means that three manufacturing steps are required, ranging from winding and curing (left), to the heat treatment (center) under an inert atmosphere in which the material enters the brittle superconducting phase, followed by impregnation with epoxy resin.</p>\n<p>In the paper it’s detailed in how many ways this can go wrong, ranging from contamination to incorrect winding and handling glitches. With enough trial-error-and-corrections they managed to create a number of coils that passed all tests, with the now debugged tooling being helpful in scaling up production.</p>\n<p>If everything goes well, the LHC will enter its fourth run as the brand-new <a href=\"https://en.wikipedia.org/wiki/High_Luminosity_Large_Hadron_Collider\" rel=\"noopener nofollow\" target=\"_blank\">HL-LHC</a> project by 2030, with the 5-7.5 times higher <a href=\"https://en.wikipedia.org/wiki/Luminosity_(scattering_theory)\" rel=\"noopener nofollow\" target=\"_blank\">luminosity</a> meaning that far more collisions should occur within any timespan, and thus much more data should be produced in less time.</p>"
+}
