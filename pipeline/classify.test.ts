@@ -794,3 +794,49 @@ test("a theatre is one of the most reliably haunted places there is", () => {
     "Epsilon Perseid meteor shower will be visible tonight in the DMV",
   ]) assert.ok(!isOffbeat(t) && !classifyFlags(t).includes("entertainment"), t);
 });
+
+test("quantum computing is an industry; quantum physics is the beat", () => {
+  // 891 archived headlines say "quantum" and 784 of them say nothing else a
+  // physicist would recognise. An industry is not "the physics that sounds
+  // invented", so the beat gives up the machines and keeps the mechanics.
+  for (const t of [
+    "NVIDIA Expands Open Source CUDA-Q Platform for Fault-Tolerant Quantum Computing",
+    "A Qatar university will get access to a quantum computer under a three-year deal",
+    "Austin tech campus aims to make Texas a quantum computing leader",
+    "Thales Builds Cryptographic Security for the Age of AI and Post-Quantum Computing",
+    "Inside IBM's New Quantum Computing Fridges, 180 Times Colder Than Deep Space",
+  ]) assert.ok(!classifyTopics(t).includes("science"), t);
+
+  for (const t of [
+    "CERN Detects Quantum Entanglement in Particles Born From The Higgs Boson",
+    "Lost quantum traces could reveal dark matter at the Large Hadron Collider",
+    "Unconventional quantum materials could dramatically boost the search for dark matter",
+    "Superfluid qubit could help scale up quantum computers",
+    "Quantum Gravity Could Blur The Boundary Between Cause And Effect",
+  ]) assert.ok(classifyTopics(t).includes("science"), t);
+});
+
+test("UAP and AARO are busy acronyms", () => {
+  for (const t of [
+    "UAP-Old Mutual Lays Off 100 Staff in its Kenyan Business",
+    "Pakistan, Uzbekistan seek financing roadmap for UAP Railway",
+    "UAP Oman chapter marks decade of excellence",
+    "High Court of Karnataka Grants Bail to Accused No.4 in UAP Act Case",
+    "2027: Aaro Meta urges Kwara South APC to back Danladi",
+    "Monadelphous Engineering chases damages in contract stoush with Aaro Group",
+    "Aaro Hakulinen | Player profile",
+    "Josh Fogarty vs Aaro Joonatan Vahtera 2026 IBJJF European NoGi",
+    "James Webb Obituary",
+    "Patagonia's $155 Black Hole Hiking Backpack is On Sale for $77 at REI",
+    "Drink This Now: Fall sips at Apparition Coffee",
+  ]) assert.equal(isOffbeat(t), true, t);
+
+  // The office, the phenomenon and the files are the beat and must survive.
+  for (const t of [
+    "Recently Obtained FOIA Records Reveal AARO Quietly Built UAP Partnership With Uruguay",
+    "AARO inaugural TechX advanced training summit Day One kicks off",
+    "UAP observed in the Middle East in 2025",
+    "Dems will shut down UAP committees if they win in midterms: Burlison",
+    "Eighth UAP release includes radar analysis of object traveling near Mach 2.5",
+  ]) assert.equal(isOffbeat(t), false, t);
+});

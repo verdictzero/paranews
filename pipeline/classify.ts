@@ -2,7 +2,7 @@ import type { Flag, Topic } from "./types.ts";
 
 /** The science beat's own subjects. Named here so a guard can reuse it. */
 const SCIENCE_SUBJECT =
-  /\b(dark matter|dark energy|black holes?|event horizons?|neutron stars?|magnetars?|pulsars?|quasars?|supernovae?\b(?=[^.]{0,45}\b(?:stars?|stellar|explos\w+|exploded|remnants?|progenitors?|galax\w+|astronom\w+|telescopes?|cosmic|dark energy|light curves?|type ia|neutron|dataset|impostors?|universe|ever recorded)\b)|(?<=\b(?:brightest|distant|nearby|exploding|ancient|bright|massive|powerful|rare|type ia|type 1a|closest|nearest)\s)supernovae?|(?<=\b(?:hubble|webb|jwst|telescopes?|astronomers?|astrophysicists?|spotted|discovered|observed|detected|imaged|nasa|esa|chandra)\b[^.]{0,30})supernovae?|kilonovae?|gravitational waves?|gravitational lens\w+|neutrinos?|antimatter|cosmic rays?|fast radio bursts?|gamma[- ]ray bursts?|exoplanets?|habitable zones?|protoplanetary|accretion discs?|solar flares?|coronal mass ejections?|aurora (?:borealis|australis)|northern lights\b(?=[^.]{0,50}\b(?:visible|visibility|forecast|tonight|tomorrow|alert|seen|spotted|storms?|geomagnetic|solar|dazzl\w+|chance|states|activity)\b)|(?<=\b(?:see|seeing|watch|catch|spot|photograph\w*|chance of|forecast for)\b[^.]{0,30})northern lights|geomagnetic storms?|meteors?|meteorites?|meteor showers?|bolides?|(?:meteor|sky|green|blue|bright|massive|brilliant|giant) fireballs?|fireballs? (?:over|above|across|streak\w*|light\w* up|spotted|seen|captured|filmed)|asteroids?|comets?\b(?=[^.]{0,45}\b(?:sky|skies|orbits?|orbiting|tail|nucleus|solar system|sun|earth|telescopes?|astronomers?|observ\w+|visible|spotted|approach\w*|flyby|rendezvous|interstellar|meteors?|perihelion|coma|rising|streak\w*)\b)|comets?\s+(?:neowise|atlas|borisov|halley|encke|leonard|lovejoy|hale)|(?<=\b(?:interstellar|periodic|halley'?s|encke|neowise|hale[- ]bopp|lovejoy|leonard|borisov|3i\/atlas)\b[^.]{0,25})comets?|near[- ]earth objects?|particle accelerators?|large hadron collider|cern|higgs boson|standard model|string theory|quantum (?:computing|computers?|mechanics|entanglement|gravity|physics|tunnell?ing|states?|theory|supremacy|sensors?|materials?)|superconduct\w+|nuclear fusion|fusion reactors?|james webb|jwst|hubble (?:telescope|images?)|ligo|simulation (?:theory|hypothesis)|fermi paradox|drake equation|great filter|cosmic myster\w+|panspermia|astrobiolog\w+|hydrothermal vents?|extremophiles?|tardigrades?|bioluminescen\w+|mass extinctions?|supervolcano|geomagnetic reversals?|magnetic pole (?:reversal|flip)|deep[- ](?:sea|ocean) (?:creatures?|discover\w+|expeditions?|spiders?|life)|sea spiders?|midnight (?:zone|ocean)|abyssal (?:plain|zone|depths?)|hadal zone|astronomers?|astrophysicists?|cosmologists?|galax(?:y|ies)|nebulae?|milky way|space telescopes?|solar storms?|solar winds?|earth'?s magnetic field|magnetosphere|ionosphere|interstellar (?:comets?|objects?|visitors?)|3i\/atlas|oumuamua|(?:search|searching|searches|hunt|hunting)\w* for (?:extraterrestrial|alien|intelligent|non-?human)|extraterrestrial (?:life|intelligence|civili[sz]ations?|artificial intelligence|microbes?|biolog\w+)|alien life|biosignatures?|\bseti\b|second earth)\b/i;
+  /\b(dark matter|dark energy|black holes?|event horizons?|neutron stars?|magnetars?|pulsars?|quasars?|supernovae?\b(?=[^.]{0,45}\b(?:stars?|stellar|explos\w+|exploded|remnants?|progenitors?|galax\w+|astronom\w+|telescopes?|cosmic|dark energy|light curves?|type ia|neutron|dataset|impostors?|universe|ever recorded)\b)|(?<=\b(?:brightest|distant|nearby|exploding|ancient|bright|massive|powerful|rare|type ia|type 1a|closest|nearest)\s)supernovae?|(?<=\b(?:hubble|webb|jwst|telescopes?|astronomers?|astrophysicists?|spotted|discovered|observed|detected|imaged|nasa|esa|chandra)\b[^.]{0,30})supernovae?|kilonovae?|gravitational waves?|gravitational lens\w+|neutrinos?|antimatter|cosmic rays?|fast radio bursts?|gamma[- ]ray bursts?|exoplanets?|habitable zones?|protoplanetary|accretion discs?|solar flares?|coronal mass ejections?|aurora (?:borealis|australis)|northern lights\b(?=[^.]{0,50}\b(?:visible|visibility|forecast|tonight|tomorrow|alert|seen|spotted|storms?|geomagnetic|solar|dazzl\w+|chance|states|activity)\b)|(?<=\b(?:see|seeing|watch|catch|spot|photograph\w*|chance of|forecast for)\b[^.]{0,30})northern lights|geomagnetic storms?|meteors?|meteorites?|meteor showers?|bolides?|(?:meteor|sky|green|blue|bright|massive|brilliant|giant) fireballs?|fireballs? (?:over|above|across|streak\w*|light\w* up|spotted|seen|captured|filmed)|asteroids?|comets?\b(?=[^.]{0,45}\b(?:sky|skies|orbits?|orbiting|tail|nucleus|solar system|sun|earth|telescopes?|astronomers?|observ\w+|visible|spotted|approach\w*|flyby|rendezvous|interstellar|meteors?|perihelion|coma|rising|streak\w*)\b)|comets?\s+(?:neowise|atlas|borisov|halley|encke|leonard|lovejoy|hale)|(?<=\b(?:interstellar|periodic|halley'?s|encke|neowise|hale[- ]bopp|lovejoy|leonard|borisov|3i\/atlas)\b[^.]{0,25})comets?|near[- ]earth objects?|particle accelerators?|large hadron collider|cern|higgs boson|standard model|string theory|quantum (?:mechanics|entanglement|gravity|physics|tunnell?ing|states?|theory|supremacy|sensors?|materials?)|qubits?|superconduct\w+|nuclear fusion|fusion reactors?|james webb|jwst|hubble (?:telescope|images?)|ligo|simulation (?:theory|hypothesis)|fermi paradox|drake equation|great filter|cosmic myster\w+|panspermia|astrobiolog\w+|hydrothermal vents?|extremophiles?|tardigrades?|bioluminescen\w+|mass extinctions?|supervolcano|geomagnetic reversals?|magnetic pole (?:reversal|flip)|deep[- ](?:sea|ocean) (?:creatures?|discover\w+|expeditions?|spiders?|life)|sea spiders?|midnight (?:zone|ocean)|abyssal (?:plain|zone|depths?)|hadal zone|astronomers?|astrophysicists?|cosmologists?|galax(?:y|ies)|nebulae?|milky way|space telescopes?|solar storms?|solar winds?|earth'?s magnetic field|magnetosphere|ionosphere|interstellar (?:comets?|objects?|visitors?)|3i\/atlas|oumuamua|(?:search|searching|searches|hunt|hunting)\w* for (?:extraterrestrial|alien|intelligent|non-?human)|extraterrestrial (?:life|intelligence|civili[sz]ations?|artificial intelligence|microbes?|biolog\w+)|alien life|biosignatures?|\bseti\b|second earth)\b/i;
 
 /**
  * The room science is reported from: an observatory, a particle lab, a
@@ -31,7 +31,7 @@ const SCIENCE_CONTEXT = new RegExp(`${SCIENCE_SUBJECT.source}|${SCIENCE_AMBIENT.
  * as explosion kills mum and son" ran on the Fortean beat for a week.
  */
 const NAMED_CAUSE =
-  /\b(?:gas explosions?|explosions? (?:kill|injur|destroy|level)\w*|blasts? (?:kill|injur)\w*|plane crash|air ?strikes?|missiles?|shelling|car bombs?|pipeline blasts?|controlled (?:detonation|explosion)|sonic booms? from|quarry blast)\b/i;
+  /\b(?:gas explosions?|explosions? (?:kill|injur|destroy|level)\w*|blasts? (?:kill|injur)\w*|plane crash|air ?strikes?|missiles?|shelling|car bombs?|pipeline blasts?|controlled (?:detonation|explosion)|sonic booms? from|quarry blast|emergency slides?)\b/i;
 
 /** Either disqualifier, for the beats whose loose wording both of them reach. */
 const MUNDANE_OR_SCIENCE = new RegExp(`${NAMED_CAUSE.source}|${SCIENCE_CONTEXT.source}`, "i");
@@ -159,6 +159,17 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
      * sciences with the same strangeness. Deliberately not everything a
      * science desk files: "study finds" is not a beat.
      *
+     * Quantum computing is not here, and that is the single biggest thing the
+     * beat gives up: 891 archived headlines say "quantum" and 784 of them say
+     * nothing else a physicist would recognise — a Qatar university buying
+     * access to a machine, NVIDIA's orchestration layer, IBM's fridges, a
+     * grant programme, a cryptography product. It is an industry, and an
+     * industry is not "the physics that sounds invented". What stays is the
+     * physics the industry is built on, which these headlines name when they
+     * are really about it: entanglement, tunnelling, qubits, superconductors,
+     * quantum materials, and the dark-matter searches that use them. The
+     * remaining 107 keep the beat on exactly that test.
+     *
      * "Comet" and "northern lights" are brands as often as they are objects.
      * One live pull returned a defence contract called COMET, a band called
      * Comet, a school team called the Comets, a Northern Lights EP and a
@@ -173,7 +184,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
      * Developer OptQC", "Tennessee, United Kingdom announce nuclear fusion
      * partnership". No vendor is named here: IonQ publishes real results too.
      */
-    unless: /\b(?:invests? in|investments?|funding rounds?|series [a-e] rounds?|acquires?|acquisitions?|joint ventures?|partnerships?|joins? forces|memorand(?:um|a) of understanding|signs? (?:an? )?(?:mou|agreement|deal)|go[- ]to[- ]market|commerciali[sz]\w+|startups?|shareholders?|ipo|ufos?|uaps?|pentagon|department of war|disclosure|whistleblowers?|abduct\w+|crash retrievals?|grusch|elizondo|coulthart|sparks (?:theor\w+|speculation))\b/i,
+    unless: /\b(?:invests? in|investments?|funding rounds?|series [a-e] rounds?|acquires?|acquisitions?|joint ventures?|partnerships?|joins? forces|memorand(?:um|a) of understanding|signs? (?:an? )?(?:mou|agreement|deal)|go[- ]to[- ]market|commerciali[sz]\w+|startups?|shareholders?|ipo|roadmaps?|ufos?|uaps?|pentagon|department of war|disclosure|whistleblowers?|abduct\w+|crash retrievals?|grusch|elizondo|coulthart|sparks (?:theor\w+|speculation))\b/i,
   },
   {
     topic: "archaeology",
@@ -441,7 +452,20 @@ const OFFBEAT: RegExp[] = [
    */
   /\b(?:revenue|net loss|net income|full[- ]year results|fy\d{2}\b|h[12] results|narrows loss|shareholders?|price dynamics|execution-aware)\b/i,
   /\bsecures?\s+(?:a\$|us\$|\$|£|€)?[\d.]+\s*(?:million|billion|m\b|bn\b)/i,
-  /\buap (?:old mutual|holdings|group|insurance|towers)\b|^uap\s+(?:honours?|honors?|celebrates?|announces?|launches?|partners?|reports?|appoints?)/i,
+  /*
+   * UAP is a busy acronym. It is UAP Inc in Canada and UAP-Old Mutual in
+   * Kenya, the United Architects of the Philippines in Bacolod and in Oman, a
+   * pharmacy school, India's Unlawful Activities Prevention Act, and the
+   * Uzbekistan-Afghanistan-Pakistan railway. AARO likewise is a Canadian
+   * automotive association, a UK accounting firm, a Nigerian politician and
+   * at least four Finnish footballers.
+   */
+  /\buap[\s-](?:old mutual|holdings|group|insurance|towers|railway|act\b|reach\b|inc\b|bacolod|azucar|oman)\b|\buap\b[^.]{0,45}\b(?:architects?|pharmacists?|hospital planning|heritage foundation|healthcare rates|lease reporting|accounting|marks (?:a )?decade|anniversary)\b/i,
+  /^uap\s+(?:honours?|honors?|celebrates?|announces?|launches?|partners?|reports?|appoints?)/i,
+  /\baaro[\s-](?:meta|canada|group|angerpuro|hakulinen|heiskanen|nyholm|t[öo]rnblom|joonatan)\b|\bby aaro\b/i,
+  // A sports-statistics page. These arrive by the dozen when a player shares
+  // a name with the beat.
+  /\bplayer profile\b|\bstats by competition\b|\bpenalty goals\b|\(detailed view\)|\bibjjf\b|\bno-?gi\b/i,
   /\b(?:betting odds|sportsbook|wagers?|payouts?)\b|\bodds\b[^.]{0,20}\bbets?\b/i,
   /*
    * A beat word that is a product. Ritchey's Bigfoot is a bicycle, Squier's
@@ -504,6 +528,15 @@ const OFFBEAT: RegExp[] = [
   // monument, and Bigfoot is a town in Texas; a bot files every tremor near
   // either of them.
   /\bmag\.?\s*\d\.\d\b|\bmagnitude \d(?:\.\d)? earthquake\b/i,
+  // An obituary. The archive holds three for a James Webb who was not a
+  // telescope, two for a Duane Stout nicknamed Bigfoot, one for an Anissa
+  // Hamrick called Nessie, and one filed from Bigfoot, Texas.
+  /\bobituar(?:y|ies)\b/i,
+  /\bon sale for\s*[$£€]\d/i,
+  /\b(?:bet365|draftkings|fanduel|paddy power|william hill|ladbrokes|betfair)\b/i,
+  // A beat word over a door. Sunken City Brewery, Bigfoot Bakery, Apparition
+  // Coffee — the same failure as Sasquatch Resources, one street down.
+  /\b(?:bigfoot|sasquatch|yeti|mothman|nessie|sunken city|poltergeist|apparition|phantom|thunderbird|wendigo|cryptid|skinwalker|atlantis)\s+(?:brewing|brewer(?:y|ies)|distiller(?:y|ies)|taproom|winery|cider|coffee|bakery|diner|tavern)\b/i,
   /\b(?:ad|advert|commercial) (?:campaigns?|films?|spots?|brings?|features?|stars)\b/i,
   // AARO is the Pentagon office and also a Canadian trade association that runs
   // a charity golf day. A fundraising total is never a beat story.
