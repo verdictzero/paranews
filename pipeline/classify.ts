@@ -296,6 +296,9 @@ const ENTERTAINMENT: RegExp[] = [
   /\bblockbusters?\b/i,
   /\b(?:film|movie|special|advance|free|public|sneak) screenings?\b/i,
   /\bcinemas?\b/i,
+  // A projection format is only ever a distribution story. Not a bare "HDR":
+  // astronomers image in it too.
+  /\b(?:4dx|imax|35mm|70mm|dolby cinema|premium hdr|screenx)\b/i,
   /\bsci-?fi\b/i,
   /\bscience fiction\b/i,
   /\b(?:rom-?coms?|romantic comed(?:y|ies)|sitcoms?|comed(?:y|ies))\b/i,
@@ -314,6 +317,14 @@ const ENTERTAINMENT: RegExp[] = [
   /\bgraphic novels?\b/i,
   /\b(?:manga|anime|isekai|manhwa|webtoon|light novels?|english dub)\b/i,
   /\bvideo ?games?\b/i,
+  /*
+   * Grand Theft Auto. GTA 6 shipped with a Skunk Ape in its swamps, a UFO
+   * abduction quest and a haunted hotel, and the wire answered with 146
+   * headlines of location guides and easter-egg lists in a fortnight. Two of
+   * them were the front page's second and third stories. No headline naming
+   * the game is ever a report of anything.
+   */
+  /\b(?:gta\s*(?:6|vi|v|5|iv)|grand theft auto)\b/i,
   /\bgameplay\b/i,
   /\bdlc\b/i,
   /\b(?:playstation|xbox|nintendo|roblox|fortnite|minecraft|square enix|ubisoft|capcom|bethesda|rockstar games|epic games|steam deck|game pass|fallout \d+|until dawn)\b/i,
@@ -323,6 +334,27 @@ const ENTERTAINMENT: RegExp[] = [
   /\b(?:broadway|off-broadway|west end)\b/i,
   /\b(?:theatre|theater|stage|dance|puppet) (?:shows?|productions?|reviews?|compan(?:y|ies)|adaptations?|plays?|tickets)\b/i,
   /\bstage (?:play|musical|version)\b/i,
+  /*
+   * A staged production, as against a haunted building. The distinction
+   * matters because a theatre is one of the most reliably haunted places
+   * there is: "Historic Wilson Theatre paranormal investigation", "Edinburgh
+   * is home to the UK's top three most haunted theatres" and the Fox
+   * Theatre's ghost tours are all this site's beat, and none of them says
+   * matinee, press night or Theatre Royal.
+   */
+  /\b(?:matinee|box office|curtain call|final curtain|standing ovation|press night|extends? (?:its )?run|run (?:through|until) \w+ ?\d*|touring production|stage adaptation|theatre royal|playhouse|dinner theat(?:re|er)|(?:immersive|interactive) (?:paranormal )?theat(?:re|er))\b/i,
+  // A title playing at a named venue on named dates: "…at Soho Theatre 7-26
+  // Sept". An investigation at the Colonial Theater carries no run.
+  /\bat (?:the )?[\w'’-]+ theat(?:re|er)\b[^.]{0,22}\d/i,
+  /*
+   * Paranormal Activity went to Broadway and then on tour, and the quoted
+   * form above only ever caught the film. 296 headlines carry the name; the
+   * production is the ones that also name a stage, a house or an audience,
+   * which is what keeps "residents report paranormal activity at the old
+   * mill" — the phenomenon the site exists for — out of it.
+   */
+  /paranormal activity\b[^.]{0,45}\b(?:theatres?|theaters?|broadway|west end|playhouse|the lowry|on stage|live on stage|audiences?|matinee|box office|touring production|stage adaptation|previews?|gala (?:night|opening)|curtain)\b/i,
+  /\b(?:theatres?|theaters?|broadway|west end|playhouse|the lowry|on stage|live on stage|audiences?|matinee|box office|touring production|stage adaptation|previews?|gala (?:night|opening)|curtain)\b[^.]{0,45}\bparanormal activity/i,
   /\bplaywrights?\b/i,
   /\bballets?\b/i,
   /\b(?:the|new|romance|rock|jukebox|stage|a) musical\b(?! instrument)/i,
@@ -451,6 +483,27 @@ const OFFBEAT: RegExp[] = [
   // Ogopogo is a ski patrol zone at Big White as well as a lake monster, and
   // the zone wins its division awards every year. A patrol is not a sighting.
   /\bski patrol(?:s|lers?)?\b/i,
+  /*
+   * Merchandise. West Virginia's DMV put the Mothman and the Flatwoods
+   * Monster on a licence plate and the USPS is putting cryptids on stamps in
+   * 2027; between them that is 73 headlines about plate sales and stamp
+   * designs, two of which reached the front page. A plate is not a sighting.
+   * Bare "DMV" is not here: in American weather copy it is Washington,
+   * Maryland and Virginia, and a meteor shower is visible over it.
+   */
+  /\b(?:licen[cs]e|number|vanity|sample) plates?\b|\bplate (?:sales|design)\b/i,
+  /\b(?:postage|postal|usps|forever) stamps?\b|\bstamps?\b[^.]{0,30}\b(?:usps|postal service|philatel\w+)\b|\b(?:usps|postal service)\b[^.]{0,30}\bstamps?\b/i,
+  // Wendigo is a steeplechaser with a Coral Gold Cup entry. Racecourse is not
+  // here: Chepstow is Wales' most haunted one, and that is a real story.
+  /\b(?:coral gold cup|handicap chase|jockey|racecard|steeplechase|gelding|bookmakers?|handicapper)\b/i,
+  // A beat word that is a company name. Sasquatch Resources buying a mineral
+  // property on Vancouver Island filed eleven times. Not "capital", "group"
+  // or "media": Washington is America's Bigfoot capital and that is beat news.
+  /\b(?:bigfoot|sasquatch|yeti|mothman|nessie|ufo|uap|aaro|poltergeist|apparition|phantom|thunderbird|wendigo|cryptid|skinwalker)\s+(?:resources|minerals|mining|logistics|technologies|industries|holdings|ventures|partners|labs|systems|solutions|enterprises)\b/i,
+  // A seismograph bulletin. Yonaguni-jima is the island off the underwater
+  // monument, and Bigfoot is a town in Texas; a bot files every tremor near
+  // either of them.
+  /\bmag\.?\s*\d\.\d\b|\bmagnitude \d(?:\.\d)? earthquake\b/i,
   /\b(?:ad|advert|commercial) (?:campaigns?|films?|spots?|brings?|features?|stars)\b/i,
   // AARO is the Pentagon office and also a Canadian trade association that runs
   // a charity golf day. A fundraising total is never a beat story.

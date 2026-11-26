@@ -736,3 +736,61 @@ test("a promotion is not a report", () => {
   // A haunted hayride is still an attraction: demoted, not hidden.
   assert.deepEqual(classifyFlags("Michigan Haunted Trail Brings Cryptids and Creatures Into the Woods"), ["attraction"]);
 });
+
+test("a video game, a stage run and a licence plate are not the beat", () => {
+  // GTA 6 shipped with a Skunk Ape, a UFO abduction quest and a haunted
+  // hotel, and 146 headlines of location guides followed in a fortnight.
+  for (const t of [
+    "Where To Find Bigfoot In GTA 6? Location, How To Trigger The Secret Encounter And What Happens Next",
+    "GTA 6 Alien Dreams Quest Guide: How to Get Abducted, Solve the UFO Puzzles and Rescue the Alien",
+    "'GTA VI' Is Hiding a Horror Game: Satan, Bigfoot, 'Terminator 2,' and More",
+    "Sasquatch (aka Bigfoot) Found In GTA 5",
+    "'Grand Theft Auto Online' Update Adds Triple Rewards on Slasher Modes and Halloween Survivals",
+  ]) assert.ok(classifyFlags(t).includes("entertainment"), t);
+
+  // The Paranormal Activity stage production, which the quoted-title rule
+  // only ever caught as a film.
+  for (const t of [
+    "Paranormal Activity at Theatre Royal Brighton proves the power of horror theatre",
+    "Paranormal Activity takes over Milton Keynes Theatre",
+    "'Gripping' Paranormal Activity thrills audiences at The Lowry",
+    "Announcing Paranormal Activity Live On Stage For Australia",
+    "Bigfoot Ripped My Dog In Half I Saw It at Soho Theatre 7-26 Sept",
+    "I survived a Dinner with the Vampire, Apparition's newest dinner theater experience",
+  ]) assert.ok(classifyFlags(t).includes("entertainment"), t);
+
+  // Merchandise, a racehorse, a mining company, a seismograph bot.
+  for (const t of [
+    "West Virginia DMV unveils cryptid-themed license plate",
+    "Cryptid plate sales top 1,000 in West Virginia; DMV orders more",
+    "USPS to release Mothman-inspired stamp in 2027",
+    "2027 postal stamps to include Mothman",
+    "Wendigo made favourite for Coral Gold Cup after smooth winning return",
+    "Sasquatch Resources to Buy Echo Property for CA$131,250",
+    "Thunderbird Minerals Upgrades to OTCQB Trading",
+    "Weak mag. 2.5 earthquake - 13 km SSW of Bigfoot, Texas",
+  ]) assert.equal(isOffbeat(t), true, t);
+
+  assert.ok(classifyFlags("Curry Barker's ANYTHING BUT GHOSTS Set For Premium HDR By Barco Release").includes("entertainment"));
+  // A rule for "'Poltergeist' Star Dominique Dunne" was dropped rather than
+  // shipped: it also took "The 'Alien Megastructure' Star Is Still
+  // Unexplained", which is Tabby's star and squarely on the beat.
+  assert.ok(!classifyFlags("The \"Alien Megastructure\" Star Is Still Unexplained 15 Years Later").includes("entertainment"));
+});
+
+test("a theatre is one of the most reliably haunted places there is", () => {
+  // Every one of these was in the archive while the stage rules were written.
+  // None may be caught: the building is the story, not a show inside it.
+  for (const t of [
+    "Historic Wilson Theatre paranormal investigation clip",
+    "Boo Fighters: a Public Paranormal Investigation at the Colonial Theater",
+    "Edinburgh is home to UK's top three most haunted theatres - here are the spirits who live there",
+    "Victory Theatre claims mysterious footage has drawn paranormal investigation",
+    "Two iconic Leeds landmarks named among the 13 most haunted theatres in the UK",
+    "Waverly Hills Sanatorium tour guide shares haunting, paranormal activity inside century-old building",
+    "Residents report paranormal activity at the old mill",
+    "Chepstow named Wales' most haunted racecourse as Halloween approaches",
+    "This Northern California Town Calls Itself The Bigfoot Capital Of The World",
+    "Epsilon Perseid meteor shower will be visible tonight in the DMV",
+  ]) assert.ok(!isOffbeat(t) && !classifyFlags(t).includes("entertainment"), t);
+});
