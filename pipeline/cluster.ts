@@ -8,7 +8,7 @@ export interface ClusterOptions {
   now?: Date;
   /** IDF-weighted Jaccard similarity needed to join two headlines. */
   threshold?: number;
-  /** Two items further apart than this are never compared. */
+  /** Two items further apart than this are never compared. Defaults to maxSpanHours. */
   pairWindowHours?: number;
   /** A cluster may never span more publication time than this. */
   maxSpanHours?: number;
@@ -20,7 +20,7 @@ export interface ClusterOptions {
  * quotes, local stories picked up nationally) and no unrelated stories joined.
  * The ≥2-shared-token rule and the time windows carry the false-positive risk.
  */
-const DEFAULTS = { threshold: 0.3, pairWindowHours: 72, maxSpanHours: 7 * 24 };
+const DEFAULTS = { threshold: 0.3, maxSpanHours: 7 * 24 };
 
 /**
  * Group items into stories. Pure lexical: IDF-weighted Jaccard over stemmed
@@ -31,8 +31,28 @@ const DEFAULTS = { threshold: 0.3, pairWindowHours: 72, maxSpanHours: 7 * 24 };
 export function buildClusters(items: Item[], options: ClusterOptions = {}): Cluster[] {
   const now = options.now ?? new Date();
   const threshold = options.threshold ?? DEFAULTS.threshold;
-  const pairWindow = (options.pairWindowHours ?? DEFAULTS.pairWindowHours) * 3_600_000;
-  const maxSpan = (options.maxSpanHours ?? DEFAULTS.maxSpanHours) * 3_600_000;
+  const maxSpanHours = options.maxSpanHours ?? DEFAULTS.maxSpanHours;
+  /*
+   * Two items further apart than a cluster may span can never end up in one,
+   * so the pair window has no honest value of its own: it is the span.
+   *
+   * It used to be 72 hours against a 7-day span, and the gap was invisible
+   * until a story outlasted it. The Pentagon's eighth UAP release ran from 21
+   * to 26 November, and "Pentagon UFO files reveal secret underground bunker
+   * plans to store 'exotic material'" and "New UFO files reveal Pentagon's
+   * plan for secret underground vault to keep 'exotic material'" scored 0.577
+   * against a 0.30 threshold — and were never compared, because they are 124
+   * hours apart. The front page carried the same vault twice, five places
+   * apart, and the release itself four more times.
+   *
+   * Widening the window loosens nothing: the threshold and the shared-rare-
+   * token rule still decide every merge, and the span guard still bounds the
+   * result. It only lets the clusterer look at pairs it was already willing
+   * to join. Measured over the archive it merged 351 visible clusters, every
+   * sampled one a genuine same-story pair, and cost a second of build time.
+   */
+  const pairWindow = (options.pairWindowHours ?? maxSpanHours) * 3_600_000;
+  const maxSpan = maxSpanHours * 3_600_000;
 
   const n = items.length;
   const toks = items.map((it) => tokenize(it.title_norm));

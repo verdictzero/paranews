@@ -145,3 +145,26 @@ test("the aggregate headline is the one the coverage agrees on", () => {
   const pair = [mk("Nessie spotted at Urquhart Bay", "BBC", "press", 3), mk("Loch Ness monster seen again", "Daily Star", "genre", 4)];
   assert.equal(consensusTitle(pair).publisher, "BBC");
 });
+
+test("a story that outlasts three days is still one story", () => {
+  // The Pentagon's eighth UAP release ran 21-26 November. These two headlines
+  // score 0.577 against a 0.30 threshold and are 124 hours apart; under the
+  // old 72-hour pair window they were never compared, and the front page
+  // carried the same vault twice, five places apart.
+  const items = [
+    ...filler(40),
+    mk("Pentagon UFO files reveal secret underground bunker plans to store exotic material", "Howl.Link", "genre", 10),
+    mk("New UFO files reveal Pentagon's plan for secret underground vault to keep exotic material", "Times of India", "press", 134),
+  ];
+  const clusters = buildClusters(items, { now });
+  const joined = clusters.find((c) => c.items.length === 2 && /underground/i.test(c.title));
+  assert.ok(joined, "the two write-ups belong to one cluster");
+
+  // The window never overrides the span guard: beyond seven days they stay apart.
+  const farApart = [
+    ...filler(40),
+    mk("Pentagon UFO files reveal secret underground bunker plans to store exotic material", "Howl.Link", "genre", 10),
+    mk("New UFO files reveal Pentagon's plan for secret underground vault to keep exotic material", "Times of India", "press", 10 + 8 * 24),
+  ];
+  assert.ok(!buildClusters(farApart, { now }).some((c) => c.items.length === 2 && /underground/i.test(c.title)), "eight days apart is beyond the span");
+});
