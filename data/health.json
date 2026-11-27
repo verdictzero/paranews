@@ -1,34 +1,32 @@
 {
   "sources": {
     "amys-crypt": {
-      "status": "ok",
-      "consecutive_failures": 0,
+      "status": "failing",
+      "consecutive_failures": 1,
       "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_http_status": 304,
-      "last_item_count": 1,
-      "etag": "\"8fa86a3e8657f827052566ba1a075675-gzip\"",
-      "last_modified": "Mon, 23 Nov 2026 05:13:38 GMT"
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_error": "HTTP 415",
+      "last_http_status": 415,
+      "last_item_count": 1
     },
     "ancient-origins": {
-      "status": "ok",
-      "consecutive_failures": 0,
-      "consecutive_empty": 2,
+      "status": "failing",
+      "consecutive_failures": 1,
       "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_error": "not XML",
       "last_http_status": 200,
-      "last_item_count": 0,
-      "etag": "\"673428-1795793504;br\""
+      "last_item_count": 0
     },
     "ancient-pages": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 1,
-      "etag": "\"d916a75dc20e1dbfa763028281cb042b\"",
-      "last_modified": "Fri, 27 Nov 2026 14:44:06 GMT"
+      "etag": "\"21258c5d1aa4b571659d4a4e07673f2e\"",
+      "last_modified": "Fri, 27 Nov 2026 19:06:05 GMT"
     },
     "anomalien": {
       "status": "disabled",
@@ -37,25 +35,25 @@
     "arxiv-uap": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 1
     },
     "avi-loeb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 7
     },
     "bad-ufos": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 41,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 42,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0,
       "last_modified": "Wed, 18 Nov 2026 22:24:39 GMT"
@@ -63,16 +61,16 @@
     "black-vault": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 9
     },
     "cfz": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 7,
       "etag": "\"fefba41de71e3e663176c8a2a74d01f1\"",
@@ -85,18 +83,18 @@
     "conversation-paranormal": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 204,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 205,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0
     },
     "conversation-ufos": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 265,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 266,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0
     },
@@ -111,33 +109,33 @@
     "dailymail-sciencetech": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 8
+      "last_item_count": 9
     },
     "dailyrecord-lochness": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 17,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 18,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0
     },
     "dailystar-bigfoot": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 3
     },
     "dailystar-weird": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 1
     },
@@ -145,8 +143,8 @@
       "status": "ok",
       "consecutive_failures": 0,
       "consecutive_empty": 65,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 0,
       "etag": "W/\"adc08c9a1e9d76633170759fee87542e\"",
@@ -154,9 +152,9 @@
     },
     "disclosure-yearbook": {
       "status": "quarantined",
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_ok_at": "2026-11-26T04:20:00.719Z",
-      "last_checked_at": "2026-11-26T23:01:48.390Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_error": "HTTP 403",
       "last_http_status": 403,
       "last_item_count": 1,
@@ -169,415 +167,407 @@
     "gn-abduction-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 33
+      "last_item_count": 36
     },
     "gn-abduction-us": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
-      "last_item_count": 55
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
+      "last_item_count": 56
     },
     "gn-archaeology-deep-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 4
     },
     "gn-archaeology-sites-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 1
     },
     "gn-astrobiology-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 14
+      "last_item_count": 13
     },
     "gn-contact-us": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
       "last_item_count": 9
     },
     "gn-cryptids-au": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
       "last_item_count": 99
     },
     "gn-cryptids-c-gb": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
-      "last_item_count": 29
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
+      "last_item_count": 67
     },
     "gn-cryptids-c-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 63
+      "last_item_count": 45
     },
     "gn-cryptids-ca": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 99
+      "last_item_count": 100
     },
     "gn-cryptids-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 51
+      "last_item_count": 100
     },
     "gn-cryptids-ie": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 100
     },
     "gn-cryptids-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 100
+      "last_item_count": 98
     },
     "gn-exoarch-anomalies-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 9,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 10,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0
     },
     "gn-exoarch-artifacts-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 2
+      "last_item_count": 3
     },
     "gn-fortean-a-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 17
+      "last_item_count": 24
     },
     "gn-fortean-a-us": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
-      "last_item_count": 16
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
+      "last_item_count": 15
     },
     "gn-fortean-b-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 45
+      "last_item_count": 44
     },
     "gn-fortean-b-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 45
+      "last_item_count": 47
     },
     "gn-fortean-c-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 10
+      "last_item_count": 7
     },
     "gn-fortean-d-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 9,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 10,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0
     },
     "gn-ghostcam-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 8
     },
     "gn-ghosts-a-gb": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
-      "last_item_count": 16
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
+      "last_item_count": 30
     },
     "gn-ghosts-a-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 52
+      "last_item_count": 32
     },
     "gn-ghosts-au": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 34
+      "last_item_count": 32
     },
     "gn-ghosts-b-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 43
+      "last_item_count": 37
     },
     "gn-ghosts-b-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 44
     },
     "gn-ghosts-ca": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 34
+      "last_item_count": 32
     },
     "gn-ghosts-ie": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 52
     },
     "gn-mysteries-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 22
+      "last_item_count": 37
     },
     "gn-ooparts-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 4,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 5,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0
     },
     "gn-paranormal-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 53
+      "last_item_count": 45
     },
     "gn-paranormal-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 54
+      "last_item_count": 45
     },
     "gn-science-a-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 72
     },
     "gn-science-a-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 75
+      "last_item_count": 81
     },
     "gn-science-b-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 67
+      "last_item_count": 69
     },
     "gn-science-b-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 77
+      "last_item_count": 85
     },
     "gn-science-c-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 16
+      "last_item_count": 14
     },
     "gn-temporal-gb": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
-      "last_item_count": 8
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
+      "last_item_count": 5
     },
     "gn-temporal-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 5
+      "last_item_count": 6
     },
     "gn-ufo-au": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 99
+      "last_item_count": 98
     },
     "gn-ufo-ca": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 99
+      "last_item_count": 98
     },
     "gn-ufo-figures-us": {
-      "status": "failing",
-      "consecutive_failures": 1,
-      "last_ok_at": "2026-11-27T05:18:39.112Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_error": "HTTP 429",
-      "last_http_status": 429,
-      "last_item_count": 19
+      "status": "ok",
+      "consecutive_failures": 0,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
+      "last_item_count": 16
     },
     "gn-ufo-gb": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 99
+      "last_item_count": 97
     },
     "gn-ufo-ie": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 99
     },
     "gn-ufo-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 99
+      "last_item_count": 98
     },
     "gn-warren-cases-us": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 9
     },
     "jason-colavito": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 6,
-      "last_modified": "Fri, 27 Nov 2026 15:31:53 GMT"
+      "last_modified": "Fri, 27 Nov 2026 23:42:30 GMT"
     },
     "kevin-randle": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 78,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 79,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0,
-      "etag": "W/\"99e02cd7b39efdf4feaa835f135490943fbb4ddcd3ce4d2db46fe0e5e71eacfe\"",
-      "last_modified": "Fri, 27 Nov 2026 08:10:57 GMT"
+      "etag": "W/\"57a9ff89461a20fdde06251fe8a95a86dd286f966f6212f3531c7aca5dbd590e\"",
+      "last_modified": "Fri, 27 Nov 2026 23:24:46 GMT"
     },
     "liberation-times": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 7,
       "etag": "W/\"87e26c7708eab96ad28a0b04c374b822\""
@@ -585,16 +575,16 @@
     "livescience": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 9
     },
     "lochness-mystery": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 2,
       "etag": "W/\"f6eaba4a79caea8e56df66b6611f67fdfa82871bb95245a0c541c455ed824b5a\"",
@@ -603,26 +593,26 @@
     "metabunk": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 4,
-      "last_modified": "Fri, 27 Nov 2026 15:31:53 GMT"
+      "last_modified": "Fri, 27 Nov 2026 23:42:30 GMT"
     },
     "mirror-ghosts": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 1
     },
     "mirror-weird": {
       "status": "ok",
       "consecutive_failures": 0,
-      "consecutive_empty": 77,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 78,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 0
     },
@@ -633,62 +623,62 @@
     "new-england-folklore": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_http_status": 304,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
       "last_item_count": 1,
-      "etag": "W/\"7969659686ccb8e0d0bf29a8c6d1d4a8a242b68a332d3b97b248c403fd978560\"",
-      "last_modified": "Thu, 26 Nov 2026 05:56:46 GMT"
+      "etag": "W/\"28900844f8e9c8d59343bbc84e28ba65e99753572b30bd85cae6006204c322e1\"",
+      "last_modified": "Fri, 27 Nov 2026 23:22:54 GMT"
     },
     "newsnation-ufo": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 20,
-      "etag": "W/\"1475130412fbabaf6e756489adb1148c\"",
-      "last_modified": "Fri, 27 Nov 2026 14:57:42 GMT"
+      "etag": "W/\"717e82a9f4e54163009989a8d77e07e8\"",
+      "last_modified": "Fri, 27 Nov 2026 23:13:31 GMT"
     },
     "nypost-aliens": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_http_status": 304,
-      "last_item_count": 6,
-      "etag": "W/\"dc5b00ed1c70e65942f4d2416fa0fb7d\"",
-      "last_modified": "Fri, 27 Nov 2026 05:18:00 GMT"
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
+      "last_item_count": 5,
+      "etag": "W/\"86c3172bcd9c5dbaa4e94d5ccf6c6de6\"",
+      "last_modified": "Fri, 27 Nov 2026 23:42:08 GMT"
     },
     "nypost-bigfoot": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 2,
-      "etag": "W/\"dc5b00ed1c70e65942f4d2416fa0fb7d\"",
-      "last_modified": "Fri, 27 Nov 2026 05:18:00 GMT"
+      "etag": "W/\"211f13866ac28ae18ebacb27b2b1cb94\"",
+      "last_modified": "Fri, 27 Nov 2026 23:06:23 GMT"
     },
     "nypost-ghosts": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 9,
-      "etag": "W/\"dc5b00ed1c70e65942f4d2416fa0fb7d\"",
-      "last_modified": "Fri, 27 Nov 2026 05:18:00 GMT"
+      "last_item_count": 8,
+      "etag": "W/\"211f13866ac28ae18ebacb27b2b1cb94\"",
+      "last_modified": "Fri, 27 Nov 2026 23:06:23 GMT"
     },
     "nypost-ufos": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 8,
-      "etag": "W/\"f66763e106c4e54b228c1344de0e713c\"",
-      "last_modified": "Fri, 27 Nov 2026 15:19:22 GMT"
+      "etag": "W/\"211f13866ac28ae18ebacb27b2b1cb94\"",
+      "last_modified": "Fri, 27 Nov 2026 23:06:23 GMT"
     },
     "openminds": {
       "status": "disabled",
@@ -697,43 +687,43 @@
     "paranormal-chronicles": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_http_status": 304,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
       "last_item_count": 2,
-      "last_modified": "Mon, 23 Nov 2026 13:01:21 GMT"
+      "last_modified": "Mon, 23 Nov 2026 09:01:23 GMT"
     },
     "phantoms-and-monsters": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_http_status": 304,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
       "last_item_count": 17,
-      "etag": "W/\"8fda54e73bcf91a572b84227c6c580d6\"",
-      "last_modified": "Thu, 26 Nov 2026 20:41:47 GMT"
+      "etag": "W/\"bebce557abab1fdf50b5517c225a93b5\"",
+      "last_modified": "Fri, 27 Nov 2026 19:33:20 GMT"
     },
     "phys-physics": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 5
     },
     "phys-space": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 8
+      "last_item_count": 9
     },
     "quanta": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 1,
       "etag": "\"239e1a5b50383a6edca9b1d2528a6d36-gzip\"",
@@ -742,28 +732,29 @@
     "sasquatch-chronicles": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
-      "last_http_status": 304,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
+      "last_http_status": 200,
       "last_item_count": 9,
-      "etag": "W/\"68ccb4616c4b82ae4cfbbf38230bdcee\"",
-      "last_modified": "Fri, 27 Nov 2026 02:05:54 GMT"
+      "etag": "W/\"c991e0c9b109af2decd7f5f007f4c8b3\"",
+      "last_modified": "Fri, 27 Nov 2026 21:55:17 GMT"
     },
     "sciencealert": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "consecutive_empty": 1,
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
-      "last_item_count": 1,
-      "etag": "W/\"626d2f63cc215055921126d72e771a59\"",
-      "last_modified": "Fri, 27 Nov 2026 15:00:27 GMT"
+      "last_item_count": 0,
+      "etag": "W/\"87338d81367c341bbe921e7a4809a9e1\"",
+      "last_modified": "Fri, 27 Nov 2026 23:23:58 GMT"
     },
     "scu": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 1,
       "last_modified": "Thu, 26 Nov 2026 20:14:08 GMT"
@@ -771,8 +762,8 @@
     "sharon-hill": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 1
     },
@@ -782,9 +773,9 @@
     },
     "skeptical-inquirer": {
       "status": "quarantined",
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_ok_at": "2026-11-26T22:24:44.987Z",
-      "last_checked_at": "2026-11-26T23:15:02.855Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_error": "HTTP 415",
       "last_http_status": 415,
       "last_item_count": 4,
@@ -793,17 +784,17 @@
     "spooky-isles": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 5,
-      "last_modified": "Fri, 27 Nov 2026 06:00:00 GMT"
+      "last_modified": "Fri, 27 Nov 2026 20:38:54 GMT"
     },
     "spr": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 8,
       "etag": "W/\"1795786528\"",
@@ -822,8 +813,8 @@
     "ufo-chronicles": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 1,
       "etag": "W/\"3ffb8958a19d97eddadbacbfd513faf989f1ae0be3c4f7a99b3a55e0350b3b3d\"",
@@ -832,8 +823,8 @@
     "ufo-sightings-hotspot": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 304,
       "last_item_count": 7,
       "etag": "W/\"b84601b4a8782d3ddd4daa07aaedf6216523e365d30c34d802fdb9d251737990\"",
@@ -842,8 +833,8 @@
     "unexplained-mysteries": {
       "status": "ok",
       "consecutive_failures": 0,
-      "last_ok_at": "2026-11-27T15:31:52.132Z",
-      "last_checked_at": "2026-11-27T15:31:52.132Z",
+      "last_ok_at": "2026-11-27T23:42:29.430Z",
+      "last_checked_at": "2026-11-27T23:42:29.430Z",
       "last_http_status": 200,
       "last_item_count": 1,
       "last_modified": "Fri, 27 Nov 2026 11:26:44 GMT"
