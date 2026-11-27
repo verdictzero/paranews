@@ -1,6 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { classifyFlags, classifyTopics, isNotice, isOffTopic, isOffbeat, isRoundup } from "./classify.ts";
+import { computeFlags } from "./normalize.ts";
+import type { Topic } from "./types.ts";
+import { HIDDEN_FLAGS } from "./visibility.ts";
 
 test("topics from real headlines", () => {
   assert.deepEqual(classifyTopics("Pentagon seeks access to vast private UFO records collection"), ["ufo"]);
@@ -839,4 +843,27 @@ test("UAP and AARO are busy acronyms", () => {
     "Dems will shut down UAP committees if they win in midterms: Burlison",
     "Eighth UAP release includes radar analysis of object traveling near Mach 2.5",
   ]) assert.equal(isOffbeat(t), false, t);
+});
+
+test("every case in classify.cases.txt", () => {
+  // One line per headline: expectations, a bar, the headline. See the file's header.
+  const text = readFileSync(new URL("./classify.cases.txt", import.meta.url), "utf8");
+  let n = 0;
+  for (const line of text.split("\n")) {
+    if (!line.trim() || line.startsWith("#")) continue;
+    const bar = line.indexOf("|");
+    const title = line.slice(bar + 1).trim();
+    const topics = classifyTopics(title);
+    const hidden = computeFlags(title, "Test").some((f) => HIDDEN_FLAGS.has(f));
+    for (const e of line.slice(0, bar).trim().split(/\s+/)) {
+      const got = `topics=[${topics}] hidden=${hidden}: ${title}`;
+      if (e === "=hidden") assert.ok(hidden, got);
+      else if (e === "=shown") assert.ok(!hidden, got);
+      else if (e[0] === "+") assert.ok(topics.includes(e.slice(1) as Topic), `${e} ${got}`);
+      else if (e[0] === "-") assert.ok(!topics.includes(e.slice(1) as Topic), `${e} ${got}`);
+      else assert.fail(`unknown expectation "${e}" in: ${line}`);
+    }
+    n++;
+  }
+  assert.ok(n >= 150, `read ${n} cases`);
 });

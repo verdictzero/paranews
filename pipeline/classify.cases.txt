@@ -1,0 +1,191 @@
+# Headlines from the archive, each checked by hand against what the classifier
+# should do with it, plus a few controls written to sit on a guard's edge.
+# pipeline/classify.test.ts runs every line.
+#
+#   <expectations> | <headline>
+#
+#   +beat    the headline is on that beat       -beat    it is not
+#   =hidden  it carries a hidden flag           =shown   it carries none
+#
+# A guard is only trustworthy with its control beside it: when a rule here
+# changes, the line that fails says which reading of the words it broke.
+
+# Borrowed words: a beat word used for something else. Each must lose the beat
+# or be hidden.
+-fortean | Euclid and Webb Confirm the Most Distant Quasar Yet, 630 Million Years After the Big Bang
+-fortean | Giant Black Holes Ruled Out as Dark Matter by Big Bang Afterglow
+-fortean =hidden | Loud boom heard in Deer Park as Clean Harbors reports incident
+-ufo =hidden | Close Encounters With Music: Come to the Cabaret! From Piaf to Weill, with Life-Size Puppets
+-ufo =hidden | WVU Insect Zoo Offers Close Encounters With Bugs
+-ufo | Unidentified aerial object enters Polish airspace during massive Russian attack on Ukraine
+-ufo | 1 killed, 13 rescued after unidentified aerial object strikes Indian vessel near Oman
+=hidden | Emily Blunt Hopes She Was Visited By Aliens Before 'Disclosure Day'
+=hidden | Recent Release, "UFO," by Dr. Alfred Brausam, Explores Mysteries of Unidentified Flying Objects
+=hidden | #jesus #god #islam #muslim#allah #ufo #instagram #tiktok #truth
+=hidden | who want a cartoon made next ? #music #like #ufo #atlanta #youtubeshorts #rap #fyp
+=hidden | 'On the Last Day of Christmas' Trailer: Demons in Baton Rouge
+=hidden | Amityville Horror: The House That Wouldn't Let Go–Trailer
+=hidden | Amy Poehler on Her Ghost Hunter SNL Sketch with DIG Costar Hugh Laurie
+=hidden | Paranormal Activity 8 (2027)
+=hidden | Assault of the Sasquatch (2009)
+=hidden | Stonehenge and Crop Circles Ending Explained: What Bradley Walsh Discovered in Wiltshire
+=hidden | Clairvoyant Tsveta from "The Bachelor: Love in Paradise" Reveals How She Received Her Gift
+=hidden | RHOL's Nessie Welschinger on her Singaporean and Egyptian roots, and London upbringing
+=hidden | TV Tonight: Bradley Walsh investigates UFOs, Stonehenge and the lost city of Atlantis
+-ghosts | Maxwell's Demon Can Extract Energy From Hidden Memories, Study Finds
+-ghosts | Researchers seek ghost-like particles deep in Lake Superior
+-ghosts | Roch Voisine fait une rare apparition publique avec ses 2 garçons
+=hidden | Exorcism? Breakthrough? Duke rejuvenates season, exacts revenge against UConn
+=hidden | 'Brilliant' £13 ghost hunting gadget for family fun arrives in time for Halloween
+=hidden | Yowie Group Appoints GBA Capital and Boston Global as Joint Lead Managers for A$2.5 Million Placement
+=hidden | Four cars submerge at Yowie Bay boat ramp over two years
+=hidden | Tim The Yowie Man meets the beloved resident of The Cheshire Cheese
+=hidden | Wendigo lowers colours of Potters Charm in Carlisle feature race
+=hidden | Third time luck for Kid in The Meteorite
+=hidden | Wendigo Beach, MB Current Weather
+=hidden | Scottish Souvenir Magnet Set - Piper, Sheep, Nessie & Highland Cow (4 Designs, White)
+=hidden | Sq'éwlets First Nation acquires Sasquatch Inn
+=hidden | Exploding Kittens Launches New Strategy Game: Sell Me a Sasquatch
+=hidden | All 6 Mystery Creature Piece Locations in Driving Empire – Fire Horse Quest
+=hidden | Bigfoot Trail Alliance celebrates year of trail restoration
+=hidden | Clarksburg-Harrison Public Library announces new Mothman library card, Letters to Santa event
+=hidden | Game Day #21: The Cursed vs The Cryptids.
+=hidden | Cryptid Con to be held at Belterra this weekend
+=hidden | Stardock's Clairvoyance takes aim at rising AI cloud bills with Hivemind
+=hidden | THIEAUDIO Introduces Clairvoyance MKII: The Evolution of a Signature Sound
+=hidden | Elon Musk's Neuralink is recruiting for 'Telepathy' brain-chip trial, here's how to apply
+=hidden | My Mother-Law Ruined Our Honeymoon, Then a Strange Noise Upstairs Revealed Her Latest Surprise
+=hidden | Teen's Secret Gets Exposed After Parent Finds A Strange Object Hidden Under His Bed
+-fortean | This strange creature lived 309 million years ago, long before the dinosaurs
+-fortean | Mysterious object in Magellanic Cloud may date back to dawn of universe
+-temporal | Why Kids with ADHD Get Stuck in the Screen-Time Loop. And How to Break It.
+=hidden | Time Slip Theatre brings Disney's 'Frozen' musical to Old Louisville Dec. 4-20
+=hidden | Creamy Mami, the Magic Angel Pop-Up Store "Tokimeki Time Slip" Opens in Shibuya and Namba
+=hidden | Ransom Riggs's 'Miss Peregrine' Marks 15 Years Inside a Time Loop
+-archaeology | 25 Buffaloes Rescued From Hidden Chamber Of Truck In Bongaigaon; Three Arrested
+-archaeology | Japan Scrambles Fighters After Chinese Drones Fly Near Yonaguni for Consecutive Days
+-archaeology | Yonaguni Meaning: What Bad Bunny Says in Japanese at the End
+-exoarchaeology | A new way to extract oxygen from lunar soil could support bases on the moon
+-science | 'Extremely challenging': York council faces £32m black hole
+-science | 'Money monster': Labor's secret $170bn budget black hole
+-science | Man City face £300m black hole in financial 'catastrophe' as two punishments proposed
+-science | Hyundai Motor Is Getting In On The Nuclear Fusion Game
+-science | Germany invests €500 million in nuclear fusion
+-science | IQM Quantum Computers Sells 54-Qubit Radiance R3 System to South Korean Quantum-AI Infrastructure Firm
+=hidden | Nitroverts Drop Sophomore Album 'True Nature Of Antimatter' via FiXT
+=hidden | Bolide, Divo, Mistral — Join us on the most unreal $60m Bugatti road trip
+
+# Controls: the real thing, worded the same way. Every guard above has one.
++ufo =shown | RAF jets reported 'close encounters with two unidentified drones in British skies' this year
++ufo =shown | In 1948, two pilots reported a cigar-shaped UFO over Alabama, and the case baffled officials
++ufo =shown | "It's the Damnedest Thing I've Ever Seen" — When a UFO Dogfought an RAF Fighter (1956)
++ufo =shown | Steven Spielberg Thinks UFOs Might Just Be Humans Travelling Back From 500,000 Years In The Future
++ufo =shown | What is this mysterious light streaking across the sky? Drone, UFO, or something we haven't discovered
+=shown | US Government Reportedly Plotted to Harness Dark Energy for Star Trek-Style Warp Drives to Hunt Aliens
++ghosts =shown | Inside the eerie American ghost town where stolen souvenirs are blamed for illness and ruin
++ghosts =shown | Historic Wilson Theatre paranormal investigation clip
++fortean =shown | Loud boom heard in three Burgas districts, cause unclear
++fortean =shown | Hyderabad jolted by mysterious boom and tremors, experts rule out major earthquake
++fortean =shown | Pilots report mysterious lights 'moving at extreme speeds' across Oregon skies
++fortean =shown | Okefenokee 'SWAMP MONSTER': Witness Reports Strange Creature as Alligators Erupt Into Chaos
++archaeology =shown | Is the Yonaguni Monument a Man-Made Ice Age Structure?
++archaeology =shown | Hidden chamber in the Valley of Kings: Queen Nefertiti's resting place?
++science =shown | Euclid Telescope Finds 360-Million-Solar-Mass Black Hole 630 Million Years After Big Bang
++science =shown | Leander teen awarded $50,000 scholarship for supermassive black hole research
++science =shown | How do tokamaks work to make nuclear fusion possible?
++science =shown | Strong lasers could unlock cheaper ignition for nuclear fusion fuel
++science =shown | CERN Detects Quantum Entanglement in Particles Born From The Higgs Boson
++science =shown | What time is the Leonid meteor shower most visible today, and which is the best way to see it in the US?
++cryptids =shown | Family's mysterious beach find defies identification, is it Ogopogo's tooth?
++temporal =shown | 'Time Traveller' Claims AI Will Rule Earth After World War 3, Says the CIA Sent Him to Year 2118
++science -fortean =shown | Mysterious object measuring up to 1,500 km discovered beyond Pluto
++science -fortean =shown | Mysterious object in Magellanic Cloud may date back to dawn of universe
++cryptids =hidden | The Woodbooger of Appalachia: Terrifying Sounds and Encounters #woodbooger #bigfoot #appalachia
+
+# Ghost idioms (ghost voters, cosmic ghosts, dramatising) and UFO as a shape,
+# a style or a brand.
+=hidden | 'Exorcising' INEC's ghost voters
+=hidden | Here's What Your 'Ghost Poops' May Say About Your Gut Health
+-ghosts | Helpful Cosmic Ghost Brings Stellar Birth, Not Death
+-ghosts | Betelgeuse is haunted by a cosmic poltergeist tormenting the doomed star's atmosphere
+=hidden | Danny Robins and The Witch Farm cast on dramatising "one of the greatest real-life ghost stories of all time"
+=hidden | Bob Hope's UFO House: The $50 Million Palm Springs Mansion
+=hidden | Amazon's Adorable UFO Cat Bed Gives Kitties an Out-of-This-World Place To Nap
+=hidden | Burger King France Is Serving UFO-Shaped Burgers Stuffed With Ice Cream
+=hidden | Kansas burger stand wins court battle over UFO-themed mural halted by city officials
+=hidden | UFO Moviez India (UFO.NS) Edges Up 1.20% to ₹60.52 as Stock Approaches Resistance Near ₹63.55
+=hidden | Kaiyodo Announces Amazing Yamaguchi UFO Robot Grendizer Articulated Figure
+=hidden | How To Get The GTA Online UFO Rewards 2026
+=hidden | Cryptid Price (CID/USD) Today
++ufo =shown | Pilots stunned after spotting mysterious UFO shaped like a pill while flying across America
++ufo =shown | Forget nukes: US, China and Russia could be in a new UFO arms race
++ufo =shown | New trail to visit "Alleged UFO Skip Site" being built near Corona, NM
++ghosts =shown | Ghost Hunts and Vampires Are Coming to This Montana Ghost Town
++science =shown | 'Ghost particles' from space telescope wins 2026 Nobel Prize in Physics
+
+# Names, products and idioms across Cryptids, High Strangeness, Science,
+# Ghosts and UFO: a racehorse, a wrestling tour, a chocolate company, an
+# Apple TV series, meteorite watch dials, a trance label, a ticker, a TV
+# listing, a clip caption. Each class has a control.
+=hidden | Wendigo Strengthens Gold Cup Hopes With Carlisle Win
+=hidden | Replay: Mat 10 - 2026 Northwest Bigfoot Battle
+=hidden | Yowie Names Lead Managers for Proposed Placement Targeting Approximately A$2.5m
+=hidden | Bigfoot, Ratman and a mural on Mount Chiliad: the long history of GTA's oddest myths
+=hidden | Cryptid-collecting deck-building auto battler Portentum out now on Early Access - for free!
+=hidden | Holiday Picture Book "Sasquatch on a Stump" Delivers a Heartwarming Tale of Friendship and Christmas
+=hidden | Bigfoot, I Love You (2026) Review
+=hidden | Supernatural: Sam Winchester #2 Preview: Sam Takes a Bat to Mothman
+=hidden | Professor Avi Loeb (@ProfAviLoeb) on X
+=hidden | Orb ufo uap takes off at high rate of speed #uap #uaps
+=hidden | UFO Moviez India (NSE:UFO): Has It Settled Its Dispute With TSR Films?
+=hidden | Deep Blue Bigfoot (2026) by Tomas Dauksa - For Sale
+=hidden | Spectacular UFO-Like Clouds Spotted in Tenerife
++ufo =shown | Eerie 'UFO cloud' over Washington DC sparks claim of cloaked alien craft hiding in the sky
+=hidden | Raiders DB Treydan Stukes on Building the Black Hole
+=hidden | New Welsh Lib Dem leader was left paralysed and survived two near-death experiences
++fortean =shown | Analysis of 50 near-death experiences reveals uncanny patterns
++fortean =shown | Tennessee Man Claims He Met Jesus During Near-Death Experience Following Ruptured Appendix
++science -fortean =shown | Scientists Question the Nature of Mysterious Object 1998 KY26
+=hidden | NASA UFO videos unlocked from obscure 1996 PS1 game
++cryptids =shown | Dogman Chases Couple Down a Rural Ohio Road
++cryptids =shown | Michigan's Dogman is Due to Make Another Appearance in 2027
+-cryptids | Dogman: Caleb Landry Jones Gives the Performance of 2023 in Luc Besson's Dark Return
+=hidden | NOC Recaps 'Dark Matter' S2, E3: Wreckage
++science =shown | First stellar stream beyond the Milky Way could reveal dark matter
++science =shown | Astronomers revisit Cassini's Grand Finale dives between Saturn and its rings
+=hidden | Dark Matter buys House Numbers to put AI agents inside mortgage files
+=hidden | Knis launches 100-piece automatic watch with a genuine meteorite dial
++science =shown | Meteorite that landed in Cape Cod was a 'lone wolf' from the outer solar system, scientists find
+=hidden | Smooth Chino heads odds in quality field for The Meteorite
+=hidden | Black Hole Recordings New Releases – Week 47
+=hidden | The referral black hole: What really drives physician referral decisions
++science =shown | Astronomers find 'monster black hole' at the edge of the universe
+=hidden | 'This was an absolute ASTEROID!': Democrats DEMOLISH GOP in historic 'blue wave' midterms
++science =shown | Built To Crash: The UAE's Eight-Year, One-Way Trip to a Red Asteroid
+=hidden | ANTIMATTER (ANTI) Price Prediction for 2026 to 2031
+=hidden | Phasmophobia's next update lets you tell ghosts what to do, and it has a release date
+-ghosts +science | Hubble and Webb spot something ghostly happening in the Cat's Head Nebula
++ghosts =shown | Paranormal Tales from The Webb City Library – KSNF/KODE
+=hidden | Isabelle Adjani : sa silhouette au fil des années - pourquoi les rumeurs de régime reviennent à chaque apparition
+=hidden | GravaStar Launches Mercury V98 Pro Chrome Edge Keyboard with UFO Hall Effect Switches
+=hidden | UFO Chronicles on Blaze: full details and when it's on
+=hidden | Inside Speke's former Flying Saucer pub which is due to go under the hammer
++ufo =shown | Saucer-shaped cloud hovering motionless over D.C. sparks UFO speculation
+=hidden | Mutual UFO Network Las Cruces Chapter Meeting
+
+# Edges, written rather than archived: wording a guard above must not reach.
+# A UAP hearing preview, an official Navy video, a sighting at a campsite, a
+# blue asteroid that is an asteroid, a meteorite through a roof.
++ufo =shown | Navy's official video shows UAP pacing fighter jet off Virginia coast
++ufo =shown | Pentagon awarded secret UFO retrieval contract to Lockheed, whistleblower claims
++ufo =shown | What to watch for as Congress holds its next UAP hearing
++ufo =shown | Preview: What to expect at Wednesday's UAP hearing
++fortean =shown | Family at campsite films strange lights hovering over lake
++science =shown | New model reconciles dark energy tension between telescopes
++fortean =shown | Near-death experiences in patients with cognitive impairment, study finds
++science =shown | Mysterious blue asteroid Phaethon is shedding sodium, scientists find
++science =shown | What are the odds a meteorite hits your house? Scientists explain
++science =shown | Video: iPhone captures meteorite streaking over Texas
++science =shown | Woman dials 911 after meteorite crashes through her roof
++cryptids =shown | Hunter shares Yowie footage from Queensland bush
++science =shown | Scientists baffled by 'impossible black hole' in early cosmos

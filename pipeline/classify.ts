@@ -2,7 +2,7 @@ import type { Flag, Topic } from "./types.ts";
 
 /** The science beat's own subjects. Named here so a guard can reuse it. */
 const SCIENCE_SUBJECT =
-  /\b(dark matter|dark energy|black holes?|event horizons?|neutron stars?|magnetars?|pulsars?|quasars?|supernovae?\b(?=[^.]{0,45}\b(?:stars?|stellar|explos\w+|exploded|remnants?|progenitors?|galax\w+|astronom\w+|telescopes?|cosmic|dark energy|light curves?|type ia|neutron|dataset|impostors?|universe|ever recorded)\b)|(?<=\b(?:brightest|distant|nearby|exploding|ancient|bright|massive|powerful|rare|type ia|type 1a|closest|nearest)\s)supernovae?|(?<=\b(?:hubble|webb|jwst|telescopes?|astronomers?|astrophysicists?|spotted|discovered|observed|detected|imaged|nasa|esa|chandra)\b[^.]{0,30})supernovae?|kilonovae?|gravitational waves?|gravitational lens\w+|neutrinos?|antimatter|cosmic rays?|fast radio bursts?|gamma[- ]ray bursts?|exoplanets?|habitable zones?|protoplanetary|accretion discs?|solar flares?|coronal mass ejections?|aurora (?:borealis|australis)|northern lights\b(?=[^.]{0,50}\b(?:visible|visibility|forecast|tonight|tomorrow|alert|seen|spotted|storms?|geomagnetic|solar|dazzl\w+|chance|states|activity)\b)|(?<=\b(?:see|seeing|watch|catch|spot|photograph\w*|chance of|forecast for)\b[^.]{0,30})northern lights|geomagnetic storms?|meteors?|meteorites?|meteor showers?|bolides?|(?:meteor|sky|green|blue|bright|massive|brilliant|giant) fireballs?|fireballs? (?:over|above|across|streak\w*|light\w* up|spotted|seen|captured|filmed)|asteroids?|comets?\b(?=[^.]{0,45}\b(?:sky|skies|orbits?|orbiting|tail|nucleus|solar system|sun|earth|telescopes?|astronomers?|observ\w+|visible|spotted|approach\w*|flyby|rendezvous|interstellar|meteors?|perihelion|coma|rising|streak\w*)\b)|comets?\s+(?:neowise|atlas|borisov|halley|encke|leonard|lovejoy|hale)|(?<=\b(?:interstellar|periodic|halley'?s|encke|neowise|hale[- ]bopp|lovejoy|leonard|borisov|3i\/atlas)\b[^.]{0,25})comets?|near[- ]earth objects?|particle accelerators?|large hadron collider|cern|higgs boson|standard model|string theory|quantum (?:mechanics|entanglement|gravity|physics|tunnell?ing|states?|theory|supremacy|sensors?|materials?)|qubits?|superconduct\w+|nuclear fusion|fusion reactors?|james webb|jwst|hubble (?:telescope|images?)|ligo|simulation (?:theory|hypothesis)|fermi paradox|drake equation|great filter|cosmic myster\w+|panspermia|astrobiolog\w+|hydrothermal vents?|extremophiles?|tardigrades?|bioluminescen\w+|mass extinctions?|supervolcano|geomagnetic reversals?|magnetic pole (?:reversal|flip)|deep[- ](?:sea|ocean) (?:creatures?|discover\w+|expeditions?|spiders?|life)|sea spiders?|midnight (?:zone|ocean)|abyssal (?:plain|zone|depths?)|hadal zone|astronomers?|astrophysicists?|cosmologists?|galax(?:y|ies)|nebulae?|milky way|space telescopes?|solar storms?|solar winds?|earth'?s magnetic field|magnetosphere|ionosphere|interstellar (?:comets?|objects?|visitors?)|3i\/atlas|oumuamua|(?:search|searching|searches|hunt|hunting)\w* for (?:extraterrestrial|alien|intelligent|non-?human)|extraterrestrial (?:life|intelligence|civili[sz]ations?|artificial intelligence|microbes?|biolog\w+)|alien life|biosignatures?|\bseti\b|second earth)\b/i;
+  /\b((?:19|20)\d{2} (?!ps\d)[a-z]{2}\d{1,3}|dark matter|dark energy|black holes?|event horizons?|neutron stars?|magnetars?|pulsars?|quasars?|supernovae?\b(?=[^.]{0,45}\b(?:stars?|stellar|explos\w+|exploded|remnants?|progenitors?|galax\w+|astronom\w+|telescopes?|cosmic|dark energy|light curves?|type ia|neutron|dataset|impostors?|universe|ever recorded)\b)|(?<=\b(?:brightest|distant|nearby|exploding|ancient|bright|massive|powerful|rare|type ia|type 1a|closest|nearest)\s)supernovae?|(?<=\b(?:hubble|webb|jwst|telescopes?|astronomers?|astrophysicists?|spotted|discovered|observed|detected|imaged|nasa|esa|chandra)\b[^.]{0,30})supernovae?|kilonovae?|gravitational waves?|gravitational lens\w+|neutrinos?|antimatter|cosmic rays?|fast radio bursts?|gamma[- ]ray bursts?|exoplanets?|habitable zones?|protoplanetary|accretion discs?|solar flares?|coronal mass ejections?|aurora (?:borealis|australis)|northern lights\b(?=[^.]{0,50}\b(?:visible|visibility|forecast|tonight|tomorrow|alert|seen|spotted|storms?|geomagnetic|solar|dazzl\w+|chance|states|activity)\b)|(?<=\b(?:see|seeing|watch|catch|spot|photograph\w*|chance of|forecast for)\b[^.]{0,30})northern lights|geomagnetic storms?|meteors?|meteorites?|meteor showers?|bolides?|(?:meteor|sky|green|blue|bright|massive|brilliant|giant) fireballs?|fireballs? (?:over|above|across|streak\w*|light\w* up|spotted|seen|captured|filmed)|asteroids?|comets?\b(?=[^.]{0,45}\b(?:sky|skies|orbits?|orbiting|tail|nucleus|solar system|sun|earth|telescopes?|astronomers?|observ\w+|visible|spotted|approach\w*|flyby|rendezvous|interstellar|meteors?|perihelion|coma|rising|streak\w*)\b)|comets?\s+(?:neowise|atlas|borisov|halley|encke|leonard|lovejoy|hale)|(?<=\b(?:interstellar|periodic|halley'?s|encke|neowise|hale[- ]bopp|lovejoy|leonard|borisov|3i\/atlas)\b[^.]{0,25})comets?|near[- ]earth objects?|particle accelerators?|large hadron collider|cern|higgs boson|standard model|string theory|quantum (?:mechanics|entanglement|gravity|physics|tunnell?ing|states?|theory|supremacy|sensors?|materials?)|qubits?|superconduct\w+|(?:nuclear fusion|fusion reactors?)(?=[^.]{0,60}\b(?:tokamaks?|stellarators?|plasma|ignition|hydrogen-boron|net energy|energy gain|breakeven|the sun|stars?)\b)|(?<=\b(?:physics behind|tokamaks?|stellarators?|plasma|ignition|lasers?|deuterium)\b[^.]{0,40})nuclear fusion|tokamaks?|stellarators?|james webb|jwst|hubble (?:telescope|images?)|ligo|simulation (?:theory|hypothesis)|fermi paradox|drake equation|great filter|cosmic myster\w+|panspermia|astrobiolog\w+|hydrothermal vents?|extremophiles?|tardigrades?|bioluminescen\w+|mass extinctions?|supervolcano|geomagnetic reversals?|magnetic pole (?:reversal|flip)|deep[- ](?:sea|ocean) (?:creatures?|discover\w+|expeditions?|spiders?|life)|sea spiders?|midnight (?:zone|ocean)|abyssal (?:plain|zone|depths?)|hadal zone|astronomers?|astrophysicists?|cosmologists?|galax(?:y|ies)|nebulae?|milky way|space telescopes?|solar storms?|solar winds?|earth'?s magnetic field|magnetosphere|ionosphere|interstellar (?:comets?|objects?|visitors?)|3i\/atlas|oumuamua|dwarf planets?|kuiper belt|oort cloud|trans-?neptunian|beyond pluto|magellanic clouds?|dawn of (?:the )?universe|(?:search|searching|searches|hunt|hunting)\w* for (?:extraterrestrial|alien|intelligent|non-?human)|extraterrestrial (?:life|intelligence|civili[sz]ations?|artificial intelligence|microbes?|biolog\w+)|alien life|biosignatures?|\bseti\b|second earth)\b/i;
 
 /**
  * The room science is reported from: an observatory, a particle lab, a
@@ -22,7 +22,7 @@ const SCIENCE_SUBJECT =
  * and kept its Fortean tag until they were.
  */
 const SCIENCE_AMBIENT =
-  /\b(?:astronomers?|astrophysicists?|cosmologists?|physicists?|seismologists?|volcanolog\w+|pal(?:a)?eontolog\w+|marine biolog\w+|telescopes?|observator(?:y|ies)|galax(?:y|ies)|galactic|nebulae?|cosmic|cosmos|the universe|interstellar|solar system|milky way|(?:in|from|outer|deep) space|orbit(?:s|ing|al)?|spacecraft|space probes?|mars rovers?|light[- ]years?|star systems?|exoplanets?|magnetic fields?|magnetosphere|ionosphere|solar winds?|deep[- ](?:sea|ocean)|sea spiders?|midnight ocean|sea ?floor|ocean floor|midnight zone|abyssal|hadal|submersibles?|research vessels?|particle (?:accelerators?|physics|collisions?|colliders?)|collider|quantum|peer[- ]reviewed)\b/i;
+  /\b(?:astronomers?|astrophysicists?|cosmologists?|physicists?|seismologists?|volcanolog\w+|pal(?:a)?eontolog\w+|marine biolog\w+|telescopes?|observator(?:y|ies)|galax(?:y|ies)|galactic|nebulae?|cosmic|cosmos|the universe|interstellar|solar system|milky way|(?:in|from|outer|deep) space|orbit(?:s|ing|al)?|spacecraft|space probes?|mars rovers?|light[- ]years?|star systems?|exoplanets?|magnetic fields?|magnetosphere|ionosphere|solar winds?|deep[- ](?:sea|ocean)|sea spiders?|midnight ocean|sea ?floor|ocean floor|midnight zone|abyssal|hadal|submersibles?|research vessels?|particle (?:accelerators?|physics|collisions?|colliders?)|collider|quantum|peer[- ]reviewed|magellanic|dwarf planets?|kuiper|oort cloud|pluto|universe|million years ago|fossils?|dinosaurs?|prehistoric|hurtl\w+ toward(?:s)? earth)\b/i;
 
 const SCIENCE_CONTEXT = new RegExp(`${SCIENCE_SUBJECT.source}|${SCIENCE_AMBIENT.source}`, "i");
 
@@ -33,6 +33,70 @@ const SCIENCE_CONTEXT = new RegExp(`${SCIENCE_SUBJECT.source}|${SCIENCE_AMBIENT.
 const NAMED_CAUSE =
   /\b(?:gas explosions?|explosions? (?:kill|injur|destroy|level)\w*|blasts? (?:kill|injur)\w*|plane crash|air ?strikes?|missiles?|shelling|car bombs?|pipeline blasts?|controlled (?:detonation|explosion)|sonic booms? from|quarry blast|emergency slides?)\b/i;
 
+/**
+ * What a boom turns out to have been. Broader than NAMED_CAUSE because it
+ * guards only booms: aircraft, flights and jets are here, and must not be on
+ * any list that guards lights, objects or figures.
+ */
+const BOOM_CAUSE =
+  /\b(?:explosions?|explod\w+|blasts?|refiner(?:y|ies)|chemical plant|transformers?|power (?:outage|cut|failure)s?|substation|fires?|flames?|blaze|ablaze|burn(?:s|ed|ing)?|earthquakes?|quakes?|seismic|volcan\w+|erupt\w*|spacex|starship|rockets?|re-?entry|re-?entering|sonic booms?|military (?:aircraft|jets?|planes?|exercises?|training)|fighter jets?|jets?|aircraft|flights?|planes?|declares? (?:an? )?emergency|emergency (?:landing|slides?)|air ?strikes?|missiles?|drones?|shelling|bombs?|gunfire|gunshots?|fireworks?|demolition|collaps\w+|crumbl\w+|thunder(?:storms?)?|lightning|construction|quarry|mining|chemical|industrial|reports? (?:an? )?incident)\b/i;
+
+/** The cause is named only to be dismissed, or the boom is still being chased. */
+const BOOM_UNRESOLVED =
+  /\b(?:mysterious|unexplained|unknown|unidentified|mystery|cause (?:unclear|unknown|undetermined|not known)|no (?:explosion|earthquake|known cause|fire|gunfire)|rul(?:e|es|ed|ing) out|seek(?:s|ing)? (?:help|answers|source)|still investigating|what (?:was|caused) (?:it|that|the)|baffl\w+|puzzl\w+)\b/i;
+
+/*
+ * "Near-death experience" is also English for a close call. A Welsh party
+ * leader who "survived two near-death experiences", twelve metal musicians, a
+ * WWE Hall of Famer's 31 days in the ICU and a professor who "recounts 18" are
+ * brushes with death, not the phenomenon. Counts, survival and celebrity
+ * gossip mark the idiom; anything about what was seen, studied or believed
+ * keeps the beat, so "Analysis of 50 near-death experiences" stays.
+ */
+const NDE_CLOSE_CALL =
+  /^(?=.*\bnear[- ]death\b)(?!.*\b(?:stud(?:y|ies)|scien\w+|research\w*|analy[sz]\w+|patterns?|brains?|consciousness|afterlife|patients?|tunnels?|shapes?|colou?rs?|drawings?|sketch\w*|what happens|life after death|out-of-body|veridical|heaven|hell|god|jesus|angels?|souls?|spirits?|other side|saw|met|visions?|describes|encounters?|dying)\b).*\b(?:surviv\w+|overcom\w+|survival|life support|icu|(?:\d+|two|three|four|five|six|seven|eight|nine|ten|multiple|several|many|numerous) near[- ]death|musicians?|athletes?|recounts?|wwe|shoot|backstage|deadliest)\b/i;
+
+// "Fighting for her life after death by hanging sentence" is a sentence, not the afterlife.
+const FORTEAN_IDIOM = new RegExp(`${NDE_CLOSE_CALL.source}|\\blife after death (?:by|sentence)\\b`, "i");
+
+const BOOM_EXPLAINED = new RegExp(`^(?!.*(?:${BOOM_UNRESOLVED.source})).*(?:${BOOM_CAUSE.source})`, "i");
+
+/**
+ * What the science beat refuses, in three parts. Commerce and the UFO-politics
+ * vocabulary are the guard that has always been there.
+ */
+const SCIENCE_COMMERCE = /\b(?:invests? in|investments?|funding rounds?|series [a-e] rounds?|acquires?|acquisitions?|joint ventures?|partnerships?|joins? forces|memorand(?:um|a) of understanding|signs? (?:an? )?(?:mou|agreement|deal)|go[- ]to[- ]market|commerciali[sz]\w+|startups?|shareholders?|ipo|roadmaps?|ufos?|uaps?|pentagon|department of war|disclosure|whistleblowers?|abduct\w+|crash retrievals?|grusch|elizondo|coulthart|sparks (?:theor\w+|speculation)|sells?|orders|plans to scale|manufacturing|scaling support|awarded [^.]{0,40}contracts?|contracts? to supply|pdk|digital twin framework|wafer fabrication|advanced packaging|leads national mission|to install [^.]{0,30}quantum computer)\b/i;
+
+/*
+ * "Black hole" is a British and Australian budget idiom, and on the science
+ * beat it was the largest leak left once quantum computing went: 87 headlines
+ * — York council's £32m black hole, Labor's $170bn one, Man City's £300m,
+ * "Healey left £49bn black hole in Britain's finances". The telescope rule
+ * cannot tell them apart; money and public finance next to the phrase can.
+ * A headline that also names astronomy keeps the beat, because "$50,000
+ * scholarship for supermassive black hole research" is the real thing.
+ */
+const BUDGET_BLACK_HOLE =
+  /\bblack holes?\b[^.]{0,45}\b(?:budget|funding|financ\w+|pensions?|council|tax|deficit|spending|accounts|treasury|economy|bailout|debt|accountability|surveillance|indemnity|chancellor|nhs|infra\w*)\b|\b(?:budget|funding|financ\w+|pensions?|council|tax|deficit|spending|accounts|treasury|economy|bailout|debt|accountability|surveillance|indemnity|chancellor|nhs|infra\w*)\b[^.]{0,45}\bblack holes?\b|[£$€]\s?\d[\d.,]*\s*(?:k|m|bn|million|billion)?\b[^.]{0,30}\bblack holes?\b|[‘'"“]black hole[’'"”]/i;
+const ASTRONOMY =
+  /\b(?:telescopes?|astronom\w+|galax\w+|solar[- ]mass|supermassive|stars?|event horizon|jwst|webb|euclid|nasa|esa|chandra|hubble|cosmic|universe|gravitational|quasars?)\b/i;
+
+/*
+ * The other idioms the big words lend themselves to. A "referral black hole",
+ * Amazon's "account recovery black hole", immigration judges' "First
+ * Amendment black hole", Russia's "Black Hole" Kilo-class submarine; "political
+ * dark matter"; Democrats' "absolute asteroid" of a midterm and a court's
+ * "'Asteroid' to hit short-staffed" warning; the ASTEROID immunotherapy trial.
+ * A quoted phrase that ends in the term is how a headline borrows it.
+ */
+const SCIENCE_IDIOM =
+  /\b(?:referral|account recovery|internet|first amendment|hiring|capital|information|data|legal|bureaucra\w+|customer service)\s+black holes?\b|^(?!.*\b(?:scien\w+|physic\w+|research\w*|stud(?:y|ies)|discover\w*|detect\w*|observ\w+|spacetime|merg\w+|spin\w*|orbit\w*|massive|monster|impossible|hungry|giant)\b).*[‘'"“][^‘'"“’”]{0,40}\bblack hole[’'"”]|\bkind of a black hole\b|\bbigger black hole\b|\b(?:political|regulatory|corporate|institutional)\s+dark matter\b|[‘'"“]dark matter[’'"”]\s+(?:decisions?|deals?|moves?)|\bblue asteroid\b(?=[^.]{0,60}\b(?:republicans?|democrats?|gop|maga|trump|midterms?|county|north carolina)\b)|\babsolute asteroid\b|[‘'"“]asteroid!?[’'"”]|\basteroid hit takes out\b|\basteroid trial\b|\bai asteroid\b/i;
+
+const SCIENCE_NOT = new RegExp(
+  `${SCIENCE_COMMERCE.source}|^(?!.*(?:${ASTRONOMY.source})).*(?:${BUDGET_BLACK_HOLE.source}|${SCIENCE_IDIOM.source})`,
+  "i",
+);
+
 /** Either disqualifier, for the beats whose loose wording both of them reach. */
 const MUNDANE_OR_SCIENCE = new RegExp(`${NAMED_CAUSE.source}|${SCIENCE_CONTEXT.source}`, "i");
 
@@ -42,14 +106,19 @@ const MUNDANE_OR_SCIENCE = new RegExp(`${NAMED_CAUSE.source}|${SCIENCE_CONTEXT.s
  * topics to Google News items. Tuned for precision over recall: a wrong topic
  * is worse than a missed one because the source's default topic still applies.
  */
-const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
+export const TOPIC_RULES: readonly { topic: Topic; re: RegExp; unless?: RegExp }[] = [
   {
     topic: "ufo",
     // "Close encounters of the X kind" is a headline formula the wire uses for
     // anything — golf, moose, bears, the AfD. Only the numbered kinds are the
     // Spielberg reference, so any other kind is somebody else's story; a bare
     // "close encounters" still counts, and "up-close encounters" never does.
-    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|alien (?:spacecraft|craft|abduction|encounter|contact|bod(?:y|ies)|mummies|technology)|space aliens?|roswell(?:'s|’s)?\s+(?:incident|crash|ufo|uap|slides?|debris|1947|aliens?|wreckage|coverups?|cover-ups?|mania|myster\w+|saucers?|recovery|witness\w*|files?|museum|festival)|(?:[a-z]+(?:'s|’s)|the [a-z]+)\s*['"‘’“”]?\s*roswell\b|area 51|close encounters? of the (?:first|second|third|fourth|fifth|3rd|4th|5th) kind|(?<!up[- ])close encounters(?! of the )|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|non-?human (?:intelligence|biologics?|craft)|nhi|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
+    re: /\b(ufos?|uaps?|unidentified (?:aerial|anomalous|flying)|flying saucers?|aaro|alien (?:spacecraft|craft|abduction|encounter|contact|bod(?:y|ies)|mummies|technology)|space aliens?|roswell(?:'s|’s)?\s+(?:incident|crash|ufo|uap|slides?|debris|1947|aliens?|wreckage|coverups?|cover-ups?|mania|myster\w+|saucers?|recovery|witness\w*|files?|museum|festival)|(?:[a-z]+(?:'s|’s)|the [a-z]+)\s*['"‘’“”]?\s*roswell\b|area 51|close encounters? of the (?:first|second|third|fourth|fifth|3rd|4th|5th) kind|(?<!up[- ])close encounters(?! of the )(?! with\b(?![^.]{0,30}\b(?:drones?|unidentified|ufos?|uaps?|aliens?|craft|objects?|orbs?|extraterrestrials?)\b))|tic[- ]tac|(?:bright|glowing|mysterious|orange|white|red|multiple|strange|anomalous) orbs?|orbs? (?:over|above|in the sky)|giant disc|(?:disc|saucer|cigar)[- ]shaped|black triangles?|triangular (?:craft|object)|drone sightings?|disclosure|elizondo|grusch|coulthart|avi loeb|fravor|uap task force|galileo project|skinwalker|alien ships?|non-?human (?:intelligence|biologics?|craft)|nhi|crashed (?:craft|saucer)|crash retrievals?|reverse[- ]engineer\w*)\b/i,
+    // A drone in a war is not a UAP. "Unidentified aerial object enters Polish
+    // airspace during massive Russian attack on Ukraine" and an Indian vessel
+    // struck near Oman are the Ukraine war and the Red Sea, and the beat's own
+    // vocabulary is the only thing they share with it.
+    unless: /\b(?:russian (?:attack|drones?|missiles?)|attack on ukraine|houthis?|massive (?:russian )?attack|vessel near oman|zmiinyi|snake island|flying saucer moon|ai teams up)\b/i,
   },
   {
     /*
@@ -79,14 +148,19 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
   {
     topic: "ghosts",
     // "Ghost" is physics' favourite metaphor and none of it is haunted: ghost
-    // galaxies, the ghost particle (a neutrino), ghost imaging, phantom energy.
-    unless: /\bghost (?:galax\w+|particles?|imaging|nuclei|nucleus|peaks?|branch(?:es)?|stars?)\b|\bphantom energy\b/i,
+    // galaxies, the ghost particle and "ghost-like particles" (neutrinos),
+    // ghost imaging, phantom energy, Maxwell's demon. And in French an
+    // apparition is an appearance: six Quebec celebrities making "une rare
+    // apparition" on a red carpet reached the Hauntings beat.
+    // Ghost voters and ghost workers are payroll and ballot fraud, a "ghost
+    // poop" is a gut-health column, and a cosmic ghost is a nebula.
+    unless: /\bghost(?:[- ]?like)? (?:galax\w+|particles?|imaging|nuclei|nucleus|peaks?|branch(?:es)?|stars?)\b|\bphantom energy\b|\bmaxwell'?s demons?\b|\bghost (?:poops?|voters?|workers?|employees?|payroll|guns?|kitchens?|flights?)\b|\bcosmic (?:ghosts?|poltergeists?|spectres?|specters?|phantoms?)\b|\bbetelgeuse\b[^.]{0,40}\bhaunted\b|\b(?:une|la|l'|chaque|son|sa|ses|leur|cette|nouvelle|dernière|première|rare|très rare|courte|brève|fait une) apparitions?\b|\bapparitions? (?:publiques?|télévisées?|remarquées?|de|du|des|sur|au|à|aux)\b|\b(?:asteroids?|nebulae?|stellar|galax\w+|telescopes?|webb(?! city)|hubble|jwst|supernovae?|quasars?|pulsars?)\b|\bhaunted by (?:\w+ ){0,2}(?:words|memories|regrets?|guilt|debts?|the past|his past|her past|mistakes?|decisions?|loss(?:es)?)\b|\bwarren collection\b[^.]{0,80}\b(?:work permits?|staff|recruit\w*|belfast|malta|jobs?)\b|\bspirit of (?:service|christmas|the season|giving|community|adventure|competition|cooperation|innovation|the game|sportsmanship|aloha|halloween)\b/i,
     re: /\b(ghosts?|ghostly(?=\s+(?:figures?|presences?|apparitions?|shapes?|forms?|entit(?:y|ies)|voices?|footsteps?|footprints?|woman|women|man|men|child|children|monk|nun|face|faces|image|images|encounters?|activity|possessions?|rituals?|attacks?|forces?|beings?|happenings?|goings?|tales?|stor(?:y|ies)|legends?|hauntings?|spirits?)\b)|haunted|hauntings\b|haunting\b(?=\s+(?:at|in|of|on|near|inside|that|which|was|is|began|continues|reported|claims?)\b|[.,;:!?"'\)]|$)|poltergeists?|paranormal|apparitions?|spirits? (?:of|in|at)|s[eé]ances?|exorcis(?:m|t|ts)|(?:something|someone|anything)\s+(?:demonic|ghostly|unholy)|demonic(?=\s+(?:figures?|presences?|apparitions?|shapes?|forms?|entit(?:y|ies)|voices?|footsteps?|footprints?|woman|women|man|men|child|children|monk|nun|face|faces|image|images|encounters?|activity|possessions?|rituals?|attacks?|forces?|beings?|happenings?|goings?|tales?|stor(?:y|ies)|legends?|hauntings?|spirits?)\b)|possession|ouija|medium(?:s|ship)?|afterlife|phantoms?|spectres?|specters?|shadow (?:people|figures?)|conjuring house|annabelle|warren collection|amityville|enfield (?:poltergeist|haunting)|most haunted|ghost hunters?|ghost hunting|(?:inhuman|evil|malevolent) spirits?|haunted dolls?|possessed dolls?|spirit box|met the devil|the devil at|satan(?:ic)?|demons?|overnight investigation|paranormal (?:investigat\w+|research\w+|group|team|society|activity))\b/i,
   },
   {
     topic: "cryptids",
     // "yeti" (coolers), "dogman" (children's books) and "jersey devil" (NHL) need context.
-    re: /\b(bigfoot|sasquatch|cryptids?|cryptozoolog(?:y|ist|ists)|yeti (?:footprints?|sightings?|legend|myth|hunt|expedition|dna|scalp|creature)|abominable snowman|loch ness (?:monster|witness|sighting|creature|hunter|footage)s?|(?:in|on|at|over|from) loch ness|nessie|lake monsters?|sea (?:monsters?|serpents?)|dogman sightings?|mothman|chupacabras?|skinwalkers?|wendigo|yowie|thunderbird sightings?|jersey devil sightings?|goatman|ogopogo|mokele|thylacine|living dinosaurs?)\b/i,
+    re: /\b(bigfoot|sasquatch|cryptids?|cryptozoolog(?:y|ist|ists)|yeti (?:footprints?|sightings?|legend|myth|hunt|expedition|dna|scalp|creature)|abominable snowman|loch ness (?:monster|witness|sighting|creature|hunter|footage)s?|(?:in|on|at|over|from) loch ness|nessie|lake monsters?|sea (?:monsters?|serpents?)|dogman (?:sightings?|encounters?|attacks?|legend|chases|stalks|pursued|spotted|stares)|(?:michigan|ohio|illinois|wisconsin|north carolina|pennsylvania|ny)(?:'s)? dogman|(?<!besson'?s? )['‘"“]dogman['’"”](?! (?:live|obituary))|(?:bigfoot|sasquatch) (?:&|and) dogman|dogman (?:&|and) (?:bigfoot|sasquatch)|(?:shoot|shot|saw|spotted) a dogman|mothman|chupacabras?|skinwalkers?|wendigo|yowie|thunderbird sightings?|jersey devil sightings?|goatman|woodbooger|ogopogo|mokele|thylacine|living dinosaurs?)\b/i,
   },
   {
     /*
@@ -111,6 +185,8 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
      */
     topic: "fortean",
     re: /\b(high strangeness|high weirdness|fortean|ultraterrestrials?|superspectrum|men in black\b(?=[^.]{0,40}\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b)|(?<=\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b[^.]{0,40})men in black|window areas?\b(?=[^.]{0,40}\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b)|(?<=\b(?:ufos?|uaps?|witness\w*|encounters?|encountered|visit\w*|sightings?|phenomen\w+|abduct\w+|mothman|contactees?|silenc\w+|paranormal|paranormal)\b[^.]{0,40})window areas?|contactees?|indrid cold|crop circles?|cattle mutilations?|animal mutilations?|livestock mutilations?|black[- ]eyed (?:children|kids)|phantom (?:hitchhikers?|callers?|clowns?|vehicles?|aircraft|helicopters?|cars?|trains?)|black helicopters?|skyquakes?|earth ?lights|ley lines?|tree knocks?|wood knocks?|synchronicit(?:y|ies)|(?:ufo|sighting) flaps?|rains? of (?:fish|frogs)|rain(?:ed|ing) (?:fish|frogs)|(?:fish|frogs) (?:fell|falling|rained) from the sky|near[- ]death experiences?|shared death experiences?|terminal lucidity|out[- ]of[- ]body|reincarnation|past[- ]life (?:memor\w+|regression|recall)|past lives (?:research|memor\w+|stud\w+|regression|recall)|(?:recall\w*|remember\w*|stud(?:y|ies) of|research into) past lives|premonitions?|psychic|telepath(?:y|ic)|clairvoyan\w+|precognition|extrasensory perception|remote viewing|parapsycholog\w+|survival of consciousness|spontaneous human combustion|bermuda triangle|missing 411|dyatlov|skinwalker ranch|virgin mary|weeping (?:statue|madonna)|marian apparitions?|approved miracles|miracle (?:healing|cure)s?|lourdes|consciousness (?:exists )?beyond|life after death|the other side\b(?! of ))\b/i,
+
+    unless: FORTEAN_IDIOM,
   },
   {
     /*
@@ -125,8 +201,30 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
      * telescope. Only the wording defers.
      */
     topic: "fortean",
-    re: /\b(anomalous (?:phenomen\w+|experiences?|objects?|craft|signals?|readings?)|unexplained (?:phenomen\w+|activity|noises?|sounds?|lights?|objects?|howls?|footage|video|events?|deaths?|disappearances?|marks?)|mysterious(?:ly)? (?:light|sound|boom|object|signal|creature|figure|craft)\w*|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|booms?|noises?|sounds?|signals?)|(?:loud|mysterious|unexplained) booms?)\b/i,
+    re: /\b(anomalous (?:phenomen\w+|experiences?|objects?|craft|signals?|readings?)|unexplained (?:phenomen\w+|activity|noises?|sounds?|lights?|objects?|howls?|footage|video|events?|deaths?|disappearances?|marks?)|mysterious(?:ly)? (?:light|sound|object|signal|creature|figure|craft)\w*|strange (?:noises?|sounds?|creatures?|lights?|objects?|figures?|animals?|signals?)|mystery (?:creatures?|objects?|lights?|animals?|noises?|sounds?|signals?))\b/i,
     unless: MUNDANE_OR_SCIENCE,
+  },
+  {
+    /*
+     * A boom is the beat's one piece of atmospheric wording that almost always
+     * has an answer by the second paragraph. Of 43 visible boom headlines, 30
+     * named the cause in the headline itself — two earthquakes in Lancashire,
+     * a refinery blast in Mangaluru, Clean Harbors in Deer Park, a burning
+     * catamaran, a transformer, Mayon erupting, Starship re-entering, a
+     * military jet over DeWitt County, a flight declaring an emergency over
+     * Scotland. The skyquake is the boom nobody can account for: the Burgas
+     * districts "cause unclear", New Holstein police asking for help, West
+     * Hills where 911 found "no explosion or gunfire".
+     *
+     * So booms have their own rule and their own, much broader, list of
+     * causes. Aircraft and flights are causes here and nowhere else: a jet
+     * explains a boom, but a pilot who sees strange lights is a witness.
+     * And a cause the headline rules out is not a cause — "experts rule out
+     * major earthquake" leaves the boom on the beat.
+     */
+    topic: "fortean",
+    re: /\b(?:(?:loud|mysterious|mystery|unexplained|strange|unidentified|huge|massive) (?:booms?|bangs?)|booms? (?:heard|reported|rattl\w+|shak\w+|startl\w+|jolt\w+))\b/i,
+    unless: BOOM_EXPLAINED,
   },
   {
     /*
@@ -145,7 +243,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
      * slip, loop, Mandela — stand on their own.
      */
     topic: "temporal",
-    re: /\b(time slips?|time loops?|time anomal\w+|temporal anomal\w+|chrononauts?|retrocausal\w+|closed timelike curves?|chronology protection|grandfather paradox|bootstrap paradox|causal loops?|mandela effect|glitch in the matrix|arrow of time|(?<!real[- ])time[- ]travell?(?:ers?|ing)?\b(?=[^.]{0,45}\b(?:real|really|proof|proves?|proven|evidence|claims?|claiming|hoax|debunk\w*|physics|scientific|science|theor(?:y|ies)|paradox|possible|impossible|machines?|experiments?|relativity|wormholes?|conspirac\w+|warns?|predicts?|reveals?|insists?|visited|year \d{3,4}|from \d{3,4}|from the year)\b)|(?<=\b(?:real|really|proof|proves?|proven|evidence|claims?|claiming|hoax|debunk\w*|physics|scientific|science|theor(?:y|ies)|paradox|possible|impossible|machines?|experiments?|relativity|wormholes?|conspirac\w+|warns?|predicts?|reveals?|insists?|visited|year \d{3,4}|from \d{3,4}|from the year)\b[^.]{0,45})(?<!real[- ])time[- ]travell?(?:ers?|ing)?)\b/i,
+    re: /\b(time slips?|(?<!screen[- ])time loops?|time anomal\w+|temporal anomal\w+|chrononauts?|retrocausal\w+|closed timelike curves?|chronology protection|grandfather paradox|bootstrap paradox|causal loops?|mandela effect|glitch in the matrix|arrow of time|(?<!real[- ])time[- ]travell?(?:ers?|ing)?\b(?=[^.]{0,45}\b(?:real|really|proof|proves?|proven|evidence|claims?|claiming|hoax|debunk\w*|physics|scientific|science|theor(?:y|ies)|paradox|possible|impossible|machines?|experiments?|relativity|wormholes?|conspirac\w+|warns?|predicts?|reveals?|insists?|visited|year \d{3,4}|from \d{3,4}|from the year)\b)|(?<=\b(?:real|really|proof|proves?|proven|evidence|claims?|claiming|hoax|debunk\w*|physics|scientific|science|theor(?:y|ies)|paradox|possible|impossible|machines?|experiments?|relativity|wormholes?|conspirac\w+|warns?|predicts?|reveals?|insists?|visited|year \d{3,4}|from \d{3,4}|from the year)\b[^.]{0,45})(?<!real[- ])time[- ]travell?(?:ers?|ing)?)\b/i,
   },
   {
     /*
@@ -184,7 +282,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
      * Developer OptQC", "Tennessee, United Kingdom announce nuclear fusion
      * partnership". No vendor is named here: IonQ publishes real results too.
      */
-    unless: /\b(?:invests? in|investments?|funding rounds?|series [a-e] rounds?|acquires?|acquisitions?|joint ventures?|partnerships?|joins? forces|memorand(?:um|a) of understanding|signs? (?:an? )?(?:mou|agreement|deal)|go[- ]to[- ]market|commerciali[sz]\w+|startups?|shareholders?|ipo|roadmaps?|ufos?|uaps?|pentagon|department of war|disclosure|whistleblowers?|abduct\w+|crash retrievals?|grusch|elizondo|coulthart|sparks (?:theor\w+|speculation))\b/i,
+    unless: SCIENCE_NOT,
   },
   {
     topic: "archaeology",
@@ -192,7 +290,14 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
     // structure nobody can explain, a chamber found by radar, or a site that
     // does not fit the timeline is this beat. Named sites are listed because
     // the anomaly is in the site, not in the wording of the headline.
-    re: /\b(anomalous archaeolog\w+|forbidden archaeolog\w+|g[oö]bekli tepe|gunung padang|yonaguni|nan madol|puma ?punku|bimini road|derinkuyu|karahan tepe|elongated skulls?|paracas skulls?|giant skeletons?|nephilim|underwater (?:ruins?|cit(?:y|ies)|pyramids?|structures?)|sunken (?:cit(?:y|ies)|ruins?)|submerged (?:cit(?:y|ies)|ruins?)|hidden (?:chambers?|voids?)|(?:radar|lidar|sonar|scans?)[^.]{0,24}anomal\w+|subsurface anomal\w+|lost civili[sz]ation|lost city of|el dorado|percy fawcett|ancient (?:aliens|astronauts)|ancient astronaut theor\w+|mysterious (?:inscriptions?|monoliths?|ruins?|structures?)|unexplained (?:inscriptions?|ruins?|structures?)|megalithic (?:myster|anomal)\w*|impossible (?:engineering|masonry|geometry)|atlantis)\b/i,
+    re: /\b(anomalous archaeolog\w+|forbidden archaeolog\w+|g[oö]bekli tepe|gunung padang|yonaguni(?=[^.]{0,30}\b(?:monument|ruins?|pyramids?|structures?|underwater|megalith\w*|stones?|man-made|terraces?|ancient)\b)|(?<=\b(?:monument|ruins?|pyramids?|underwater|megalith\w*|ancient)\b[^.]{0,30})yonaguni|nan madol|puma ?punku|bimini road|derinkuyu|karahan tepe|elongated skulls?|paracas skulls?|giant skeletons?|nephilim|underwater (?:ruins?|cit(?:y|ies)|pyramids?|structures?)|sunken (?:cit(?:y|ies)|ruins?)|submerged (?:cit(?:y|ies)|ruins?)|hidden (?:chambers?|voids?)|(?:radar|lidar|sonar|scans?)[^.]{0,24}anomal\w+|subsurface anomal\w+|lost civili[sz]ation|lost city of|el dorado|percy fawcett|ancient (?:aliens|astronauts)|ancient astronaut theor\w+|mysterious (?:inscriptions?|monoliths?|ruins?|structures?)|unexplained (?:inscriptions?|ruins?|structures?)|megalithic (?:myster|anomal)\w*|impossible (?:engineering|masonry|geometry)|atlantis)\b/i,
+    /*
+     * Yonaguni is also a Japanese island with a radar station, an earthquake
+     * zone and a Bad Bunny song; only the monument is the beat, so it needs
+     * the monument nearby. And a hidden chamber is as often in a lorry as in
+     * a pyramid: Assam police find heroin, cash and smuggled buffalo in them.
+     */
+    unless: /\bhidden chambers?\b[^.]{0,40}\b(?:truck|lorry|dumper|vehicle|car|van|bus|container)\b|\b(?:smuggl\w+|seized|arrested|heroin|drugs|contraband|buffalo\w*|cash found)\b[^.]{0,60}\bhidden chambers?\b|\bhidden chambers?\b[^.]{0,60}\b(?:arrested|seized|smuggl\w+)\b/i,
   },
   {
     topic: "exoarchaeology",
@@ -208,7 +313,7 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
     // is a machine-learning paper about craters. Neither is an artefact
     // somebody else left. An alien claim in the same headline overrides the
     // guard, so "Aliens Built Moon Towers" still counts.
-    unless: /^(?!.*\b(?:aliens?|extraterrestrial|non-?human|ufos?|artificial origin)\b).*\b(?:astronauts?|artemis|regolith|3d[- ]print\w+|habitats?|colonis\w+|coloniz\w+|anomaly detection|machine learning|neural network|could help|could build|to build|will build|plans to build)\b/i,
+    unless: /^(?!.*\b(?:aliens?|extraterrestrial|non-?human|ufos?|artificial origin)\b).*\b(?:astronauts?|artemis|regolith|3d[- ]print\w+|habitats?|colonis\w+|coloniz\w+|anomaly detection|machine learning|neural network|could help|could build|to build|will build|plans to build|could support|extract(?:ing|s)? oxygen|oxygen from (?:lunar|moon|martian))\b/i,
   },
   {
     topic: "ooparts",
@@ -222,6 +327,14 @@ const TOPIC_RULES: { topic: Topic; re: RegExp; unless?: RegExp }[] = [
 ];
 
 export function classifyTopics(title: string): Topic[] {
+  /*
+   * A hashtag is something a poster added for reach, not something the
+   * headline says. "#jesus #god #islam #muslim #allah #ufo #instagram" was on
+   * the UFO beat on the strength of #ufo alone, and "Trump said what? #fyp
+   * #usa" on others. Classify the words; a clip that only reaches the beat
+   * through its tags names no beat, and is hidden as a weak match.
+   */
+  title = title.replace(/#[\p{L}\p{N}_-]+/gu, " ");
   const out: Topic[] = [];
   // A beat can have more than one rule — a strict half and a half that yields
   // to another beat — so the same topic can match twice. Order is TOPICS order.
@@ -279,6 +392,36 @@ const ENTERTAINMENT: RegExp[] = [
   /\b(?:official|new|teaser|first|full|final|red[- ]band|debut|launch|overview) trailers?\b/i,
   /\btrailer (?:drops|dropped|released|reveals|for|debuts|teases|breakdown)\b/i,
   /\(trailer\)/i,
+  // "'On the Last Day of Christmas' Trailer: Demons in Baton Rouge", "Amityville
+  // Horror: The House That Wouldn't Let Go–Trailer". Never a bare "trailer":
+  // somebody's haunted trailer is a home.
+  /\btrailer\s*[:|]|[|–—]\s*trailer\b/i,
+  /*
+   * A title and a year and nothing else is a listing: "Assault of the
+   * Sasquatch (2009)", "Most Haunted (2002)", "Paranormal Activity 8 (2027)".
+   * Seven words at most, because "When a UFO Dogfought an RAF Fighter (1956)"
+   * is a historical case and keeps its year.
+   */
+  /^(?:\S+\s+){0,6}\S+\s*\(\s*(?:19|20)\d{2}\s*\)\s*$/,
+  /\bending explained\b/i,
+  /\bdramati[sz](?:e|es|ing|ed)\b|\bbest looks\b|\bred carpet\b|\btable read\b/i,
+  // UFO Robot Grendizer is a 1975 anime whose figures still sell by the dozen.
+  /\bgrendizer\b|\bdante ufo robot\b/i,
+  /\b(?:tv tonight|sky history)\b|\btime,? (?:and )?channel\b|\bwhat to expect as\b/i,
+  // Not "what time is": that is how a meteor-shower viewing guide begins.
+  // Spielberg's film, which ran fifty headlines on the UFO beat.
+  /\bdisclosure day\b/i,
+  // Not "Star Trek-style": a government plan for Star Trek-style warp drives
+  // is a disclosure story.
+  /\bstar trek\b(?!-style)/i,
+  /\b(?:the bachelor(?:ette)?|love island|real housewives|rhol|rhony|rhoa|rhobh)\b/i,
+  // A press-release book launch: "Recent Release, '46,' from Page Publishing".
+  /^recent release\b|\b(?:page publishing|christian faith publishing)\b/i,
+  /\bsophomore album\b/i,
+  // The cast of the classic films, who keep the films in the news.
+  /\b(?:james brolin|dominique dunne|heather o'?rourke|zelda rubinstein)\b/i,
+  // The time loop as a plot device.
+  /\btime loop\b[^.]{0,50}\b(?:film|movie|series|show|novel|book|musical|anime|k-?drama|episode|season|starring|director|actor|rom-?com|marks \d+ years)\b|\b(?:film|movie|series|show|novel|book|musical|anime|k-?drama|episode|starring|director|actor|rom-?com|marks \d+ years inside)\b[^.]{0,50}\btime loop\b/i,
   /\bfirst look\b/i,
   // A bare "Teaser" is promotion in every one of the twelve headlines the
   // archive holds. The qualified rule above wanted the word "trailer", so six
@@ -313,7 +456,7 @@ const ENTERTAINMENT: RegExp[] = [
   /\bsci-?fi\b/i,
   /\bscience fiction\b/i,
   /\b(?:rom-?coms?|romantic comed(?:y|ies)|sitcoms?|comed(?:y|ies))\b/i,
-  /\b(?:cast members?|casting (?:news|call|announcement)|joins? the cast|the cast of|starring|to star in|co-stars?|star of (?:the )?(?:film|movie|show|series)|onscreen performance)\b/i,
+  /\b(?:cast members?|casting (?:news|call|announcement)|joins? the cast|the cast of|starring|to star in|co-?stars?|star of (?:the )?(?:film|movie|show|series)|onscreen performance)\b/i,
   /\b(?:film|movie|tv|show|series|franchise|executive|blumhouse) producers?\b/i,
   /\b(?:jason blum|blumhouse|a24|lionsgate|warner bros|universal pictures|paramount pictures|sony pictures|pixar|dreamworks|marvel studios|dc studios)\b/i,
   // Books, comics, games
@@ -328,6 +471,9 @@ const ENTERTAINMENT: RegExp[] = [
   /\bgraphic novels?\b/i,
   /\b(?:manga|anime|isekai|manhwa|webtoon|light novels?|english dub)\b/i,
   /\bvideo ?games?\b/i,
+  // Strategy and card games, playtests, and the Roblox location guides
+  // ("All 6 Mystery Creature Piece Locations in Driving Empire").
+  /\b(?:strategy game|card game|party game|exploding kittens|simulator|piece locations|part locations|playtest)\b/i,
   /*
    * Grand Theft Auto. GTA 6 shipped with a Skunk Ape in its swamps, a UFO
    * abduction quest and a haunted hotel, and the wire answered with 146
@@ -335,10 +481,10 @@ const ENTERTAINMENT: RegExp[] = [
    * them were the front page's second and third stories. No headline naming
    * the game is ever a report of anything.
    */
-  /\b(?:gta\s*(?:6|vi|v|5|iv)|grand theft auto)\b/i,
+  /\b(?:gta\s*(?:6|vi|v|5|iv|online)|grand theft auto)\b/i,
   /\bgameplay\b/i,
   /\bdlc\b/i,
-  /\b(?:playstation|xbox|nintendo|roblox|fortnite|minecraft|square enix|ubisoft|capcom|bethesda|rockstar games|epic games|steam deck|game pass|fallout \d+|until dawn)\b/i,
+  /\b(?:playstation|ps[1-5]|xbox|nintendo|roblox|fortnite|minecraft|square enix|ubisoft|capcom|bethesda|rockstar games|epic games|steam deck|game pass|fallout \d+|until dawn)\b/i,
   /\bgame (?:shows?|trailers?|reviews?|releases?|devs?|developers?|studios?)\b/i,
   /\b(?:tokyo game show|gamescom|comic-?con|fan expo)\b/i,
   // Stage and music
@@ -397,6 +543,38 @@ const ENTERTAINMENT: RegExp[] = [
   // activity" (the phenomenon) apart from 'Paranormal Activity' (the franchise).
   /['"]paranormal activity['"]/i,
   /\b(?:the conjuring(?! house)|(?<!real-life |real life )ghostbusters|beetlejuice|x-files|twilight zone|doctor who|skinwalker ranch|ancient aliens|expedition bigfoot|finding bigfoot|mountain monsters|paranormal caught on camera|kindred spirits|the dead files|ghost files|ghost adventures|john wick|sasquatch sunset|alien: earth)\b/i,
+  /*
+   * Games, books and boxed sets that borrow the beat. A cryptid-collecting
+   * auto battler on Early Access, a Bigfoot picture book, paranormal romance
+   * (a shelf, not a phenomenon), a Blu-ray unboxing, "Bigfoot, I Love You
+   * (2026) Review", the Mothman in a Roblox farming game.
+   */
+  /\b(?:adventure|horror|indie|video|survival|puzzle|deck-?building|roguelike|roguelite|co-?op|action|rpg|mobile) games?\b|\bearly access\b|\bauto[- ]battler\b|\bgame announces\b|\bgrow a garden\b/i,
+  /\bpicture books?\b|\bchildren'?s books?\b|\byoung readers\b|\bgraphic novels?\b|\boni press\b|^available now\b|\bdebut (?:\w+ ){0,2}novel\b|\bparanormal romance\b/i,
+  /\(\s*(?:19|20)\d{2}\s*\)\s*(?:review|trailer|film|movie|explained)\b/i,
+  /\bblu-?ray\b|\bunboxing\b|\b4k ultra ?hd\b|\bsteelbook\b/i,
+  // "Uncanny X-Men #36 Preview", "Ghost Adventures Season 31 Finale Preview".
+  /(?<![\w&])#\d{1,3}\b[^.]{0,40}\bpreview\b|\b(?:fall|season|finale|game|episode)\s+preview\b|[”"]\s+preview\b/i,
+  /\b(?:action|articulated|vinyl|collectible) figures?\b|\breaction\+|\bfunko\b/i,
+  /\b(?:male|female) lead'?s?\b/i,
+  // An art marketplace listing: "Deep Blue Bigfoot (2026) by Tomas Dauksa - For Sale".
+  /^.{3,80}\((?:19|20)\d{2}\) by [A-Z]/,
+  // Luc Besson's Dogman (2023) and the King's X song share a cryptid's name.
+  /\bluc besson\b|\bcaleb landry jones\b|\bking's x\b|\bkamal haasan\b|\bstuck in a time loop for\b|\bshorts? video\b/i,
+  // Curry Barker's Anything But Ghosts (2027) and Phasmophobia's Resonance update filed 40 stories between them.
+  /\banything but ghosts\b|\bcurry barker\b|\bphasmophobia\b|\blove ghost\b|\btheatrical release\b|\bsteam (?:preview|page|demo|release|next fest)\b|\bhorror highlights\b|\b1979'?s [“"']?the amityville horror\b|#kmjs\b|\bgabi ng lagim\b/i,
+  // TV listings ("UFO Chronicles on Blaze: full details and when it's on"), music videos, a mobile racing game.
+  /\bofficial (?:visualizer|audio|music video|lyric video)\b|\(official (?:video|visualizer)\)|\bhill climb racing\b|\bwhen it'?s on\b|\btechno\b/i,
+  // Roblox and Fisch event guides, short-drama sites, "what to watch" columns, a Close Encounters cast retrospective.
+  /\bclose encounters (?:of the third kind )?cast\b|\bwhere the stars landed\b|\bshort drama\b|\bplot summary\b|\bwatch this fan story\b|\bwatchflick\b|\b(?:adopt me|fisch|steal an egg)\b|\b(?:companion|event|box|mutation|variants?) guide\b|\bwhat to watch (?:on|friday|saturday|sunday|tonight|today|this (?:week|weekend))\b|\bwhat to watch\s*$|\bhalloween watch\b|\bkids'? show\b/i,
+  /*
+   * Apple TV's Dark Matter ran its second season through the archive window:
+   * 97 recaps, finale explainers and cast interviews, every one of them filed
+   * under physics. Cassini's "Grand Finale" is the only finale that is science.
+   */
+  /\bdark matter\b(?=[^.]{0,40}\b(?:(?<!grand )finales?|seasons?|s\d\b|episodes?|apple tv)\b)|\b(?:(?<!grand )finales?|apple tv)\b[^.]{0,60}\bdark matter\b|\bstream dark matter\b|\bdaniela'?s death\b/i,
+  /(?<!grand )\bfinales?\b/i,
+  /\basteroid city\b|[‘'"“]asteroid[’'"”] world premiere\b|\basteroid lily\b|\btank-vs-asteroid\b|\bpreuzmite\b|\bfree download and play\b|\bballad of\b|\btype beat\b|\bmutation guide\b/i,
 ];
 
 /**
@@ -508,6 +686,52 @@ const OFFBEAT: RegExp[] = [
   // the zone wins its division awards every year. A patrol is not a sighting.
   /\bski patrol(?:s|lers?)?\b/i,
   /*
+   * More beat words over doors and in other people's names. Yowie is an ASX
+   * company, a Sydney suburb and a Canberra columnist (Tim the Yowie Man);
+   * Flying Saucer is a Texas beer hall and a Houston pie company; the Bigfoot
+   * Trail is a hiking route through the Klamath Mountains; Clairvoyance is a
+   * Stardock AI product and a pair of THIEAUDIO earphones; Telepathy is
+   * Neuralink's brain chip; Time Slip is a Louisville theatre company.
+   */
+  /\byowie (?:group|bay|man)\b|\btim the yowie\b/i,
+  /\bflying saucer (?:pie|draught|emporium|presents|bar|restaurant|beer|pizza|cafe|diner|company)\b/i,
+  /\bbigfoot trail\b/i,
+  /\b(?:stardock|thieaudio|clairvoyance ai|clairvoyance mk\s?\w*)\b|\biems\b/i,
+  /\bneuralink\b/i,
+  /\btime slip (?:theatre|theater)\b/i,
+  /\bbugatti\b/i,
+  // Merchandise: a library card, a pop-up store, a fridge-magnet set, a gadget
+  // with a price on it.
+  /\blibrary cards?\b|\bpop-?up (?:store|shop|cafe)\b|\bmagnet set\b|\(\d+ designs?\b/i,
+  /[£$€]\d+(?:\.\d+)?\s+(?:[\w-]+\s+){0,3}(?:gadgets?|kits?|toys?|backpacks?|lamps?)\b/i,
+  // Weather pages for Sasquatch Mountain Resort and Wendigo Lake.
+  /\bcurrent weather\b/i,
+  // Racing: Wendigo runs over fences, Kid in The Meteorite on the flat.
+  /\b(?:raceday|race day|feature race|grand national|sky sports racing|four-timer|lowers? (?:the )?colours|ownership shares|racing post|third time luck\w*)\b/i,
+  // Sport by its metaphors: Duke's "exorcism" of UConn, a comet win streak.
+  /\bgame day\s*#?\s*\d+\b|\bexacts? revenge\b|\brejuvenat\w+ (?:its |their )?season\b|\bwin(?:ning)? streak\b/i,
+  /\bmarket data\b/i,
+  // A token's price page: Cryptid (CID/USD), Neutrino Index (XTN/USD), UFO Gaming.
+  /\bprice today\b|\(\w+\/usd\)/i,
+  /*
+   * UFO as a shape, a style or a brand rather than a sighting: Bob Hope's UFO
+   * House, an Amazon UFO cat bed, UFO Jeans, a UFO-themed mural in Salina,
+   * UFO-shaped burgers, a UFO-inspired e-SUV, and UFO Moviez, an Indian cinema
+   * chain whose share price files every trading day. "Mysterious UFO shaped
+   * like a pill" is a sighting and is untouched: the shape has to belong to a
+   * house, a burger or a cloud.
+   */
+  /\bufo[- ](?:style|styled|themed|inspired)\b/i,
+  /\bufo[- ]shaped (?:house|homes?|mansion|building|burgers?|sandwich|restaurant|cafe|bed|lamp|car|e?-?suv|cloud|supercell|thunderstorm|structure|pastry|tarts?|bowl|chair|pool)\b/i,
+  /\bufo (?:jeans|cat beds?|gaming|moviez|multiplexes|php|system aims|tarts|circus|installation)\b|['‘]?\bufo house\b/i,
+  /*
+   * Viral family-drama copy, syndicated by the hundred: "My Mother-Law Ruined
+   * Our Honeymoon, Then a Strange Noise Upstairs…", "Teen's Secret Gets
+   * Exposed After Parent Finds A Strange Object". The strange noise is the
+   * hook, not the subject.
+   */
+  /\b(?:ruined (?:our|my) (?:honeymoon|wedding)|teen'?s secret|baby suddenly|parent finds|mom shares what|dad shares what)\b/i,
+  /*
    * Merchandise. West Virginia's DMV put the Mothman and the Flatwoods
    * Monster on a licence plate and the USPS is putting cryptids on stamps in
    * 2027; between them that is 73 headlines about plate sales and stamp
@@ -536,11 +760,71 @@ const OFFBEAT: RegExp[] = [
   /\b(?:bet365|draftkings|fanduel|paddy power|william hill|ladbrokes|betfair)\b/i,
   // A beat word over a door. Sunken City Brewery, Bigfoot Bakery, Apparition
   // Coffee — the same failure as Sasquatch Resources, one street down.
-  /\b(?:bigfoot|sasquatch|yeti|mothman|nessie|sunken city|poltergeist|apparition|phantom|thunderbird|wendigo|cryptid|skinwalker|atlantis)\s+(?:brewing|brewer(?:y|ies)|distiller(?:y|ies)|taproom|winery|cider|coffee|bakery|diner|tavern)\b/i,
+  /\b(?:bigfoot|sasquatch|yeti|mothman|nessie|sunken city|poltergeist|apparition|phantom|thunderbird|wendigo|cryptid|skinwalker|atlantis)\s+(?:brewing|brewer(?:y|ies)|distiller(?:y|ies)|taproom|winery|cider|coffee|bakery|diner|tavern|inn|motel)\b/i,
   /\b(?:ad|advert|commercial) (?:campaigns?|films?|spots?|brings?|features?|stars)\b/i,
   // AARO is the Pentagon office and also a Canadian trade association that runs
   // a charity golf day. A fundraising total is never a beat story.
   /\brais(?:e|es|ed|ing) (?:a\$|us\$|\$|£|€)[\d,.]+/i,
+  /*
+   * Round two of names that are not the beat. Wendigo is a Jamie Snowden
+   * chaser bound for the Coral Gold Cup; the Northwest Bigfoot Battle is a
+   * folkstyle wrestling tour stop whose mat-by-mat replays arrive twenty at a
+   * time; Yowie Group is an ASX chocolate company; Mount Chiliad is a GTA
+   * map; Bigfoot RV, Bigfoot Culture and Bigfoot Books and Brews are shops.
+   */
+  /\bwendigo\b(?=[^.]{0,60}\b(?:snowden|carlisle|newbury|gold cup|hurdles?|handicap chase|novice|trainer|jockey|raceday|colin parker|cheltenham|haydock)\b)|\b(?:snowden|carlisle)\b[^.]{0,40}\bwendigo\b/i,
+  /\bbigfoot battle\b|^replay: mat \d+/i,
+  /\byowie\b[^.]{0,60}\b(?:placement|lead managers|a\$|asx|quarterly|half[- ]year|annual report|chocolate)\b/i,
+  /\bmount chiliad\b|\bgta'?s (?:oddest |weirdest |strangest |biggest )?(?:myths?|mysteries|easter eggs?|secrets)\b/i,
+  /\bbigfoot (?:books and brews|rv|culture|brewing|brewery|coffee|bbq|bar|tavern|pizza|outfitters|lodge)\b|\bbigfoot erotica\b|\bgolden wrench\b|\bcurling\b|\bbonspiel\b|\bcanelo\b/i,
+  /\bsmall business\b|\bstorefront\b|\bskate ?decks?\b|\bcostume ever\b|\bmedicare\b|\bword of the day\b|\bmorning bid\b|\b[a-z0-9-]+\.(?:io|app)\b/i,
+  /\b(?:kittens?|puppies|puppy)\b|\bfurry friday\b|\bmeet \w+ the (?:cat|dog)\b/i,
+  // A social profile or post rather than a story: "Professor Avi Loeb (@ProfAviLoeb) on X".
+  /\(@\w+\)/,
+  /*
+   * Products and companies named for the sky. Meteorite is a watch dial (Armin
+   * Strom, Davosa, Knis, Rolex), an Air Jordan colourway and a Group 1 race at
+   * Cranbourne; Black Hole is a trance label, a Patagonia duffel and a Peacock
+   * tourbillon; Dark Matter Technologies writes mortgage software; Antimatter
+   * is an Armada ski, a keyboard switch and a token with a price page.
+   */
+  /\bmeteorite[- ]dials?\b|\bmeteorite watch(?:es)?\b|\b(?:its|a|the) dial\b[^.]{0,40}\bmeteorite\b|\bmeteorite\b[^.]{0,80}\b(?:gmt|calibre|automatic watch|inlays?|limited[- ]edition|collector pieces|knife|release date)\b|\b(?:watchmaker|gmt|calibre|limited[- ]edition|collector pieces|air jordan|rolex|armin strom|guerlain|davosa|formex|knis|caviar|torch lighter)\b[^.]{0,80}\bmeteorite\b/i,
+  /\btourbillon\b|\bguilloch\w+|\bduffel\b|\bformex\b|\bessence ceramica\b|\bmuc-off\b|\bchain lube\b|\bhoka\b|\bair jordan\b|\barmada antimatter\b|\bantimatter by flux\b|\bmissile switch\b|\bblack hole recordings\b|\bout on black hole\b|\bblack hole of joy\b|\bnordvpn\b/i,
+  /\bkid in the meteorite\b|\bjigsaw meteorite\b|\bmeteorite glory\b|\bthe meteorite 20\d\d\b|\bmeteorite 20\d\d:|\b(?:off to|field for) the meteorite\b|\bmeteorite in first of three\b|\bcan rock meteorite\b|\bmeteorite\b[^.]{0,50}\b(?:horse betting|cranbourne)\b|\bcranbourne\b[^.]{0,50}\bmeteorite\b/i,
+  /\bdark matter (?:buys|technologies|and servicelink)\b|\bdark matter,\s*servicelink\b|\bservicelink\b|\bdark matter berlin\b/i,
+  /\btokenomics\b|\bmarket ?cap\b|\bprice prediction\b|\blive charts\b/i,
+  /*
+   * UFO as a brand, a pun or an acronym, round three: GravaStar's "UFO Hall
+   * Effect" keyboard switches, Anker's MagSafe UFO charger, a Ludwig UFO snare
+   * case, MicroPort's UFO Spark neurostimulator, Ghana's UFO party president,
+   * Nissin's Black UFO noodles, "uniformed flying officer", a Futuro house for
+   * sale, a Speke pub called the Flying Saucer going under the hammer.
+   */
+  /\bkeyboards?\b|\bhall effect\b|\bchargers?\b|\bmagsafe\b|\banker\b|\bsnare drum\b|\bdrum case\b|\bhardshell\b|\butility club\b|\bgolfwrx\b|\bufo lamp\b/i,
+  /\bufo spark\b|\bufo (?:president|commends)\b|\(ufo\) movements?\b|\bufo eric-atuanya\b|\bwinding-uap\b|\buniformed flying officer\b|\btaste test\b|\byakisoba\b|[‘'"“]black ufo\b|\bsomething offbeat\b/i,
+  /['‘]flying saucer['’] (?:airship|project)\b|\bflying saucer pub\b|\bflying saucer[- ](?:style|styled|themed|inspired)\b|\bfuturo house\b|\bsleep inside a ufo\b|\bglamping\b|\bufo mural\b|\b(?:pub|house|home|mansion|coupe|thunderbird|car|cruise)\b[^.]{0,60}\b(?:under the hammer|up for auction)\b/i,
+  /\bclouds? that (?:can )?looks? like a ufo\b|\blens-shaped cloud\b/i,
+  // Ford's Bronco Sasquatch package, and the Jeep built to answer it.
+  /\bbronco\b|\btrailhawk\b|\bjeep\b|\bafter reconciling with\b/i,
+  // A digest of a dozen items mentions an exorcism the way it mentions Puebla.
+  /^(?:[^,]+,){8,}/,
+  /\brolls-royce\b|\bgolden retrievers?\b|\bregulatory dark matter\b/i,
+  // Two hashtags make a clip caption: "Orb ufo uap takes off at high rate of speed #uap #uaps".
+  /#[\p{L}\p{N}_]+[^#]*#[\p{L}\p{N}_]+/u,
+  /*
+   * Market copy. UFO is a ticker three times over (Procure Space ETF, Alien
+   * Metals on AIM, UFO Moviez on the NSE) and quantum computing is a sector
+   * with ETFs, so share moves, results and "seasonal returns charts" file
+   * daily under beat words.
+   */
+  /\b(?:q[1-4]\s?fy\d{2}|h[12]\s?fy\d{2}|h[12] (?:loss|profit|results)|net (?:profit|loss)|seasonal returns|trading window|stake (?:falls|rises)|lead managers|proposed placement)\b|\b(?:nse|asx|nyse|nasdaq|lse|tsx):\s?[a-z]{2,5}\b|\(\w{2,6}\.(?:ns|l|ax|to|bo)\)/i,
+  /\bsamsung\b|\bgalaxy (?:a|s|z)\d{1,3}\b|\bgalaxy (?:watch|tab|buds|fold|flip|ring|phones?)\b/i,
+  // Sport that names nothing: the Raiders' "Black Hole" end zone, Austin
+  // Riley's three-run homer "exorcism", a Patriots QB's favourite cryptid.
+  /\b(?:qb|quarterbacks?|nlwcs?|nlcs|alcs|nlds|alds|inactives|big ten|broncos|seahawks|49ers|dodgers|phillies)\b|\b(?:\d-run|two-run|three-run|solo|huge|go-ahead|walk-off|leadoff) homers?\b|(?<!tomb |grave )\braiders\b/i,
+  // A lenticular cloud is weather. One that "sparks claims of a cloaked alien
+  // craft" is a UFO story and stays.
+  /^(?!.*\b(?:claims?|speculation|aliens?|craft|cloaked|sightings?|theor\w+)\b).*\b(?:flying saucer|ufo|ufo-like|saucer-shaped|lenticular) clouds?\b/i,
 ];
 
 export function isOffbeat(title: string): boolean {
@@ -563,7 +847,7 @@ const ATTRACTION =
  * worth more than the vendor list that surrounds it.
  */
 const GATHERING =
-  /\b(?:festival|fest|convention|expo|symposium|conclave|jamboree|comic[- ]?con|parade|gala|county fair|state fair|meet-?up|camp-?out|calling contest|conference|vendors?|tickets?|line-?up|registration|attendees?|keynote|speaks at|guest speakers?|cirque|horror-themed circus|las vegas show|touring show|immersive (?:event|experience))\b/i;
+  /\b(?:festival|fest|convention|expo|symposium|conclave|jamboree|comic[- ]?con|parade|gala|county fair|state fair|meet-?up|camp-?out|calling contest|conference|vendors?|tickets?|line-?up|registration|attendees?|keynote|speaks at|guest speakers?|cirque|horror-themed circus|las vegas show|touring show|immersive (?:event|experience)|(?:cryptid|bigfoot|ufo|paranormal|ghost|monster|para|scare|mysti)[- ]?con|(?:speech|lecture|talk) titled|chapter meetings?|monthly meetings?|ufo days|(?:bigfoot|ufo|ghost|monster|cryptid) bash)\b/i;
 
 /** A claim reported from the event, rather than the event's own housekeeping. */
 const GATHERING_NEWSWORTHY =

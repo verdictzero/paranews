@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildClusters, consensusTitle, dedupeMembers, distinctPublishers } from "./cluster.ts";
+import { buildClusters, consensusTitle, dedupeMembers, distinctPublishers, weightedJaccard } from "./cluster.ts";
 import { itemId, normalizeTitle } from "./text.ts";
 import type { Item, Tier, Topic } from "./types.ts";
 
@@ -167,4 +167,40 @@ test("a story that outlasts three days is still one story", () => {
     mk("New UFO files reveal Pentagon's plan for secret underground vault to keep exotic material", "Times of India", "press", 10 + 8 * 24),
   ];
   assert.ok(!buildClusters(farApart, { now }).some((c) => c.items.length === 2 && /underground/i.test(c.title)), "eight days apart is beyond the span");
+});
+
+test("a shared year is not a shared story", () => {
+  // "Election 2026 Michigan" scored 0.31 against "Michigan Bigfoot and UFO
+  // Sightings 2026 Reported This Year" on the live corpus and became the
+  // headline of a sightings story. A year still weighs; it is not one of the
+  // two shared words a match needs.
+  const idf = new Map([["election", 5], ["2026", 3], ["michigan", 4], ["bigfoot", 4], ["ufo", 1], ["sighting", 1], ["year", 2]]);
+  assert.equal(weightedJaccard(["election", "2026", "michigan"], ["michigan", "bigfoot", "ufo", "sighting", "2026", "year"], idf), 0);
+  // Two real words still match, and the year they share still counts toward the score.
+  const idf2 = new Map([["roswell", 4], ["debris", 4], ["1947", 3], ["museum", 3]]);
+  assert.ok(weightedJaccard(["roswell", "debris", "1947"], ["roswell", "debris", "1947", "museum"], idf2) > 0.7);
+});
+
+test("a member whose headline names no beat neither titles the story nor files it", () => {
+  // A Sasquatch Chronicles episode about near-death research put a Daily Mail
+  // consciousness study on the Cryptids page: the feed declares cryptids, and
+  // a cluster's beats were the union of every member's.
+  const items = [
+    ...filler(40),
+    mk("Life after death mystery deepens as scientists find signs of consciousness in clinically dead patients", "Daily Mail", "genre", 5, { topics: ["fortean"] }),
+    mk("New study finds signs of consciousness in clinically dead patients", "Sasquatch Chronicles", "press", 4, { topics: ["cryptids"], flags: ["weak-match"] }),
+  ];
+  const c = buildClusters(items, { now }).find((c) => /consciousness/.test(c.title))!;
+  assert.equal(c.items.length, 2, "one story");
+  assert.deepEqual(c.topics, ["fortean"]);
+  assert.match(c.title, /^Life after death/, "the higher-tier member names no beat, so it does not speak for the group");
+
+  // When no member names a beat, every member still counts.
+  const unnamed = [
+    ...filler(40),
+    mk("New study finds signs of consciousness in clinically dead patients", "Sasquatch Chronicles", "press", 4, { topics: ["cryptids"], flags: ["weak-match"] }),
+    mk("Study finds signs of consciousness in clinically dead patients", "Other Outlet", "genre", 3, { topics: ["fortean"], flags: ["weak-match"] }),
+  ];
+  const u = buildClusters(unnamed, { now }).find((c) => /consciousness/.test(c.title))!;
+  assert.deepEqual(u.topics, ["cryptids", "fortean"]);
 });

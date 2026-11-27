@@ -132,7 +132,16 @@ export function buildClusters(items: Item[], options: ClusterOptions = {}): Clus
   return clusters;
 }
 
-/** Σ idf over shared tokens / Σ idf over all tokens; 0 when fewer than two tokens are shared. */
+/**
+ * A year is a date, not a subject. "Election 2026 Michigan" and "Michigan
+ * Bigfoot and UFO Sightings 2026 Reported This Year" share two tokens and
+ * scored 0.31, so an election notice became the headline of a sightings
+ * story. A shared year still weighs in the score; it just is not one of the
+ * two shared words a match needs.
+ */
+const YEAR = /^(?:19|20)\d{2}$/;
+
+/** Σ idf over shared tokens / Σ idf over all tokens; 0 when fewer than two non-year tokens are shared. */
 export function weightedJaccard(a: string[], b: string[], idf: Map<string, number>): number {
   const setB = new Set(b);
   let shared = 0;
@@ -143,7 +152,7 @@ export function weightedJaccard(a: string[], b: string[], idf: Map<string, numbe
     union += v;
     if (setB.has(w)) {
       shared += v;
-      sharedCount++;
+      if (!YEAR.test(w)) sharedCount++;
     }
   }
   const setA = new Set(a);
@@ -207,7 +216,8 @@ export function dedupeMembers(members: Item[]): Item[] {
 const CONSENSUS_MIN_WRITEUPS = 3;
 const CONSENSUS_MIN_TOKENS = 4;
 
-export function consensusTitle(members: Item[]): Item {
+export function consensusTitle(all: Item[]): Item {
+  const members = onBeat(all);
   const ranked = [...members].sort(memberOrder);
   const groups = writeUps(members).map((g) => [...g].sort(memberOrder)[0]);
   if (groups.length < CONSENSUS_MIN_WRITEUPS) return ranked[0];
@@ -225,6 +235,18 @@ export function consensusTitle(members: Item[]): Item {
   const pool = usable.length ? usable : scored;
   pool.sort((a, b) => b.score - a.score || memberOrder(a.m, b.m));
   return pool[0].m;
+}
+
+/**
+ * The members whose own headline names the beat. A weak-match member is only
+ * on a beat because its feed declared one, so it neither speaks for the group
+ * nor adds a section: a Sasquatch Chronicles episode about near-death research
+ * put a Daily Mail consciousness study on the Cryptids page. When no member
+ * names a beat, all of them count, as before.
+ */
+function onBeat(members: Item[]): Item[] {
+  const named = members.filter((m) => !m.flags.includes("weak-match"));
+  return named.length ? named : members;
 }
 
 /** A headline that can stand as the group's, rather than one outlet's packaging of it. */
@@ -265,7 +287,7 @@ function makeCluster(members: Item[], now: Date): Cluster {
     publishers,
     tier: bestTier(members.map((m) => m.tier)),
     corroboration,
-    topics: sortTopics(members.flatMap((m) => m.topics)),
+    topics: sortTopics(onBeat(members).flatMap((m) => m.topics)),
     flags,
     first_published: published[0],
     latest_published: latest,
