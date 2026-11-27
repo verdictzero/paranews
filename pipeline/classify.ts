@@ -537,7 +537,10 @@ const ENTERTAINMENT: RegExp[] = [
   /\b(?:movies|films|episodes|games|characters|villains|scenes|performances) (?:ranked|that|you|we)\b/i,
   /\bbest (?:horror|scary|scariest|paranormal|ghost|alien|ufo|sci-?fi|monster|creature|religious|exorcist-themed) (?:movies|films|shows|series|games|books|episodes)\b/i,
   /\b(?:movie|film|book|game|album|episode|season|series|dub|theatre|theater|tv|play) reviews?\b/i,
-  /^review\b/i,
+  // "Review finds…" and "Review into…" are an inquiry reporting, not a critic.
+  /^review\b(?! (?:finds|found|says|shows|reveals|into|concludes|recommends|calls|urges|board|panel)\b)/i,
+  // "Paranormal Activity at The Alexandra: Review" is the stage show, reviewed.
+  /[:|–—-]\s*review\s*$/i,
   /\breview ?[|:]/i,
   // Named franchises and shows. The quoted form keeps "reports of paranormal
   // activity" (the phenomenon) apart from 'Paranormal Activity' (the franchise).
@@ -806,6 +809,8 @@ const OFFBEAT: RegExp[] = [
   /\bclouds? that (?:can )?looks? like a ufo\b|\blens-shaped cloud\b/i,
   // Ford's Bronco Sasquatch package, and the Jeep built to answer it.
   /\bbronco\b|\btrailhawk\b|\bjeep\b|\bafter reconciling with\b/i,
+  // A prediction market's page on whether aliens will be confirmed is a betting line.
+  /\bprediction markets?\b|\bodds & prediction\b|\bpolymarket\b|\bkalshi\b|\bbetting odds\b/i,
   // A digest of a dozen items mentions an exorcism the way it mentions Puebla.
   /^(?:[^,]+,){8,}/,
   /\brolls-royce\b|\bgolden retrievers?\b|\bregulatory dark matter\b/i,
